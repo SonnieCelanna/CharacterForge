@@ -1,0 +1,3186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character Forge — OC Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Alegreya:ital,wght@0,400;0,500;0,700;1,400&family=Alegreya+SC:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0a0f;
+    --bg-card: #111118;
+    --bg-card-hover: #16161f;
+    --bg-input: #0d0d14;
+    --border: #1e1e2a;
+    --border-glow: #2a2a3a;
+    --text-primary: #e8e4df;
+    --text-secondary: #8a8695;
+    --text-muted: #ffffff;
+    --accent-gold: #c9a84c;
+    --accent-gold-dim: #8a7234;
+    --accent-ember: #b85a3a;
+    --accent-violet: #9b7cc4;
+    --accent-teal: #6edcdc;
+    --accent-rose: #8a3a5a;
+    --tag-bg: #1a1a25;
+    --tag-border: #2a2a3a;
+    --generate-bg: #1a1520;
+    --generate-border: #3a2a4a;
+    --generate-hover: #2a1f35;
+    --result-bg: #0e0e16;
+    --scrollbar-track: #0a0a0f;
+    --scrollbar-thumb: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Alegreya', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(107, 76, 138, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(201, 168, 76, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ═══════ HEADER ═══════ */
+  .site-header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .site-header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    letter-spacing: 0.08em;
+    color: var(--accent-gold);
+    text-shadow: 0 0 40px rgba(201, 168, 76, 0.15);
+    margin-bottom: 8px;
+  }
+
+  .site-header .subtitle {
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .header-line {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold-dim), transparent);
+    margin: 24px auto 0;
+  }
+
+  /* ═══════ MAIN LAYOUT ═══════ */
+  .main-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ═══════ SECTION BLOCKS ═══════ */
+  .generator-section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-family: 'Alegreya SC', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+  }
+
+  /* Section color themes */
+  .section--skills .section-icon { background: rgba(110, 220, 220, 0.15); color: var(--accent-teal); }
+  .section--skills .section-header { border-color: rgba(110, 220, 220, 0.25); }
+  .section--skills .gen-card { --card-accent: var(--accent-teal); }
+
+  .section--personality .section-icon { background: rgba(184, 90, 58, 0.15); color: var(--accent-ember); }
+  .section--personality .section-header { border-color: rgba(184, 90, 58, 0.2); }
+  .section--personality .gen-card { --card-accent: var(--accent-ember); }
+
+  .section--mannerisms .section-icon { background: rgba(155, 124, 196, 0.15); color: var(--accent-violet); }
+  .section--mannerisms .section-header { border-color: rgba(155, 124, 196, 0.25); }
+  .section--mannerisms .gen-card { --card-accent: var(--accent-violet); }
+
+  /* ═══════ GENERATOR CARDS ═══════ */
+  .gen-card {
+    --card-accent: var(--accent-gold);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .gen-card:hover {
+    border-color: var(--border-glow);
+  }
+
+  .gen-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: default;
+  }
+
+  .gen-card-title {
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--card-accent);
+    text-transform: uppercase;
+  }
+
+  .gen-card-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Count selector */
+  .count-selector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 8px;
+  }
+
+  .count-selector label {
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .count-selector select {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .count-selector select:hover,
+  .count-selector select:focus {
+    border-color: var(--card-accent);
+  }
+
+  /* Generate button */
+  .btn-generate {
+    background: var(--generate-bg);
+    border: 1px solid var(--generate-border);
+    color: var(--text-secondary);
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 7px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-generate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.03));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .btn-generate:hover {
+    background: var(--generate-hover);
+    border-color: var(--card-accent);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .btn-generate:hover::before { opacity: 1; }
+
+  .btn-generate:active {
+    transform: translateY(0);
+  }
+
+  .btn-generate.rolling {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  /* Clear button */
+  .btn-clear {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.65rem;
+    font-family: 'Alegreya SC', serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-clear:hover {
+    color: var(--accent-rose);
+    border-color: rgba(138, 58, 90, 0.3);
+  }
+
+  /* ═══════ RESULTS AREA ═══════ */
+  .gen-card-results {
+    padding: 0 20px 18px;
+    min-height: 36px;
+  }
+
+  .result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .result-tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-family: 'Alegreya', serif;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    animation: tagIn 0.35s ease backwards;
+    transition: background 0.2s;
+    line-height: 1.4;
+  }
+
+  .result-tag:hover {
+    background: var(--bg-card-hover);
+  }
+
+  /* Speech result is a block, not tags */
+  .result-speech {
+    background: var(--result-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-family: 'Alegreya', serif;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    animation: tagIn 0.4s ease backwards;
+  }
+
+  .result-speech .speech-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .result-speech .speech-value {
+    color: var(--text-primary);
+  }
+
+  .result-speech .speech-row {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .result-speech .speech-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .placeholder-text {
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 4px 0;
+  }
+
+  @keyframes tagIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* stagger children */
+  .result-tag:nth-child(1) { animation-delay: 0s; }
+  .result-tag:nth-child(2) { animation-delay: 0.06s; }
+  .result-tag:nth-child(3) { animation-delay: 0.12s; }
+  .result-tag:nth-child(4) { animation-delay: 0.18s; }
+  .result-tag:nth-child(5) { animation-delay: 0.24s; }
+  .result-tag:nth-child(6) { animation-delay: 0.30s; }
+  .result-tag:nth-child(7) { animation-delay: 0.36s; }
+  .result-tag:nth-child(8) { animation-delay: 0.42s; }
+
+  /* ═══════ LOCK TOGGLE ═══════ */
+  .btn-lock {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    padding: 5px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+  }
+
+  .btn-lock:hover {
+    color: var(--accent-gold-dim);
+    border-color: rgba(201,168,76,0.2);
+  }
+
+  .btn-lock.locked {
+    color: var(--accent-gold);
+    border-color: rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.05);
+  }
+
+  /* ═══════ RESPONSIVE ═══════ */
+  @media (max-width: 600px) {
+    .gen-card-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .gen-card-controls {
+      width: 100%;
+      justify-content: flex-end;
+    }
+    .site-header { padding: 40px 16px 28px; }
+    .main-container { padding: 0 12px 60px; }
+    .sheet-panel { margin: 0 8px; }
+    .sheet-category-tags { gap: 6px; }
+  }
+
+  /* ═══════ ADD BUTTON ON TAGS ═══════ */
+  .result-tag {
+    position: relative;
+    cursor: pointer;
+    padding-right: 34px;
+  }
+
+  .result-tag .btn-add-tag {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid var(--border-glow);
+    background: rgba(201, 168, 76, 0.08);
+    color: var(--accent-gold);
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.5;
+  }
+
+  .result-tag:hover .btn-add-tag {
+    opacity: 1;
+  }
+
+  .result-tag .btn-add-tag:hover {
+    background: rgba(201, 168, 76, 0.2);
+    border-color: var(--accent-gold);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .result-tag.added-flash {
+    border-color: var(--accent-gold);
+    background: rgba(201, 168, 76, 0.08);
+  }
+
+  /* Speech row add button */
+  .speech-row {
+    position: relative;
+    cursor: pointer;
+    padding-right: 36px;
+  }
+
+  .speech-row .btn-add-speech {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    border: 1px solid var(--border-glow);
+    background: rgba(201, 168, 76, 0.08);
+    color: var(--accent-gold);
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.5;
+  }
+
+  .speech-row:hover .btn-add-speech {
+    opacity: 1;
+  }
+
+  .speech-row .btn-add-speech:hover {
+    background: rgba(201, 168, 76, 0.2);
+    border-color: var(--accent-gold);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .speech-row.added-flash {
+    background: rgba(201, 168, 76, 0.05);
+  }
+
+  /* ═══════ CHARACTER SHEET PANEL ═══════ */
+  .sheet-panel {
+    max-width: 900px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sheet-container {
+    background: var(--bg-card);
+    border: 1px solid var(--accent-gold-dim);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(201, 168, 76, 0.04);
+  }
+
+  .sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(201, 168, 76, 0.03);
+  }
+
+  .sheet-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sheet-header-icon {
+    font-size: 1.3rem;
+  }
+
+  .sheet-header h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold);
+  }
+
+  .sheet-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .sheet-header-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-sheet-action {
+    background: var(--generate-bg);
+    border: 1px solid var(--generate-border);
+    color: var(--text-secondary);
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-sheet-action:hover {
+    border-color: var(--accent-gold-dim);
+    color: var(--text-primary);
+    background: var(--generate-hover);
+  }
+
+  .btn-sheet-action.btn-danger:hover {
+    border-color: var(--accent-rose);
+    color: #d45a5a;
+  }
+
+  .btn-sheet-action.btn-export:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+  }
+
+  .sheet-body {
+    padding: 20px 24px;
+  }
+
+  .sheet-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  .sheet-empty-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    opacity: 0.4;
+    display: block;
+  }
+
+  .sheet-category {
+    margin-bottom: 20px;
+  }
+
+  .sheet-category:last-child {
+    margin-bottom: 0;
+  }
+
+  .sheet-category-label {
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sheet-category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sheet-tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    border-radius: 6px;
+    padding: 5px 28px 5px 12px;
+    font-family: 'Alegreya', serif;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    position: relative;
+    animation: tagIn 0.25s ease backwards;
+    line-height: 1.4;
+  }
+
+  .sheet-tag .btn-remove-tag {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.3;
+  }
+
+  .sheet-tag:hover .btn-remove-tag {
+    opacity: 0.7;
+  }
+
+  .sheet-tag .btn-remove-tag:hover {
+    opacity: 1;
+    color: #d45a5a;
+    background: rgba(212, 90, 90, 0.1);
+  }
+
+  /* Speech entries in sheet */
+  .sheet-speech-entry {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    padding: 4px 28px 4px 12px;
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    border-radius: 6px;
+    position: relative;
+    animation: tagIn 0.25s ease backwards;
+    line-height: 1.4;
+  }
+
+  .sheet-speech-entry .speech-sub-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sheet-speech-entry .speech-sub-value {
+    color: var(--text-primary);
+    font-family: 'Alegreya', serif;
+    font-size: 0.85rem;
+  }
+
+  .sheet-speech-entry .btn-remove-tag {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.3;
+  }
+
+  .sheet-speech-entry:hover .btn-remove-tag {
+    opacity: 0.7;
+  }
+
+  .sheet-speech-entry .btn-remove-tag:hover {
+    opacity: 1;
+    color: #d45a5a;
+    background: rgba(212, 90, 90, 0.1);
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--bg-card);
+    border: 1px solid var(--accent-gold-dim);
+    color: var(--accent-gold);
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 10px 24px;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 1000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ═══════ MANUAL TRAIT PICKER ═══════ */
+  .picker-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+
+  .picker-toggle:hover {
+    background: rgba(201, 168, 76, 0.03);
+  }
+
+  .picker-toggle-icon {
+    font-size: 0.75rem;
+    color: var(--accent-gold-dim);
+    transition: transform 0.25s;
+  }
+
+  .picker-toggle.open .picker-toggle-icon {
+    transform: rotate(90deg);
+  }
+
+  .picker-toggle-label {
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .picker-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  .picker-panel.open {
+    max-height: 600px;
+    border-bottom-color: var(--border);
+  }
+
+  .picker-inner {
+    padding: 16px 24px 20px;
+  }
+
+  .picker-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .picker-search {
+    flex: 1;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: 'Alegreya', serif;
+    font-size: 0.88rem;
+    padding: 8px 14px;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .picker-search::placeholder {
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .picker-search:focus {
+    border-color: var(--accent-gold-dim);
+  }
+
+  .picker-category-select {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+    min-width: 140px;
+  }
+
+  .picker-category-select:focus {
+    border-color: var(--accent-gold-dim);
+  }
+
+  .picker-list-area {
+    max-height: 340px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-input);
+  }
+
+  .picker-list-empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+
+  .picker-list-group-label {
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    padding: 10px 14px 4px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-input);
+    z-index: 1;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .picker-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 14px;
+    font-family: 'Alegreya', serif;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.12s;
+    border-bottom: 1px solid rgba(30, 30, 42, 0.5);
+  }
+
+  .picker-list-item:last-child {
+    border-bottom: none;
+  }
+
+  .picker-list-item:hover {
+    background: rgba(201, 168, 76, 0.05);
+  }
+
+  .picker-list-item .picker-add-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--border-glow);
+    background: rgba(201, 168, 76, 0.06);
+    color: var(--accent-gold);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    opacity: 0.4;
+  }
+
+  .picker-list-item:hover .picker-add-icon {
+    opacity: 1;
+    border-color: var(--accent-gold-dim);
+  }
+
+  .picker-list-item.on-sheet {
+    background: rgba(201, 168, 76, 0.04);
+  }
+
+  .picker-list-item.on-sheet .picker-item-text {
+    color: var(--accent-gold);
+  }
+
+  .picker-list-item.on-sheet .picker-add-icon {
+    background: rgba(201, 168, 76, 0.15);
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    opacity: 1;
+  }
+
+  .picker-list-item.on-sheet .picker-add-icon::after {
+    content: '✓';
+    font-size: 0.7rem;
+  }
+
+  .picker-list-item.on-sheet .picker-add-icon span {
+    display: none;
+  }
+
+  .picker-list-item.just-added {
+    animation: pickerFlash 0.4s ease;
+  }
+
+  @keyframes pickerFlash {
+    0% { background: rgba(201, 168, 76, 0.15); }
+    100% { background: rgba(201, 168, 76, 0.04); }
+  }
+
+  .picker-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0 0;
+  }
+
+  .picker-hint {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .picker-show-more {
+    padding: 12px 14px;
+    text-align: center;
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-gold-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    border-top: 1px solid var(--border);
+  }
+
+  .picker-show-more:hover {
+    background: rgba(201, 168, 76, 0.06);
+    color: var(--accent-gold);
+  }
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--bg-card);
+    border: 1px solid var(--accent-gold-dim);
+    color: var(--accent-gold);
+    font-family: 'Alegreya SC', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    padding: 10px 24px;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    z-index: 1000;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <h1>Character Forge</h1>
+  <p class="subtitle">Original Character Generator</p>
+  <div class="header-line"></div>
+</header>
+
+<main class="main-container">
+
+  <!-- ════════════════════════ SKILLS SECTION ════════════════════════ -->
+  <div class="generator-section section--skills">
+    <div class="section-header">
+      <div class="section-icon">⚔</div>
+      <h2>Skills</h2>
+    </div>
+
+    <div class="gen-card" data-generator="savvies">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Savvies</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll savvies…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="ineptitudes">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Ineptitudes</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll ineptitudes…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ PERSONALITY SECTION ════════════════════════ -->
+  <div class="generator-section section--personality">
+    <div class="section-header">
+      <div class="section-icon">♠</div>
+      <h2>Personality</h2>
+    </div>
+
+    <div class="gen-card" data-generator="likes">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Likes</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll likes…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="dislikes">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Dislikes</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll dislikes…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="vices">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Vices</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll vices…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="flaws">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Flaws</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll flaws…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="kinks">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Kinks &amp; Preferences</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll kinks &amp; preferences…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════ MANNERISMS SECTION ════════════════════════ -->
+  <div class="generator-section section--mannerisms">
+    <div class="section-header">
+      <div class="section-icon">🎭</div>
+      <h2>Mannerisms</h2>
+    </div>
+
+    <div class="gen-card" data-generator="speech">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Speech</span>
+        <div class="gen-card-controls">
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div data-results>
+          <span class="placeholder-text">Click generate to roll speech patterns…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="pets">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Pets</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option selected>1</option><option>2</option><option>3</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll pets…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="hobbies">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Hobbies</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll hobbies…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="religion">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Religious Beliefs</span>
+        <div class="gen-card-controls">
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll religious beliefs…</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gen-card" data-generator="tics">
+      <div class="gen-card-header">
+        <span class="gen-card-title">Tics &amp; Quirks</span>
+        <div class="gen-card-controls">
+          <div class="count-selector">
+            <label>Count</label>
+            <select data-count>
+              <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option>
+            </select>
+          </div>
+          <button class="btn-lock" title="Lock results" data-lock>🔓</button>
+          <button class="btn-clear" data-clear>Clear</button>
+          <button class="btn-generate" data-gen>Generate</button>
+        </div>
+      </div>
+      <div class="gen-card-results">
+        <div class="result-tags" data-results>
+          <span class="placeholder-text">Click generate to roll tics &amp; quirks…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ════════════════════════ CHARACTER SHEET PANEL ════════════════════════ -->
+<div class="sheet-panel">
+  <div class="sheet-container">
+    <div class="sheet-header">
+      <div class="sheet-header-left">
+        <span class="sheet-header-icon">📜</span>
+        <h2>Character Sheet</h2>
+        <span class="sheet-count" id="sheetCount">0 traits</span>
+      </div>
+      <div class="sheet-header-actions">
+        <button class="btn-sheet-action btn-export" id="btnExportTxt" title="Export as text">Export .txt</button>
+        <button class="btn-sheet-action btn-export" id="btnExportJson" title="Export as JSON">Export .json</button>
+        <button class="btn-sheet-action btn-danger" id="btnClearSheet" title="Clear all">Clear All</button>
+      </div>
+    </div>
+    <!-- Manual Trait Picker -->
+    <div class="picker-toggle" id="pickerToggle">
+      <span class="picker-toggle-icon">▶</span>
+      <span class="picker-toggle-label">Manual Trait Search</span>
+    </div>
+    <div class="picker-panel" id="pickerPanel">
+      <div class="picker-inner">
+        <div class="picker-controls">
+          <input type="text" class="picker-search" id="pickerSearch" placeholder="Search traits… or browse by category" autocomplete="off">
+          <select class="picker-category-select" id="pickerCategory">
+            <option value="">— Select Category —</option>
+            <option value="savvies">Savvies</option>
+            <option value="ineptitudes">Ineptitudes</option>
+            <option value="likes">Likes</option>
+            <option value="dislikes">Dislikes</option>
+            <option value="vices">Vices</option>
+            <option value="flaws">Flaws</option>
+            <option value="kinks">Kinks & Preferences</option>
+            <option value="pets">Pets</option>
+            <option value="hobbies">Hobbies</option>
+            <option value="religion">Religious Beliefs</option>
+            <option value="tics">Tics & Quirks</option>
+          </select>
+        </div>
+        <div class="picker-list-area" id="pickerListArea">
+          <div class="picker-list-empty">Select a category to browse, or type to search across all traits.</div>
+        </div>
+        <div class="picker-info">
+          <span class="picker-hint" id="pickerHint"></span>
+        </div>
+      </div>
+    </div>
+    <div class="sheet-body" id="sheetBody">
+      <div class="sheet-empty" id="sheetEmpty">
+        <span class="sheet-empty-icon">✦</span>
+        Click the <strong>+</strong> button on any generated trait to add it here.<br>
+        Your sheet saves automatically.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  DATA POOLS — Each generator pulls from its own pool
+// ═══════════════════════════════════════════════════════════
+
+const DATA = {
+  savvies: [
+    "Running", "Sprinting", "Long-distance running", "Jumping", "Climbing", "Swimming",
+    "Diving", "Parkour", "Acrobatics", "Gymnastics", "Balance", "Flexibility",
+    "Strength training", "Weightlifting", "Endurance", "Stamina", "Reflexes",
+    "Hand-eye coordination", "Footwork", "Agility", "Speed", "Stealth", "Sneaking",
+    "Silent movement", "Lock picking", "Pickpocketing", "Sleight of hand", "Escapology",
+    "Contortionism",
+    "Hand-to-hand combat", "Boxing", "Kickboxing", "Karate", "Judo", "Jiu-jitsu",
+    "Taekwondo", "Muay Thai", "Wrestling", "Grappling", "Knife fighting", "Swordsmanship",
+    "Staff fighting", "Marksmanship", "Archery", "Throwing weapons", "Firearms proficiency",
+    "Sharpshooting", "Quick draw", "Disarming opponents", "Defensive fighting",
+    "Offensive tactics", "Reading opponent's movements", "Counter-attacking", "Blocking",
+    "Dodging", "Evasion", "Predicting attacks", "Combat strategy",
+    "Tactical thinking in battle",
+    "Mathematics", "Physics", "Chemistry", "Biology", "Engineering", "Computer science",
+    "Programming", "Coding", "Hacking", "Data analysis", "Research", "Critical thinking",
+    "Problem-solving", "Logic puzzles", "Pattern recognition", "Memory retention",
+    "Speed reading", "Photographic memory", "Eidetic memory", "Mental math",
+    "Strategic planning", "Chess", "Debate", "Rhetoric", "Argumentation", "Philosophy",
+    "Psychology", "Reading people", "Emotional intelligence", "Body language reading",
+    "Lie detection", "Deduction", "Investigation", "Detective work", "Forensics",
+    "Crime scene analysis", "Evidence gathering", "Interrogation",
+    "Drawing", "Sketching", "Painting", "Sculpting", "Digital art", "Animation",
+    "Graphic design", "Photography", "Videography", "Film editing", "Creative writing",
+    "Poetry", "Storytelling", "Screenwriting", "Playwriting", "Music composition",
+    "Songwriting", "Playing piano", "Playing guitar", "Playing drums", "Playing violin",
+    "Playing other instruments", "Singing", "Vocal range", "Pitch perfect hearing",
+    "Music theory", "Conducting", "Dancing (ballet)", "Dancing (contemporary)",
+    "Dancing (hip-hop)", "Dancing (ballroom)", "Choreography", "Acting", "Voice acting",
+    "Improv", "Stand-up comedy", "Magic tricks", "Illusions", "Ventriloquism", "Puppetry",
+    "Charisma", "Persuasion", "Negotiation", "Diplomacy", "Mediation",
+    "Conflict resolution", "Public speaking", "Presentations", "Leadership",
+    "Team building", "Motivating others", "Inspiring people", "Networking",
+    "Making friends easily", "Small talk", "Conversation skills", "Active listening",
+    "Empathy", "Comforting others", "Counseling", "Teaching", "Mentoring",
+    "Patience with others", "Understanding different perspectives", "Cultural sensitivity",
+    "Language learning", "Multilingual", "Translation", "Interpretation",
+    "Accents and dialects", "Voice mimicry", "Impression of others",
+    "Cooking", "Baking", "Mixology", "Bartending", "Barista skills", "Food presentation",
+    "Knife skills (culinary)", "Meal planning", "Nutrition knowledge", "Cleaning",
+    "Organization", "Interior design", "Home repair", "Plumbing", "Electrical work",
+    "Carpentry", "Woodworking", "Metalworking", "Welding", "Auto repair", "Mechanics",
+    "Motorcycle maintenance", "Sewing", "Tailoring", "Fashion design", "Knitting",
+    "Crocheting", "Embroidery", "Gardening", "Landscaping", "Agriculture",
+    "Animal training", "Pet care", "Veterinary knowledge", "First aid", "CPR",
+    "Emergency medicine", "Wilderness survival", "Camping skills", "Fire starting",
+    "Shelter building", "Foraging", "Hunting", "Fishing", "Tracking", "Navigation",
+    "Map reading", "Orienteering", "Driving", "Piloting aircraft", "Sailing",
+    "Boat handling",
+    "Business management", "Marketing", "Sales", "Customer service", "Accounting",
+    "Bookkeeping", "Financial planning", "Investment knowledge", "Stock trading",
+    "Real estate", "Project management", "Time management", "Multitasking",
+    "Prioritization", "Meeting deadlines", "Working under pressure", "Attention to detail",
+    "Quality control", "Documentation", "Report writing", "Technical writing", "Editing",
+    "Proofreading", "Journalism", "Interviewing", "Broadcasting", "News anchoring",
+    "Weather forecasting", "Scientific research", "Lab work", "Medical knowledge",
+    "Surgical skills", "Diagnosis", "Pharmacy knowledge", "Legal knowledge",
+    "Law practice", "Contract negotiation", "Court proceedings", "Paralegal work",
+    "Quirk control", "Precise quirk activation", "Quirk endurance",
+    "Quirk stamina management", "Quirk evolution techniques",
+    "Creative quirk applications", "Quirk combination strategies",
+    "Support item integration", "Quirk analysis", "Understanding others' quirks",
+    "Predicting quirk abilities", "Countering specific quirk types",
+    "Rescue operations with quirk", "Combat with quirk", "Quirk-enhanced mobility",
+    "Quirk training methods", "Teaching quirk usage", "Minimizing quirk drawbacks",
+    "Managing quirk limitations", "Quirk awakening potential",
+    "Ultimate moves development", "Special techniques creation",
+    "Signature move execution",
+    "Rescue operations", "Civilian evacuation", "Disaster response",
+    "Hostage negotiation", "Crime scene securing", "Villain apprehension",
+    "Restraining techniques", "Non-lethal takedowns", "Crowd control",
+    "Public relations", "Media handling", "Interview skills", "Fan interaction",
+    "Maintaining secret identity", "Balancing hero/civilian life", "Patrol efficiency",
+    "Territory knowledge", "Threat assessment", "Damage minimization",
+    "Collateral damage prevention", "Team coordination", "Partner synchronization",
+    "Supporting other heroes", "Leading hero teams", "Underground hero tactics",
+    "Information gathering", "Infiltration", "Undercover work", "Surveillance",
+    "Reconnaissance", "Intelligence analysis", "Strategy formulation", "Battle planning",
+    "Contingency planning", "Adaptability in combat", "Improvisation",
+    "Quick decision making", "Crisis management", "Stress management",
+    "Staying calm under pressure", "Endurance in long battles", "Recovery speed",
+    "Pain tolerance", "Mental fortitude", "Willpower", "Determination",
+    "Never giving up",
+    "Budgeting", "Frugality", "Finding deals", "Bargaining", "Haggling", "Gambling",
+    "Card counting", "Poker face", "Bluffing", "Reading tells", "Gaming skills",
+    "Video game expertise", "Speedrunning", "Strategy game mastery", "Trivia knowledge",
+    "General knowledge", "Pop culture knowledge", "History knowledge", "Geography",
+    "Memorization", "Mnemonics", "Study techniques", "Test-taking", "Typing speed",
+    "Shorthand", "Calligraphy", "Handwriting analysis", "Origami", "Puzzle solving",
+    "Rubik's cube", "Riddles", "Crosswords", "Sudoku", "Brain teasers", "Pranking",
+    "Practical jokes", "Party planning", "Event coordination", "Wedding planning",
+    "Decorating", "Gift wrapping", "Gift selection", "Thoughtfulness",
+    "Remembering details about people", "Making people feel special", "Hosting"
+  ],
+
+  ineptitudes: [
+    "Terrible with directions", "Cannot cook to save their life", "Awful liar",
+    "Terrible at math", "Can't swim", "Tone-deaf", "Clumsy with tools",
+    "Horrible memory for names", "Can't keep a secret", "Zero artistic ability",
+    "Can't ride a horse", "Bad at reading the room", "Terrible penmanship",
+    "No sense of time", "Can't hold their liquor", "Useless in a fight",
+    "Awful at bargaining", "Can't tie knots", "Terrible with animals",
+    "Falls asleep during watch", "Gets lost in their own city", "Fumbles under pressure",
+    "No patience for puzzles", "Scared of heights", "Horrible at stealth",
+    "Can't bluff", "Forgets important dates", "Bad at multitasking",
+    "Terrible dancer", "Can't whistle", "Over-explains everything",
+    "Panics easily", "Can't read maps", "Poor depth perception",
+    "Allergic to common things", "Easily distracted", "Bad at small talk",
+    "No poker face", "Slow reader", "Burns everything they cook"
+  ],
+
+  likes: [
+    "Coffee", "Tea", "Hot chocolate", "Energy drinks", "Soda", "Juice", "Smoothies",
+    "Alcohol", "Wine", "Beer", "Spicy food", "Sweet food", "Salty food", "Sour food",
+    "Bitter food", "Fried food", "Healthy food", "Junk food", "Fast food", "Home cooking",
+    "Baking", "Cooking", "Seafood", "Meat", "Vegetables", "Fruits", "Pasta", "Rice",
+    "Bread", "Cheese", "Chocolate", "Candy", "Ice cream", "Desserts", "Breakfast foods",
+    "Ethnic cuisine", "Street food", "Fine dining", "Buffets", "Picnics", "BBQs", "Potlucks",
+    "Rain", "Snow", "Sunshine", "Cloudy days", "Fog", "Storms", "Thunderstorms", "Wind",
+    "Heat", "Cold", "Humidity", "Dry climate", "Spring", "Summer", "Fall", "Winter",
+    "Early mornings", "Late nights", "Sunrises", "Sunsets", "Stargazing", "The moon",
+    "Darkness", "Bright lights",
+    "Cats", "Dogs", "Birds", "Fish", "Reptiles", "Rodents", "Horses", "Farm animals",
+    "Wild animals", "Insects", "Spiders", "Bugs in general", "Pets", "Animal care", "Zoos",
+    "Aquariums", "Nature documentaries",
+    "Reading", "Writing", "Drawing", "Painting", "Sculpting", "Photography", "Videography",
+    "Crafts", "Knitting", "Sewing", "Woodworking", "Pottery", "Gardening",
+    "Cooking as hobby", "Baking as hobby", "Music", "Singing", "Playing instruments",
+    "Dancing", "Theater", "Acting", "Movies", "TV shows", "Anime", "Cartoons",
+    "Documentaries", "Reality TV", "News", "Podcasts", "Audiobooks", "Radio",
+    "Video games", "Board games", "Card games", "Puzzles", "Riddles", "Trivia",
+    "Gambling", "Sports (watching)", "Sports (playing)", "Exercise", "Running", "Yoga",
+    "Meditation", "Hiking", "Camping", "Fishing", "Hunting", "Swimming", "Surfing",
+    "Skiing", "Snowboarding", "Biking", "Skateboarding", "Rock climbing", "Martial arts",
+    "Team sports", "Solo sports", "Competition", "Winning", "Losing gracefully",
+    "Traveling", "Road trips", "Flying", "Trains", "Boats", "Adventure", "Tourism",
+    "Staycations", "Hotels", "Airbnb", "Camping trips", "Beach vacations",
+    "Mountain getaways", "City breaks", "Rural retreats", "Foreign countries",
+    "Domestic travel", "Solo travel", "Group travel", "Planning trips", "Spontaneous trips",
+    "Parties", "Social gatherings", "Bars", "Clubs", "Concerts", "Festivals",
+    "Conventions", "Crowds", "Solitude", "Quiet", "Noise", "Loud music", "Silence",
+    "Small talk", "Deep conversations", "Debates", "Arguments", "Gossip", "Rumors",
+    "Drama", "Privacy", "Public attention", "Fame", "Anonymity",
+    "Being the center of attention", "Blending in", "Leadership roles", "Following others",
+    "Teamwork", "Working alone", "Collaboration", "Independence", "Helping others",
+    "Receiving help", "Giving gifts", "Receiving gifts", "Compliments", "Criticism",
+    "Feedback", "Praise", "Recognition", "Awards", "Competition with others",
+    "Self-improvement", "Learning new things", "Teaching others", "Mentoring",
+    "Being mentored", "Routine", "Spontaneity", "Structure", "Chaos", "Organization",
+    "Messiness", "Cleanliness", "Perfection", "Imperfection", "Rules", "Breaking rules",
+    "Authority", "Rebellion", "Tradition", "Innovation", "Change", "Stability", "Risk",
+    "Safety", "Danger", "Adrenaline", "Relaxation", "Stress", "Pressure", "Challenges",
+    "Easy tasks", "Hard work", "Laziness", "Productivity", "Procrastination", "Deadlines",
+    "Free time", "Busy schedules", "Multitasking", "Focus on one thing", "Planning ahead",
+    "Living in the moment", "Nostalgia", "The future", "The past", "The present",
+    "Technology", "Social media", "Smartphones", "Computers", "The internet",
+    "Video calls", "Texting", "Phone calls", "Emails", "Letters (handwritten)",
+    "Old-fashioned things", "Modern conveniences", "Vintage items", "Antiques",
+    "New things", "Shopping", "Window shopping", "Online shopping", "Malls", "Boutiques",
+    "Thrift stores", "Garage sales", "Minimalism", "Collecting things", "Clutter",
+    "Open spaces", "Small cozy spaces", "Big cities", "Small towns", "Suburbs",
+    "Rural areas", "The countryside", "The beach", "Mountains", "Forests", "Deserts",
+    "Islands", "Rivers", "Lakes", "Oceans", "Architecture", "Skylines", "Nature",
+    "Urban environments", "Art galleries", "Museums", "Libraries", "Bookstores",
+    "Coffee shops", "Restaurants", "Diners", "Food trucks", "Parks", "Playgrounds",
+    "Historical sites", "Landmarks", "Monuments", "Graffiti", "Street art",
+    "Fashion", "Makeup", "Jewelry", "Accessories", "Formal wear", "Casual wear",
+    "Athleisure", "Uniforms", "Costumes", "Dressing up", "Comfortable clothes",
+    "High heels", "Sneakers", "Boots", "Sandals", "Hats", "Scarves", "Colors (specific)",
+    "Black and white", "Patterns", "Textures", "Soft things", "Rough textures",
+    "Smooth surfaces", "Money", "Wealth", "Luxury", "Simplicity", "Frugality",
+    "Bargains", "Expensive things", "Brand names", "Generic products", "Handmade items",
+    "Mass-produced goods", "Quality over quantity", "Quantity over quality",
+    "Experiences over things", "Material possessions", "Sentimental items", "Practicality",
+    "Aesthetics", "Function over form", "Beauty", "Ugliness", "Symmetry", "Asymmetry",
+    "Order", "Disorder", "Predictability", "Surprises", "Mysteries", "Knowing everything",
+    "Uncertainty", "Clarity", "Ambiguity", "Honesty", "White lies", "Bluntness", "Tact",
+    "Directness", "Subtlety", "Sarcasm", "Sincerity", "Humor", "Seriousness", "Jokes",
+    "Puns", "Dark humor", "Wholesome content", "Edgy content", "Political correctness",
+    "Free speech", "Politeness", "Rudeness", "Formality", "Casualness", "Professionalism",
+    "Relaxed environments",
+    "Heroes", "Villains", "Vigilantes", "Pro Heroes", "Underground Heroes",
+    "Rescue Heroes", "Combat Heroes", "Limelight Heroes", "Hero rankings",
+    "Hero merchandise", "Hero interviews", "Hero documentaries", "Hero fan culture",
+    "Hero meet-and-greets", "Hero autographs", "Hero collectibles", "Sidekicks",
+    "Hero agencies", "Large hero agencies", "Small hero agencies", "Independent heroes",
+    "Hero teams", "Hero partnerships", "Hero costumes", "Flashy hero costumes",
+    "Practical hero costumes", "Hero costume design", "Support items", "Support gear",
+    "Hero gadgets", "Hero names/aliases", "Catchy hero names", "Serious hero names",
+    "Quirks in general", "Having a quirk", "Being quirkless", "Emitter-type quirks",
+    "Transformation-type quirks", "Mutant-type quirks", "Flashy quirks", "Subtle quirks",
+    "Powerful quirks", "Weak quirks", "Rare quirks", "Common quirks", "Unique quirks",
+    "Quirk training", "Quirk practice", "Quirk evolution",
+    "Discovering new quirk applications", "Quirk combo moves",
+    "Using quirks in daily life", "Quirk restrictions", "Quirk laws", "Quirk regulations",
+    "Hero Public Safety Commission", "Quirkless people", "Quirkless discrimination",
+    "Multiple quirks", "Quirk marriages (concept)", "Inherited quirks",
+    "Quirk counseling", "Quirk therapy",
+    "U.A. High School", "Hero schools", "Hero courses", "General education courses",
+    "Support courses", "Business courses", "Hero licensing exams",
+    "Provisional hero licenses", "Hero work studies", "Internships with heroes",
+    "Hero training", "Physical training", "Rescue training", "Combat training",
+    "Teamwork exercises", "Mock battles", "Sports festivals", "School festivals",
+    "Cultural festivals", "Class activities", "Dorm life", "Campus life",
+    "School uniforms", "Homework", "Exams", "Studying", "Extra credit", "School clubs",
+    "Student council",
+    "Villain attacks", "Handling villain attacks", "Rescue operations", "Disaster relief",
+    "Civilian rescue", "Evacuations", "Hero/villain battles", "Watching hero fights",
+    "Participating in hero fights", "Media coverage of heroes", "Hero press conferences",
+    "Hero interviews on TV", "Paparazzi", "Hero gossip magazines", "Villain news",
+    "Crime reports", "Emergency broadcasts", "Public safety announcements",
+    "Hero insurance", "Collateral damage", "Reconstruction after battles",
+    "Memorials for fallen heroes", "Hero funerals", "Villain prisons",
+    "Tartarus (high-security prison)", "Rehabilitation programs", "Villain reformation",
+    "The League of Villains", "Villain organizations", "Criminal underworld",
+    "Black market", "Illegal quirk use", "Unlicensed hero work", "Vigilante justice",
+    "Breaking hero regulations",
+    "All Might (Symbol of Peace)", "Retired heroes", "New generation heroes",
+    "Legacy heroes", "Hero dynasties", "Famous hero families", "Hero history",
+    "The dawn of quirks", "Pre-quirk era", "Quirk emergence",
+    "Evolution of hero society", "International heroes", "Foreign hero systems",
+    "Hero exchange programs", "Global hero rankings", "Villain threat levels",
+    "Natural disaster response", "Man-made disaster response", "Hostage situations",
+    "Bank robberies", "Terrorism", "Organized crime", "Petty crime", "Crime prevention",
+    "Neighborhood watch", "Community service", "Public appearances",
+    "Charity work by heroes", "Hero foundations", "Youth outreach programs",
+    "Aspiring heroes", "Hero hopefuls", "Failed hero candidates",
+    "Dropouts from hero schools", "Alternative careers for failed heroes",
+    "Support industry", "Costume designers", "Support item engineers", "Hero analysts",
+    "Hero critics", "Hero worship", "Hero skeptics", "Anti-hero sentiment",
+    "Criticism of hero society", "Hero corruption", "Hero scandals", "Fake heroes",
+    "Glory-seeking heroes", "Money-motivated heroes", "Genuine altruistic heroes",
+    "Self-sacrifice", "Heroic ideals", "Justice", "Peace", "Saving people",
+    "Protecting the innocent", "Maintaining order", "Upholding the law",
+    "Personal glory", "Recognition from society", "Being #1 hero",
+    "Climbing hero rankings", "Popularity polls", "Public approval ratings",
+    "Sponsorships", "Endorsement deals", "Hero merchandise sales",
+    "Action figures of heroes", "Trading cards", "Video games featuring heroes",
+    "Movies about heroes", "Biopics", "Documentaries about villain incidents",
+    "True crime (hero edition)", "Analysis shows", "Commentary channels",
+    "Hero forums online", "Fan theories", "Shipping heroes", "Hero fan fiction",
+    "Cosplaying as heroes", "Quirk analysis", "Power scaling debates",
+    "Hypothetical battles", "Tier lists", "Equipment reviews", "Strategy discussions"
+  ],
+
+  dislikes: [
+    "Coffee", "Tea", "Hot chocolate", "Energy drinks", "Soda", "Juice", "Smoothies",
+    "Alcohol", "Wine", "Beer", "Spicy food", "Sweet food", "Salty food", "Sour food",
+    "Bitter food", "Fried food", "Healthy food", "Junk food", "Fast food", "Home cooking",
+    "Baking", "Cooking", "Seafood", "Meat", "Vegetables", "Fruits", "Pasta", "Rice",
+    "Bread", "Cheese", "Chocolate", "Candy", "Ice cream", "Desserts", "Breakfast foods",
+    "Ethnic cuisine", "Street food", "Fine dining", "Buffets", "Picnics", "BBQs", "Potlucks",
+    "Rain", "Snow", "Sunshine", "Cloudy days", "Fog", "Storms", "Thunderstorms", "Wind",
+    "Heat", "Cold", "Humidity", "Dry climate", "Spring", "Summer", "Fall", "Winter",
+    "Early mornings", "Late nights", "Sunrises", "Sunsets", "Stargazing", "The moon",
+    "Darkness", "Bright lights",
+    "Cats", "Dogs", "Birds", "Fish", "Reptiles", "Rodents", "Horses", "Farm animals",
+    "Wild animals", "Insects", "Spiders", "Bugs in general", "Pets", "Animal care", "Zoos",
+    "Aquariums", "Nature documentaries",
+    "Reading", "Writing", "Drawing", "Painting", "Sculpting", "Photography", "Videography",
+    "Crafts", "Knitting", "Sewing", "Woodworking", "Pottery", "Gardening",
+    "Cooking as hobby", "Baking as hobby", "Music", "Singing", "Playing instruments",
+    "Dancing", "Theater", "Acting", "Movies", "TV shows", "Anime", "Cartoons",
+    "Documentaries", "Reality TV", "News", "Podcasts", "Audiobooks", "Radio",
+    "Video games", "Board games", "Card games", "Puzzles", "Riddles", "Trivia",
+    "Gambling", "Sports (watching)", "Sports (playing)", "Exercise", "Running", "Yoga",
+    "Meditation", "Hiking", "Camping", "Fishing", "Hunting", "Swimming", "Surfing",
+    "Skiing", "Snowboarding", "Biking", "Skateboarding", "Rock climbing", "Martial arts",
+    "Team sports", "Solo sports", "Competition", "Winning", "Losing gracefully",
+    "Traveling", "Road trips", "Flying", "Trains", "Boats", "Adventure", "Tourism",
+    "Staycations", "Hotels", "Airbnb", "Camping trips", "Beach vacations",
+    "Mountain getaways", "City breaks", "Rural retreats", "Foreign countries",
+    "Domestic travel", "Solo travel", "Group travel", "Planning trips", "Spontaneous trips",
+    "Parties", "Social gatherings", "Bars", "Clubs", "Concerts", "Festivals",
+    "Conventions", "Crowds", "Solitude", "Quiet", "Noise", "Loud music", "Silence",
+    "Small talk", "Deep conversations", "Debates", "Arguments", "Gossip", "Rumors",
+    "Drama", "Privacy", "Public attention", "Fame", "Anonymity",
+    "Being the center of attention", "Blending in", "Leadership roles", "Following others",
+    "Teamwork", "Working alone", "Collaboration", "Independence", "Helping others",
+    "Receiving help", "Giving gifts", "Receiving gifts", "Compliments", "Criticism",
+    "Feedback", "Praise", "Recognition", "Awards", "Competition with others",
+    "Self-improvement", "Learning new things", "Teaching others", "Mentoring",
+    "Being mentored", "Routine", "Spontaneity", "Structure", "Chaos", "Organization",
+    "Messiness", "Cleanliness", "Perfection", "Imperfection", "Rules", "Breaking rules",
+    "Authority", "Rebellion", "Tradition", "Innovation", "Change", "Stability", "Risk",
+    "Safety", "Danger", "Adrenaline", "Relaxation", "Stress", "Pressure", "Challenges",
+    "Easy tasks", "Hard work", "Laziness", "Productivity", "Procrastination", "Deadlines",
+    "Free time", "Busy schedules", "Multitasking", "Focus on one thing", "Planning ahead",
+    "Living in the moment", "Nostalgia", "The future", "The past", "The present",
+    "Technology", "Social media", "Smartphones", "Computers", "The internet",
+    "Video calls", "Texting", "Phone calls", "Emails", "Letters (handwritten)",
+    "Old-fashioned things", "Modern conveniences", "Vintage items", "Antiques",
+    "New things", "Shopping", "Window shopping", "Online shopping", "Malls", "Boutiques",
+    "Thrift stores", "Garage sales", "Minimalism", "Collecting things", "Clutter",
+    "Open spaces", "Small cozy spaces", "Big cities", "Small towns", "Suburbs",
+    "Rural areas", "The countryside", "The beach", "Mountains", "Forests", "Deserts",
+    "Islands", "Rivers", "Lakes", "Oceans", "Architecture", "Skylines", "Nature",
+    "Urban environments", "Art galleries", "Museums", "Libraries", "Bookstores",
+    "Coffee shops", "Restaurants", "Diners", "Food trucks", "Parks", "Playgrounds",
+    "Historical sites", "Landmarks", "Monuments", "Graffiti", "Street art",
+    "Fashion", "Makeup", "Jewelry", "Accessories", "Formal wear", "Casual wear",
+    "Athleisure", "Uniforms", "Costumes", "Dressing up", "Comfortable clothes",
+    "High heels", "Sneakers", "Boots", "Sandals", "Hats", "Scarves", "Colors (specific)",
+    "Black and white", "Patterns", "Textures", "Soft things", "Rough textures",
+    "Smooth surfaces", "Money", "Wealth", "Luxury", "Simplicity", "Frugality",
+    "Bargains", "Expensive things", "Brand names", "Generic products", "Handmade items",
+    "Mass-produced goods", "Quality over quantity", "Quantity over quality",
+    "Experiences over things", "Material possessions", "Sentimental items", "Practicality",
+    "Aesthetics", "Function over form", "Beauty", "Ugliness", "Symmetry", "Asymmetry",
+    "Order", "Disorder", "Predictability", "Surprises", "Mysteries", "Knowing everything",
+    "Uncertainty", "Clarity", "Ambiguity", "Honesty", "White lies", "Bluntness", "Tact",
+    "Directness", "Subtlety", "Sarcasm", "Sincerity", "Humor", "Seriousness", "Jokes",
+    "Puns", "Dark humor", "Wholesome content", "Edgy content", "Political correctness",
+    "Free speech", "Politeness", "Rudeness", "Formality", "Casualness", "Professionalism",
+    "Relaxed environments",
+    "Heroes", "Villains", "Vigilantes", "Pro Heroes", "Underground Heroes",
+    "Rescue Heroes", "Combat Heroes", "Limelight Heroes", "Hero rankings",
+    "Hero merchandise", "Hero interviews", "Hero documentaries", "Hero fan culture",
+    "Hero meet-and-greets", "Hero autographs", "Hero collectibles", "Sidekicks",
+    "Hero agencies", "Large hero agencies", "Small hero agencies", "Independent heroes",
+    "Hero teams", "Hero partnerships", "Hero costumes", "Flashy hero costumes",
+    "Practical hero costumes", "Hero costume design", "Support items", "Support gear",
+    "Hero gadgets", "Hero names/aliases", "Catchy hero names", "Serious hero names",
+    "Quirks in general", "Having a quirk", "Being quirkless", "Emitter-type quirks",
+    "Transformation-type quirks", "Mutant-type quirks", "Flashy quirks", "Subtle quirks",
+    "Powerful quirks", "Weak quirks", "Rare quirks", "Common quirks", "Unique quirks",
+    "Quirk training", "Quirk practice", "Quirk evolution",
+    "Discovering new quirk applications", "Quirk combo moves",
+    "Using quirks in daily life", "Quirk restrictions", "Quirk laws", "Quirk regulations",
+    "Hero Public Safety Commission", "Quirkless people", "Quirkless discrimination",
+    "Multiple quirks", "Quirk marriages (concept)", "Inherited quirks",
+    "Quirk counseling", "Quirk therapy",
+    "U.A. High School", "Hero schools", "Hero courses", "General education courses",
+    "Support courses", "Business courses", "Hero licensing exams",
+    "Provisional hero licenses", "Hero work studies", "Internships with heroes",
+    "Hero training", "Physical training", "Rescue training", "Combat training",
+    "Teamwork exercises", "Mock battles", "Sports festivals", "School festivals",
+    "Cultural festivals", "Class activities", "Dorm life", "Campus life",
+    "School uniforms", "Homework", "Exams", "Studying", "Extra credit", "School clubs",
+    "Student council",
+    "Villain attacks", "Handling villain attacks", "Rescue operations", "Disaster relief",
+    "Civilian rescue", "Evacuations", "Hero/villain battles", "Watching hero fights",
+    "Participating in hero fights", "Media coverage of heroes", "Hero press conferences",
+    "Hero interviews on TV", "Paparazzi", "Hero gossip magazines", "Villain news",
+    "Crime reports", "Emergency broadcasts", "Public safety announcements",
+    "Hero insurance", "Collateral damage", "Reconstruction after battles",
+    "Memorials for fallen heroes", "Hero funerals", "Villain prisons",
+    "Tartarus (high-security prison)", "Rehabilitation programs", "Villain reformation",
+    "The League of Villains", "Villain organizations", "Criminal underworld",
+    "Black market", "Illegal quirk use", "Unlicensed hero work", "Vigilante justice",
+    "Breaking hero regulations",
+    "All Might (Symbol of Peace)", "Retired heroes", "New generation heroes",
+    "Legacy heroes", "Hero dynasties", "Famous hero families", "Hero history",
+    "The dawn of quirks", "Pre-quirk era", "Quirk emergence",
+    "Evolution of hero society", "International heroes", "Foreign hero systems",
+    "Hero exchange programs", "Global hero rankings", "Villain threat levels",
+    "Natural disaster response", "Man-made disaster response", "Hostage situations",
+    "Bank robberies", "Terrorism", "Organized crime", "Petty crime", "Crime prevention",
+    "Neighborhood watch", "Community service", "Public appearances",
+    "Charity work by heroes", "Hero foundations", "Youth outreach programs",
+    "Aspiring heroes", "Hero hopefuls", "Failed hero candidates",
+    "Dropouts from hero schools", "Alternative careers for failed heroes",
+    "Support industry", "Costume designers", "Support item engineers", "Hero analysts",
+    "Hero critics", "Hero worship", "Hero skeptics", "Anti-hero sentiment",
+    "Criticism of hero society", "Hero corruption", "Hero scandals", "Fake heroes",
+    "Glory-seeking heroes", "Money-motivated heroes", "Genuine altruistic heroes",
+    "Self-sacrifice", "Heroic ideals", "Justice", "Peace", "Saving people",
+    "Protecting the innocent", "Maintaining order", "Upholding the law",
+    "Personal glory", "Recognition from society", "Being #1 hero",
+    "Climbing hero rankings", "Popularity polls", "Public approval ratings",
+    "Sponsorships", "Endorsement deals", "Hero merchandise sales",
+    "Action figures of heroes", "Trading cards", "Video games featuring heroes",
+    "Movies about heroes", "Biopics", "Documentaries about villain incidents",
+    "True crime (hero edition)", "Analysis shows", "Commentary channels",
+    "Hero forums online", "Fan theories", "Shipping heroes", "Hero fan fiction",
+    "Cosplaying as heroes", "Quirk analysis", "Power scaling debates",
+    "Hypothetical battles", "Tier lists", "Equipment reviews", "Strategy discussions"
+  ],
+
+  vices: [
+    "Smoking tobacco", "Vaping", "Drinking alcohol excessively", "Recreational drug use",
+    "Prescription medication misuse", "Caffeine dependency", "Sugar addiction",
+    "Stress eating", "Binge eating", "Gambling", "Compulsive shopping", "Hoarding",
+    "Stealing (kleptomania)", "Lying habitually", "Cheating in relationships",
+    "Pornography addiction", "Sex addiction", "Masturbation compulsion", "Gossiping",
+    "Eavesdropping", "Stalking (online or offline)", "Procrastination",
+    "Chronic tardiness", "Sleeping excessively (sloth)", "Staying up all night regularly",
+    "Binge-watching television", "Video game addiction", "Social media scrolling addiction",
+    "Doomscrolling news", "Phone dependency", "Swearing excessively", "Throwing tantrums",
+    "Breaking objects when angry", "Road rage", "Speeding/reckless driving",
+    "Thrill-seeking dangerous activities", "Tanning bed addiction", "Steroid use",
+    "Cosmetic procedure addiction", "Catfishing people online", "Ghosting romantic interests",
+    "Manipulating others emotionally", "Gaslighting", "Plotting revenge",
+    "Cruelty to animals", "Bullying others", "Trolling online", "Picking fights deliberately",
+    "Overworking compulsively", "Micromanaging everything", "Enabling destructive behavior",
+    "Attention-seeking dramatics", "Constant complaining", "Self-pity wallowing",
+    "Blaming others for everything", "Making excuses habitually", "Oversharing inappropriately",
+    "Interrupting conversations constantly", "Talking over people", "Never listening to others",
+    "Criticizing everyone", "One-upping others' stories", "Bragging and showing off",
+    "Name-dropping constantly", "Keeping score in relationships", "Holding grudges indefinitely",
+    "Passive-aggressive behavior", "Giving the silent treatment", "Guilt-tripping others",
+    "Playing the victim", "Feigning helplessness", "Collecting obsessively", "Impulse buying",
+    "Shoplifting habitually", "Embezzling funds", "Pathological exaggeration",
+    "Serial flirting", "Exhibitionism", "Voyeurism", "Reading others' private messages",
+    "Vanity and excessive mirror-checking", "Skipping work/responsibilities frequently",
+    "Emotional eating", "Risky sexual behavior", "Schadenfreude indulgence",
+    "Prank-pulling cruelly", "Starting arguments for entertainment", "Hazing others",
+    "Revenge porn", "Doxing people", "Spreading misinformation knowingly"
+  ],
+
+  flaws: [
+    "Arrogant", "Insecure", "Stubborn", "Jealous", "Envious", "Cowardly", "Reckless",
+    "Impulsive", "Indecisive", "Gullible", "Cynical", "Naive", "Paranoid",
+    "Trusting to a fault", "Distrustful", "Suspicious", "Pessimistic",
+    "Unrealistically optimistic", "Judgmental", "Close-minded", "Narrow-minded",
+    "Ignorant", "Willfully ignorant", "Anti-intellectual", "Prideful", "Vain",
+    "Self-absorbed", "Selfish", "Self-centered", "Egotistical", "Narcissistic",
+    "Lacks self-awareness", "Oblivious to others' feelings", "Emotionally unavailable",
+    "Emotionally volatile", "Overly emotional", "Cold and unfeeling", "Apathetic",
+    "Lacks empathy", "Heartless", "Cruel", "Sadistic", "Vindictive", "Spiteful",
+    "Petty", "Bitter", "Resentful", "Unforgiving", "Holds grudges", "Aggressive",
+    "Confrontational", "Hot-tempered", "Short-fused", "Volatile", "Angry", "Wrathful",
+    "Irritable", "Impatient", "Restless", "Anxious", "Fearful", "Timid", "Meek",
+    "Pushover", "Spineless", "Weak-willed", "Easily influenced", "Follower mentality",
+    "Lacks conviction", "Unprincipled", "Morally flexible", "Amoral", "Immoral",
+    "Dishonest", "Untrustworthy", "Disloyal", "Unfaithful", "Unreliable",
+    "Irresponsible", "Careless", "Negligent", "Sloppy", "Disorganized", "Messy",
+    "Chaotic", "Undisciplined", "Lacks focus", "Easily distracted", "Scattered",
+    "Forgetful", "Absent-minded", "Spacey", "Oblivious", "Dense", "Slow to understand",
+    "Lacks common sense", "Foolish", "Idiotic", "Simple-minded", "Shallow",
+    "Superficial", "Materialistic", "Greedy", "Stingy", "Cheap", "Penny-pinching",
+    "Wasteful", "Extravagant", "Frivolous", "Lazy", "Unmotivated",
+    "Apathetic about goals", "Lacks ambition", "Complacent", "Entitled", "Spoiled",
+    "Demanding", "High-maintenance", "Needy", "Clingy", "Dependent", "Smothering",
+    "Overbearing", "Controlling", "Domineering", "Bossy", "Tyrannical",
+    "Authoritarian", "Rigid", "Inflexible", "Unadaptable", "Resistant to change",
+    "Set in their ways", "Traditional to a fault", "Prudish", "Uptight", "Humorless",
+    "Serious all the time", "Overly sensitive", "Thin-skinned",
+    "Takes everything personally", "Defensive", "Melodramatic", "Histrionic",
+    "Theatrical", "Fake", "Phony", "Two-faced", "Hypocritical", "Sanctimonious",
+    "Self-righteous", "Holier-than-thou", "Preachy", "Condescending", "Patronizing",
+    "Belittling", "Dismissive", "Contemptuous", "Disdainful", "Snobbish", "Elitist",
+    "Pretentious", "Pompous", "Haughty", "Aloof", "Distant", "Unapproachable",
+    "Antisocial", "Socially awkward", "Lacks social skills", "Tactless",
+    "Blunt to a fault", "Insensitive", "Rude", "Crass", "Vulgar", "Crude",
+    "Abrasive", "Obnoxious", "Annoying", "Irritating", "Grating", "Whiny",
+    "Complainy", "Negative", "Debbie Downer", "Killjoy", "Buzzkill", "Boring",
+    "Dull", "Uninteresting", "Bland", "Forgettable", "Pushover with no backbone",
+    "Doormat personality", "Conflict-averse to detriment", "People-pleaser excessively",
+    "Approval-seeking", "Validation-seeking", "Attention-needy", "Glory-seeking",
+    "Competitive to a fault", "Sore loser", "Sore winner", "Ungracious",
+    "Lacks humility", "Boastful", "Know-it-all attitude", "Unteachable",
+    "Refuses to learn", "Stuck in the past", "Living in the past",
+    "Nostalgic to dysfunction", "Futurephobic", "Commitment-phobic", "Avoidant",
+    "Escapist", "In denial", "Delusional", "Out of touch with reality",
+    "Lives in fantasy", "Immature", "Childish", "Perpetual teenager",
+    "Refuses to grow up", "Overly serious", "Joyless", "Can't have fun",
+    "Workaholic mentality", "Obsessive", "Compulsive personality", "Perfectionist",
+    "Never satisfied", "Impossible standards", "Hypercritical", "Fault-finding",
+    "Nit-picky", "Overly analytical", "Overthinks everything",
+    "Indecisive from overanalysis", "Analysis paralysis", "Catastrophizes",
+    "Always expects worst", "Doomer mentality",
+    "Freezes under pressure", "Panics easily", "Runs from danger", "Gives up easily",
+    "Hesitant", "Procrastinates", "Chronically late", "Cannot say no",
+    "Gets taken advantage of easily", "Trusts the wrong people",
+    "Self-centered in conversation", "One-upper", "Brags inappropriately", "Shows off",
+    "Cannot maintain friendships", "Burns bridges", "Cannot forgive", "Cannot apologize",
+    "Cries easily", "Emotional at wrong times", "Cannot control emotions publicly",
+    "Cannot hide feelings", "Gossips", "Blabs secrets", "Ruins surprises", "Overspends",
+    "Impulse buyer", "Cannot save money", "Falls for scams",
+    "Does everything themselves", "Micromanages poorly", "Wastes time",
+    "Procrastinates constantly", "Clicks on scams", "Too casual professionally",
+    "Too stiff professionally", "Clashes with coworkers", "Goes rogue",
+    "Doesn't listen to plans", "Second-guesses constantly",
+    "Shows mercy inappropriately", "Too brutal", "Escalates unnecessarily", "Rage quits",
+    "Sore about losing", "Gloats when winning", "Cannot take compliments",
+    "Deflects praise", "Downplays achievements", "Overestimates abilities",
+    "Bites off more than can chew", "Cannot ask for help", "Refuses help",
+    "Makes same mistakes repeatedly", "Cannot adapt", "Falls apart without routine",
+    "Wishy-washy", "Flip-flops", "Never changes mind", "Cannot resist temptation",
+    "Cannot stick to plans", "Breaks promises", "Starts projects never finishes",
+    "Quits when difficult", "Cannot handle setbacks", "Devastated by failure",
+    "Cannot bounce back", "Dwells on mistakes", "Cannot let go", "Cannot move forward",
+    "Bottles emotions", "Spills emotions everywhere", "Cannot calm down", "Spirals",
+    "Assumes worst", "Cannot relax", "Cannot enjoy the moment", "Always worried",
+    "Cannot be present", "Daydreams inappropriately", "Zones out",
+    "Repeats themselves", "No volume control", "Laughs inappropriately",
+    "Cannot control laughter", "Never laughs", "Takes jokes too seriously",
+    "Offended easily", "Tries too hard to be funny", "Overshares", "No filter",
+    "Cannot keep thoughts private", "Talks to self", "Oblivious to social norms",
+    "Drains others", "Cannot be independent", "Cannot be alone",
+    "Gets attached too quickly", "Falls in love too easily", "Trusts too fast",
+    "Opens up too soon", "No boundaries", "Invades personal space",
+    "Doesn't respect boundaries", "Overstays welcome", "Doesn't know when to leave",
+    "Talks too long", "Cancels last minute", "No-shows", "Forgets commitments",
+    "Overcommits", "Stretches too thin", "Sets unrealistic goals",
+    "Makes big promises doesn't deliver", "Lets people down",
+    "Works on wrong priorities", "Focuses on trivial things",
+    "Ignores important details", "Waits passively", "Uncomfortable with attention",
+    "Hides from recognition", "Self-sabotages", "Afraid of standing out",
+    "Crumbles under scrutiny", "Chokes under pressure", "Panics in emergencies",
+    "Makes crises worse", "Dependent on others", "Cannot survive independently",
+    "Shirks responsibility", "Avoids obligations", "Runs from commitment",
+    "Takes easy way out", "Avoids confrontation", "Lets self be walked over"
+  ],
+
+  kinks: [
+    "Dominance", "Submission", "Switch", "Power exchange", "Total power exchange",
+    "Master/slave dynamic", "Owner/pet dynamic", "Primal dom", "Primal prey",
+    "Brat taming", "Service submission", "Service dominance",
+    "Consensual non-consent", "Free use", "Authority figures", "Being in charge",
+    "Following orders", "Giving orders", "Taking control", "Surrendering control",
+    "Topping", "Bottoming", "Versatile", "Power play", "Discipline", "Obedience",
+    "Disobedience (playful)", "Defiance kink", "Corruption",
+    "Innocence corruption", "Experience gap", "Teacher/student dynamic",
+    "Senpai/kouhai dynamic", "Age gap (adults only)", "Protectiveness",
+    "Possessiveness", "Jealousy play", "Ownership", "Claiming",
+    "Marking territory", "Being claimed", "Being owned",
+    "Guardianship dynamic", "Caretaker dynamic",
+    "Praise kink", "Verbal affirmation", "Compliments", "Encouragement",
+    "Good boy/good girl", "Appreciation", "Worship", "Adoration", "Degradation",
+    "Humiliation", "Name calling", "Insults (playful)", "Verbal abuse (consensual)",
+    "Embarrassment", "Public humiliation", "Private humiliation", "Objectification",
+    "Dehumanization", "Pet play", "Puppy play", "Kitten play", "Pony play",
+    "Bunny play", "Cow play", "Being treated as furniture", "Being ignored",
+    "Free use objectification",
+    "Spanking", "Paddling", "Flogging", "Whipping", "Caning", "Slapping",
+    "Face slapping", "Ass slapping", "Thigh slapping", "Tit slapping",
+    "Ball slapping", "Punching (consensual)", "Kicking (consensual)",
+    "Rough handling", "Manhandling", "Being thrown around", "Pinning down",
+    "Wrestling", "Fighting for dominance", "Impact marks", "Bruising", "Welts",
+    "Pain play", "Masochism", "Sadism", "Biting", "Scratching", "Clawing",
+    "Marking", "Hickeys", "Love bites", "Bruising kink", "Marks and bruises",
+    "Cutting (edge play)", "Knife play", "Blood play", "Wax play",
+    "Temperature play", "Ice play", "Heat play", "Fire play", "Sensation play",
+    "Feather play", "Silk scarves", "Rough textures", "Smooth textures",
+    "Sensory overload", "Sensory deprivation", "Nipple play", "Nipple clamps",
+    "Nipple torture", "Cock and ball torture (CBT)", "Genital torture",
+    "Electrostimulation", "Violet wand", "TENS unit",
+    "Restraints", "Rope bondage", "Shibari", "Kinbaku", "Handcuffs", "Chains",
+    "Leather cuffs", "Spreader bars", "Bondage furniture", "St. Andrew's Cross",
+    "Bondage bench", "Stocks", "Mummification", "Suspension",
+    "Partial suspension", "Full suspension", "Predicament bondage", "Self-bondage",
+    "Being tied up", "Tying others up", "Escape attempts", "Struggling",
+    "Helplessness", "Immobilization", "Movement restriction", "Position training",
+    "Forced positions",
+    "Blindfolds", "Sight deprivation", "Hoods", "Masks", "Gags", "Ball gags",
+    "Ring gags", "Bit gags", "Tape gags", "Cloth gags", "Muffled sounds",
+    "Silence enforcement", "Earplugs", "Sensory deprivation tanks", "Isolation",
+    "Confinement", "Cages", "Kennels", "Closets", "Small spaces", "Claustrophilia",
+    "Oral sex", "Blowjobs", "Cunnilingus", "Anilingus", "Rimming",
+    "Deep throating", "Gagging", "Choking on cock", "Face fucking",
+    "Throat training", "Cum play", "Cum swallowing", "Cum on face",
+    "Cum on body", "Bukkake", "Creampie", "Breeding kink",
+    "Impregnation kink", "Pregnancy kink", "Lactation", "Breastfeeding",
+    "Nursing", "Spit play", "Spitting", "Drool", "Saliva", "Kissing",
+    "Deep kissing", "Neck kissing", "Body kissing", "Worship kissing",
+    "Foot worship", "Ass worship", "Cock worship", "Pussy worship",
+    "Body worship", "Muscle worship",
+    "Vaginal sex", "Anal sex", "Double penetration", "Triple penetration",
+    "Airtight", "Gangbang", "Reverse gangbang", "Orgy", "Group sex",
+    "Threesome", "Moresome", "Fisting", "Vaginal fisting", "Anal fisting",
+    "Stretching", "Gaping", "Size kink", "Size difference", "Size queen/king",
+    "Big cock", "Huge cock", "Small cock", "Cock size humiliation", "Tight fit",
+    "Loose fit", "Cervix penetration", "Deep penetration", "Shallow penetration",
+    "Missionary", "Doggy style", "Cowgirl", "Reverse cowgirl", "Mating press",
+    "Full nelson", "Prone bone", "Spooning", "Standing sex", "Against wall",
+    "Bent over", "On knees", "Riding", "Being ridden",
+    "Macro", "Giant/tiny", "Giantess", "Size growth", "Size shrinkage",
+    "Microphilia", "Macrophilia", "Hyper", "Hyper cock", "Hyper breasts",
+    "Hyper ass", "Hyper balls", "Hyper muscles", "Hyper proportions",
+    "Extreme insertions", "Extreme stretching", "Inflation", "Belly bulge",
+    "Stomach bulge", "Cum inflation", "Air inflation", "Impossibly large",
+    "Unrealistic proportions", "Futanari", "Dickgirls", "Hermaphrodite",
+    "Dual genitalia", "Multiple breasts", "Multiple cocks", "Multiple holes",
+    "Extra body parts", "Tentacles", "Oviposition", "Egg laying",
+    "Alien anatomy", "Monster anatomy", "Non-human genitalia", "Knots",
+    "Barbs", "Ridges", "Unusual shapes",
+    "Lingerie", "Stockings", "Thigh highs", "Garter belts", "Corsets", "Latex",
+    "Rubber", "Leather", "PVC", "Spandex", "Lycra", "Satin", "Silk", "Lace",
+    "Fishnets", "Body suits", "Catsuits", "Zentai", "Encasement",
+    "Uniform fetish", "School uniforms", "Military uniforms", "Police uniforms",
+    "Nurse uniforms", "Maid outfits", "Butler outfits", "Hero costumes",
+    "Villain costumes", "Cosplay", "Crossdressing", "Feminization",
+    "Sissification", "Forced feminization", "Masculinization", "Gender play",
+    "Clothing appreciation", "Partial undressing", "Staying clothed",
+    "Clothed sex", "Ripping clothes off", "Slow undressing", "Striptease",
+    "Nudity", "Public nudity", "Casual nudity", "Exhibitionism", "Voyeurism",
+    "Being watched", "Watching others", "Mirrors", "Recording", "Sex tapes",
+    "Photos", "Erotic photography",
+    "Foot fetish", "Toe sucking", "Footjobs", "High heels", "Bare feet",
+    "Stockinged feet", "Trampling", "Crushing", "Hand fetish", "Finger sucking",
+    "Handjobs", "Fingering", "Breast fetish", "Tit fucking", "Boob play",
+    "Lactation play", "Ass fetish", "Ass eating", "Anal play", "Butt plugs",
+    "Anal beads", "Anal hooks", "Thigh fetish", "Thigh fucking",
+    "Armpit fetish", "Belly button fetish", "Navel play", "Neck fetish",
+    "Choking", "Breath play", "Asphyxiation", "Erotic asphyxiation",
+    "Hair fetish", "Hair pulling", "Scalp massage", "Long hair", "Short hair",
+    "Specific hair colors", "Muscle fetish", "Abs", "Biceps", "Pecs",
+    "Thighs", "Calves", "Flexibility", "Contortionism", "Body modification",
+    "Tattoos", "Piercings", "Genital piercings", "Nipple piercings",
+    "Body jewelry", "Scarification", "Branding",
+    "Quirk use during sex", "Quirk play", "Power-enhanced sex",
+    "Emitter quirks in bed", "Transformation during sex",
+    "Mutation quirk appreciation", "Heteromorph attraction", "Tentacle quirks",
+    "Size-changing quirks", "Duplication quirks", "Multiple partners (clones)",
+    "Elemental quirks", "Temperature quirks", "Fire play (quirk)",
+    "Ice play (quirk)", "Electricity quirks", "Shocking play",
+    "Hardening quirks", "Texture play (quirk)", "Invisibility quirk",
+    "Stealth sex", "Permeation quirk", "Intangibility play",
+    "Mind control quirks", "Telepathy quirks", "Erasure quirk play",
+    "Quirkless preference", "Power difference", "Quirk compatibility",
+    "Quirk combos", "Support item integration", "Hero/villain dynamic",
+    "Rescue fantasy", "Damsel in distress", "Knight in shining armor",
+    "Captured hero", "Villain corruption", "Hero corruption",
+    "Vigilante appeal", "Underground attraction",
+    "Teacher/student", "Boss/employee", "Doctor/patient", "Nurse/patient",
+    "Therapist/patient", "Cop/criminal", "Guard/prisoner", "Captor/captive",
+    "Kidnapper/victim", "Hunter/prey", "Predator/prey", "Trainer/trainee",
+    "Coach/athlete", "Photographer/model", "Artist/muse", "Celebrity/fan",
+    "Idol/groupie", "Royalty/servant", "Noble/peasant", "Deity/worshipper",
+    "Demon/angel", "Monster/human", "Alien/human", "Robot/human",
+    "Scientist/experiment", "Creator/creation", "Summoner/summon", "Strangers",
+    "Anonymous sex", "Gloryhole", "One night stand", "Pickup scenarios", "Exes",
+    "Rivals", "Enemies to lovers", "Hate sex", "Revenge sex", "Makeup sex",
+    "Forbidden love", "Cheating fantasy", "Affair", "Netorare (NTR)",
+    "Cuckolding", "Hotwife", "Sharing", "Swinging", "Partner swapping",
+    "First time", "Virginity", "Taking virginity", "Losing virginity",
+    "Experience teaching", "Corruption of innocence", "Gentle first time",
+    "Rough first time", "Slow sex", "Slow burn tension", "Anticipation",
+    "Edging", "Teasing and denial", "Orgasm control", "Orgasm denial",
+    "Forced orgasm", "Multiple orgasms", "Overstimulation", "Ruined orgasm",
+    "Cock warming", "Lazy sex", "Morning sex", "Sleepy sex", "Wake up sex",
+    "Somnophilia (consensual)", "Sleep sex", "Drunk sex", "High sex",
+    "Adrenaline sex", "Post-fight sex", "Angry sex", "Competition sex",
+    "Competition and challenge", "Sexual competition", "Endurance challenge",
+    "Marathon sex", "All night sessions", "Quickie", "Secret sex", "Hidden sex",
+    "Public sex", "Semi-public sex", "Risk of getting caught", "Bathroom sex",
+    "Closet sex", "Car sex", "Outdoor sex", "Beach sex", "Pool sex",
+    "Shower sex", "Bath sex", "Hot tub sex", "Sauna sex", "Gym sex",
+    "Office sex", "Classroom sex", "Library sex", "Dressing room sex",
+    "Elevator sex", "Alley sex",
+    "After-care focused", "Gentle after-care", "Cuddles", "Praise after",
+    "Reassurance", "Physical comfort", "Emotional comfort", "Bathing together",
+    "Cleaning partner", "Tending wounds", "Massages", "Soft touches",
+    "Gentle and intimate", "Trust-based vulnerability", "Emotional intimacy",
+    "Deep connection", "Eye contact", "Missionary intimacy", "Face to face",
+    "Holding hands", "Interlocked fingers", "Forehead touches", "Nose rubs",
+    "Gentle kisses", "Soft kisses", "Romantic", "Passionate", "Love making",
+    "Sensual", "Tantric sex", "Extended sessions", "Connection focus",
+    "Spiritual sex", "Energy exchange", "Soul bonding",
+    "Voice kink", "Dirty talk", "Filthy talk", "Sweet talk", "Commands",
+    "Begging", "Moaning", "Loud moaning", "Quiet moaning", "Screaming",
+    "Crying (pleasure)", "Whimpering", "Gasping", "Panting", "Heavy breathing",
+    "Pet names", "Daddy/mommy kink", "Sir/ma'am", "Master/mistress",
+    "Honorifics", "Title use", "Sexting", "Phone sex", "Audio recordings",
+    "ASMR", "Whispers", "Breathing sounds", "Wet sounds", "Slapping sounds",
+    "Body sounds",
+    "Scent fixation", "Natural scent", "Musk", "Sweat", "Pheromones",
+    "Perfume/cologne", "Body odor (light)", "Smell fetish", "Taste fetish",
+    "Oral fixation", "Flavor play", "Food play", "Messy eating", "Sploshing",
+    "Wet and messy (WAM)", "Sticky", "Cum taste", "Pussy taste",
+    "Sweat licking", "Armpit licking",
+    "Cum eating", "Cum feeding", "Cum facial", "Cum on breasts", "Cum inside",
+    "Creampie eating", "Snowballing", "Squirting", "Female ejaculation",
+    "Watersports", "Golden showers", "Piss play", "Wetting", "Omorashi",
+    "Desperation", "Holding it", "Accidents", "Scat play (extreme)",
+    "Messiness", "Getting dirty", "Staying clean", "Shower after",
+    "No shower after",
+    "Medical play", "Medical examination", "Gynecological exam", "Prostate exam",
+    "Speculums", "Medical restraints", "Hospital setting", "Enemas",
+    "Anal douching", "Catheterization", "Sounding", "Urethral play", "Needles",
+    "Injections", "Piercing play", "Clinical atmosphere", "Sterile environment",
+    "Medical instruments", "Stethoscope", "Gloves", "Latex gloves",
+    "Impregnation fantasy", "Pregnancy", "Pregnant sex", "Breeding dirty talk",
+    "Fertility worship", "Virility worship", "Potent seed", "Seed planting",
+    "Womb filling", "Cervix kissing", "Claiming womb", "Baby making",
+    "Risk play", "Contraceptive sabotage fantasy", "Pregnancy risk",
+    "Fertile period", "Ovulation", "Heat cycles", "Rut cycles", "Omegaverse",
+    "Alpha/omega", "Knotting", "Bonding bites", "Scenting", "Nesting",
+    "Age play (adult only)", "Little/caregiver", "DDLG", "MDLB",
+    "Age regression", "Infantilism", "Diaper play",
+    "Incest fantasy (not real)", "Pseudo-incest", "Step-family",
+    "Forbidden family dynamics", "Race play", "Raceplay scenarios",
+    "Interracial", "Exotic attraction", "Religious play", "Nun/priest",
+    "Blasphemy", "Sacrilege", "Desecration", "Satanic imagery", "Occult",
+    "Ritual sex", "Blood magic sex", "Sacrificial play",
+    "Beast play (fantasy only)", "Furry", "Anthro", "Monster fucking",
+    "Xenophilia", "Alien sex", "Supernatural beings", "Vampires", "Werewolves",
+    "Demons", "Angels", "Ghosts", "Zombies (fantasy)",
+    "Necrophilia fantasy (not real)", "Death fetish", "Snuff fantasy (not real)",
+    "Gore (fantasy)", "Vore", "Soft vore", "Hard vore",
+    "Cannibalism fantasy", "Cooking play", "Preparation fantasy",
+    "Dildos", "Vibrators", "Butt plugs", "Anal beads", "Strap-ons", "Pegging",
+    "Prostate toys", "Double-ended dildos", "Fucking machines", "Sex machines",
+    "Sybian", "Fuck bench", "Sex furniture", "Sex swings", "Nipple clamps",
+    "Cock rings", "Chastity devices", "Chastity belts", "Chastity cages",
+    "Orgasm belts", "Denial devices", "Penis pumps", "Pussy pumps",
+    "Vacuum play", "Suction", "Ben wa balls", "Kegel balls", "Vaginal weights",
+    "Vaginal training", "Anal training", "Plugs worn all day",
+    "Remote control toys", "App-controlled toys", "Public play with toys",
+    "Hidden vibrators", "Bullet vibes",
+    "Monogamy", "Polyamory", "Open relationships", "Group dynamics", "Harem",
+    "Reverse harem", "Multiple partners", "Serial monogamy",
+    "Friends with benefits", "Casual sex", "No strings attached",
+    "Relationship sex only", "Married sex", "Long-term intimacy",
+    "New relationship energy", "Established relationship", "Comfort sex",
+    "Scheduled sex", "Spontaneous sex", "Same partner", "Different partners",
+    "Heterosexual", "Homosexual", "Bisexual", "Pansexual", "Demisexual",
+    "Sapiosexual",
+    "Thin", "Slender", "Petite", "Short", "Tall", "Curvy", "Thick", "Chubby",
+    "Fat", "BBW/BHM", "Plus-size", "Athletic", "Muscular", "Ripped",
+    "Bodybuilder", "Toned", "Soft", "Squishy", "Dad bod", "Mom bod",
+    "Pear shaped", "Apple shaped", "Hourglass", "Rectangle",
+    "Inverted triangle", "Small breasts", "Medium breasts", "Large breasts",
+    "Huge breasts", "Flat chest", "Small ass", "Bubble butt", "Big ass",
+    "Huge ass", "Slim waist", "Wide hips", "Thick thighs", "Thin legs",
+    "Muscular legs", "Hairy", "Smooth", "Trimmed", "Natural", "Shaved",
+    "Waxed", "Bush", "Treasure trail", "Body hair appreciation",
+    "Lack of body hair",
+    "Lipstick marks", "Makeup", "Makeup smearing", "Mascara running",
+    "Ruined makeup", "Working out", "Gym bodies", "Athletic wear",
+    "Yoga pants", "Compression shorts", "Jockstraps", "Underwear", "Boxers",
+    "Briefs", "Panties", "Thongs", "Commando", "No underwear",
+    "Going commando", "Glasses", "Nerdy aesthetic"
+  ],
+
+  pets: [
+    "Dog", "Cat", "Goldfish", "Betta fish", "Hamster", "Guinea pig", "Rabbit",
+    "Gerbil", "Mouse", "Rat", "Ferret", "Chinchilla", "Hedgehog",
+    "Parakeet (budgie)", "Cockatiel", "Canary", "Finch", "Lovebird",
+    "Golden Retriever Dog", "Labrador Retriever Dog", "German Shepherd Dog",
+    "Bulldog Dog", "Poodle Dog", "Beagle Dog", "Chihuahua Dog", "Husky Dog",
+    "Corgi Dog", "Shiba Inu Dog", "Akita Dog", "Dachshund Dog", "Pomeranian Dog",
+    "Great Dane Dog", "Doberman Dog", "Rottweiler Dog", "Border Collie Dog",
+    "Australian Shepherd Dog", "Pit Bull Dog", "Boxer Dog", "Pug Dog", "Maltese Dog",
+    "Yorkshire Terrier Dog", "Schnauzer Dog", "Saint Bernard Dog",
+    "Domestic shorthair Cat", "Domestic longhair Cat", "Persian Cat", "Maine Coon Cat",
+    "Siamese Cat", "Ragdoll Cat", "Bengal Cat", "Sphynx (hairless) Cat",
+    "British Shorthair Cat", "Russian Blue Cat", "Scottish Fold Cat", "Abyssinian Cat",
+    "Birman Cat", "Himalayan Cat", "Norwegian Forest Cat", "Turkish Angora Cat",
+    "Penguin", "Parrot", "Dove", "Pigeon", "Duck", "Crow", "Raven",
+    "Owl (illegal in many places but possible)",
+    "Bearded dragon", "Leopard gecko", "Crested gecko", "Ball python", "Corn snake",
+    "King snake", "Milk snake", "Boa constrictor", "Green tree python", "Garter snake",
+    "Hognose snake", "Red-eared slider turtle", "Box turtle", "Tortoise",
+    "Russian tortoise", "Sulcata tortoise", "Iguana", "Blue-tongued skink", "Tegu",
+    "Chameleon", "Veiled chameleon", "Panther chameleon", "Anole", "Monitor lizard",
+    "Savannah monitor", "Nile monitor", "Komodo dragon (extremely dangerous/illegal)",
+    "Alligator (illegal in most places)", "Crocodile (illegal in most places)", "Caiman",
+    "Frog", "Tree frog", "Poison dart frog", "Pacman frog", "African clawed frog",
+    "Bullfrog", "Toad", "Fire-bellied toad", "Axolotl", "Salamander",
+    "Fire salamander", "Newt",
+    "Koi", "Guppy", "Molly", "Platy", "Swordtail", "Tetra", "Neon tetra",
+    "Angelfish", "Discus", "Gourami", "Rainbowfish", "Barb", "Danio", "Zebrafish",
+    "Loach", "Clown loach", "Catfish", "Plecostomus (pleco)", "Cory catfish",
+    "Cichlid", "Oscar", "Arowana", "Pufferfish", "Clownfish", "Tang", "Damselfish",
+    "Wrasse", "Dottyback", "Triggerfish", "Lionfish", "Moray eel", "Seahorse",
+    "Jellyfish", "Octopus", "Cuttlefish", "Shrimp", "Cherry shrimp", "Amano shrimp",
+    "Ghost shrimp", "Crayfish", "Lobster", "Crab", "Hermit crab", "Fiddler crab",
+    "Snail", "Mystery snail", "Nerite snail", "Sea urchin", "Starfish",
+    "Sea anemone", "Coral",
+    "Syrian hamster", "Dwarf hamster", "Lop rabbit", "Angora rabbit", "Dutch rabbit",
+    "Rex rabbit", "Fancy mouse", "Fancy rat", "African pygmy hedgehog", "Sugar glider",
+    "Flying squirrel", "Chipmunk", "Squirrel", "Degu", "Prairie dog", "Meerkat",
+    "Mongoose",
+    "Chicken", "Rooster", "Goose", "Turkey", "Pig", "Potbelly pig", "Micro pig",
+    "Goat", "Pygmy goat", "Nigerian Dwarf goat", "Sheep", "Miniature sheep", "Cow",
+    "Miniature cow", "Horse", "Pony", "Miniature horse", "Donkey", "Miniature donkey",
+    "Mule", "Llama", "Alpaca", "Peacock", "Peafowl",
+    "Wallaby", "Kangaroo", "Capybara", "Coati", "Kinkajou", "Raccoon", "Skunk",
+    "Fox", "Fennec fox", "Red fox", "Arctic fox", "Bat", "Fruit bat", "Opossum",
+    "Sloth", "Two-toed sloth", "Three-toed sloth", "Armadillo", "Anteater", "Otter",
+    "River otter", "Sea otter", "Beaver", "Porcupine", "Flying fox (large bat)",
+    "Monkey", "Capuchin monkey", "Squirrel monkey", "Marmoset", "Tamarin",
+    "Spider monkey", "Howler monkey", "Macaque", "Baboon", "Lemur",
+    "Ring-tailed lemur", "Bush baby (galago)", "Slow loris", "Gibbon", "Orangutan",
+    "Chimpanzee", "Gorilla",
+    "Wolf", "Coyote", "Jackal", "Hyena", "Lion", "Tiger", "Leopard", "Cheetah",
+    "Jaguar", "Cougar (puma/mountain lion)", "Lynx", "Bobcat", "Serval", "Caracal",
+    "Ocelot", "Bear", "Black bear", "Grizzly bear", "Polar bear", "Panda",
+    "Elephant", "Asian elephant", "African elephant", "Rhinoceros", "Hippopotamus",
+    "Giraffe", "Zebra", "Bison", "Buffalo", "Moose", "Elk", "Deer", "Reindeer",
+    "Tarantula", "Scorpion", "Praying mantis", "Stick insect", "Walking stick",
+    "Leaf insect", "Beetle", "Stag beetle", "Rhinoceros beetle", "Ant farm (ants)",
+    "Butterfly", "Moth", "Madagascar hissing cockroach", "Millipede",
+    "Giant millipede", "Centipede",
+    "Land snail", "Giant African land snail", "Slug", "Worm farm", "Vinegaroon (whip scorpion)",
+    "Emperor scorpion", "Land hermit crab", "Isopods (pill bugs/roly polies)"
+  ],
+
+  hobbies: [
+    "Painting", "Drawing", "Sketching", "Sketching strangers", "Digital art",
+    "Illustration", "Cartooning", "Comics creation", "Manga drawing", "Calligraphy",
+    "Graffiti art", "Street art", "Spray painting", "Mural painting",
+    "Portrait painting", "Landscape painting", "Abstract painting",
+    "Watercolor painting", "Oil painting", "Acrylic painting", "Sculpture",
+    "Clay modeling", "Pottery", "Ceramics", "Origami", "Paper crafts",
+    "Scrapbooking", "Keeping a scrapbook", "Collage making", "Mixed media art",
+    "Printmaking", "Screen printing", "Block printing", "Photography",
+    "Film photography", "Digital photography", "Portrait photography",
+    "Nature photography", "Street photography", "Macro photography",
+    "Astrophotography", "Photo editing", "Videography", "Video editing",
+    "Filmmaking", "Animation", "Stop-motion animation", "3D modeling",
+    "Knitting", "Crocheting", "Sewing", "Embroidery", "Cross-stitch", "Quilting",
+    "Weaving", "Macramé", "Leatherworking", "Leather crafting", "Bookbinding",
+    "Candle making", "Soap making", "Jewelry making", "Beadwork", "Metalworking",
+    "Blacksmithing", "Welding", "Woodworking", "Whittling", "Wood carving",
+    "Woodturning", "Furniture making", "Model building", "Model trains",
+    "Model airplanes", "Model ships", "Miniature building", "Diorama creation",
+    "Terrarium making", "Glassblowing", "Stained glass", "Mosaic making", "Tie-dye",
+    "Batik", "Screen printing clothes", "Upcycling", "DIY projects",
+    "Home improvement", "Restoration", "Antique restoration",
+    "Singing", "Singing alone", "Playing an instrument", "Playing guitar",
+    "Playing piano", "Playing drums", "Playing violin", "Playing bass",
+    "Playing saxophone", "Playing trumpet", "Playing flute", "DJing",
+    "Music production", "Beat making", "Songwriting", "Composing music",
+    "Sound engineering", "Choir singing", "A cappella", "Beatboxing", "Karaoke",
+    "Music collecting", "Vinyl collecting", "Instrument collecting",
+    "Writing", "Journaling", "Writing poetry", "Creative writing", "Fiction writing",
+    "Novel writing", "Short story writing", "Screenwriting", "Playwriting",
+    "Fanfiction writing", "Blogging", "Vlogging", "Podcasting",
+    "Reviewing (books, movies, etc.)", "Letter writing", "Pen pals",
+    "Worldbuilding", "Character creation", "Tabletop RPG creation",
+    "Acting", "Theater", "Community theater", "Improv comedy", "Stand-up comedy",
+    "Magic tricks", "Card tricks", "Illusions", "Juggling", "Circus arts",
+    "Acrobatics", "Trapeze", "Dancing", "Ballet", "Jazz dance", "Hip-hop dance",
+    "Ballroom dancing", "Salsa dancing", "Tango", "Swing dancing", "Breakdancing",
+    "Belly dancing", "Pole dancing", "Cosplay", "Costume design", "Makeup artistry",
+    "Special effects makeup", "Face painting", "Puppetry", "Ventriloquism",
+    "Storytelling", "Public speaking",
+    "Running", "Jogging", "Sprinting", "Marathon running", "Track and field",
+    "Swimming", "Diving", "Synchronized swimming", "Water polo", "Cycling",
+    "Mountain biking", "BMX", "Road cycling", "Skateboarding", "Rollerblading",
+    "Ice skating", "Figure skating", "Hockey", "Field hockey", "Skiing",
+    "Snowboarding", "Surfing", "Wakeboarding", "Paddleboarding", "Kayaking",
+    "Canoeing", "Rowing", "Rock climbing", "Bouldering", "Mountaineering",
+    "Hiking", "Trail running", "Parkour", "Freerunning", "Gymnastics",
+    "Cheerleading", "Wrestling", "Boxing or sparring", "Boxing", "Kickboxing",
+    "Martial arts", "Karate", "Taekwondo", "Judo", "Jiu-jitsu", "Muay Thai",
+    "Kendo", "Fencing", "Fencing practice", "Archery", "Target practice",
+    "Shooting", "Sport shooting", "Hunting", "Fishing", "Fly fishing",
+    "Deep sea fishing", "Horseback riding", "Equestrian sports", "Polo", "Golf",
+    "Tennis", "Badminton", "Table tennis", "Squash", "Racquetball", "Basketball",
+    "Football", "Soccer", "Baseball", "Softball", "Volleyball", "Beach volleyball",
+    "Cricket", "Rugby", "Ultimate frisbee", "Disc golf", "Bowling", "Billiards",
+    "Pool", "Darts", "Crossfit", "Weightlifting", "Powerlifting", "Bodybuilding",
+    "Calisthenics", "Yoga or meditation", "Yoga", "Pilates", "Tai chi", "Qigong",
+    "Meditation",
+    "Camping", "Backpacking", "Bushcraft", "Survival skills", "Foraging",
+    "Mushroom hunting", "Birdwatching", "Wildlife watching", "Stargazing",
+    "Amateur astronomy", "Geocaching", "Metal detecting", "Fossil hunting",
+    "Rock collecting", "Mineral collecting", "Beachcombing", "Gardening",
+    "Vegetable gardening", "Flower gardening", "Bonsai", "Topiary", "Landscaping",
+    "Tending bees", "Beekeeping", "Chicken keeping", "Farming", "Homesteading",
+    "Sailing", "Boating", "Yachting", "Jetskiing", "Scuba diving", "Snorkeling",
+    "Freediving", "Spearfishing", "Night walks", "Urban exploration",
+    "Exploring ruins", "Visiting abandoned places", "Ghost hunting",
+    "Paranormal investigation",
+    "Collecting coins", "Coin collecting", "Stamp collecting",
+    "Trading card collecting", "Sports card collecting", "Pokemon card collecting",
+    "Comic book collecting", "Action figure collecting", "Toy collecting",
+    "Doll collecting", "Funko Pop collecting", "LEGO collecting",
+    "Model car collecting", "Die-cast collecting", "Vinyl record collecting",
+    "CD collecting", "Book collecting", "First edition collecting",
+    "Antique collecting", "Vintage collecting", "Memorabilia collecting",
+    "Movie prop collecting", "Autograph collecting", "Crystal collecting",
+    "Gemstone collecting", "Fossil collecting", "Shell collecting",
+    "Insect collecting", "Collecting insects", "Butterfly collecting",
+    "Specimen collecting", "Pressed flower collecting", "Collecting pressed flowers",
+    "Art collecting", "Painting collecting", "Weapon collecting",
+    "Collecting weapons", "Knife collecting", "Sword collecting",
+    "Antiquities collecting", "Numismatics", "Philately",
+    "Reading", "Reading fiction", "Reading non-fiction", "Book clubs", "Chess",
+    "Checkers", "Go", "Shogi", "Backgammon", "Bridge", "Poker", "Card games",
+    "Board games", "Strategy games", "War gaming", "Miniature war gaming",
+    "Tabletop RPGs", "Dungeons & Dragons", "Roleplaying games", "Video gaming",
+    "PC gaming", "Console gaming", "Retro gaming", "Speedrunning",
+    "Game collecting", "Puzzle solving", "Jigsaw puzzles", "Crossword puzzles",
+    "Sudoku", "Rubik's cube", "Brain teasers", "Escape rooms", "Logic puzzles",
+    "Riddles", "Trivia", "Quiz games", "Pub trivia", "Debate", "Philosophy",
+    "Learning languages", "Language learning", "Linguistics study", "Code breaking",
+    "Cryptography", "Programming", "Coding", "Web development", "App development",
+    "Game development", "Hacking (ethical)", "Mathematics", "Physics", "Chemistry",
+    "Biology study", "Astronomy", "History study", "Genealogy",
+    "Family tree research", "Archaeology interest", "Paleontology", "Geology",
+    "Meteorology", "Amateur radio", "Ham radio", "Electronics", "Robotics",
+    "3D printing", "Tinkering", "Inventing",
+    "Cooking", "Cooking experiments", "Baking", "Pastry making", "Bread making",
+    "Sourdough", "Cake decorating", "Candy making", "Chocolate making", "Brewing",
+    "Home brewing", "Beer brewing", "Wine making", "Mead making",
+    "Brewing potions or teas", "Tea brewing", "Coffee roasting", "Mixology",
+    "Cocktail making", "Grilling", "BBQ", "Smoking meats", "Fermenting",
+    "Pickling", "Preserving", "Canning", "Cheese making", "Sausage making",
+    "Foraging for food", "Mushroom foraging",
+    "People-watching", "Socializing", "Party hosting", "Event planning",
+    "Volunteering", "Community service", "Activism", "Protesting", "Campaigning",
+    "Mentoring", "Teaching", "Tutoring", "Coaching", "Youth programs", "Networking",
+    "Toastmasters", "Club membership", "Lodge membership",
+    "Fraternal organizations", "Meetup groups", "Fan clubs",
+    "Convention attending", "Renaissance fairs", "LARPing",
+    "Historical reenactment", "Civil War reenactment",
+    "Playing tavern games", "Dice games", "Gambling", "Casino games", "Blackjack",
+    "Roulette", "Slot machines", "Sports betting", "Horse racing", "Fantasy sports",
+    "Magic: The Gathering", "Yu-Gi-Oh", "Trading card games", "Mahjong", "Dominoes",
+    "Mindfulness", "Stretching", "Massage", "Spa visits", "Hot tub soaking",
+    "Sauna", "Bath taking", "Aromatherapy", "Candle lighting", "Incense burning",
+    "Tea drinking", "Wine tasting", "Whiskey tasting", "Beer tasting", "Napping",
+    "Daydreaming", "Cloud watching", "People watching", "Window shopping",
+    "Thrift shopping", "Antiquing", "Flea market browsing", "Visiting museums",
+    "Gallery hopping", "Visiting graveyards", "Cemetery walks", "Church visiting",
+    "Temple visiting",
+    "Mapmaking", "Cartography", "Urban sketching", "Architectural drawing",
+    "Technical drawing", "Blueprint reading", "Graph making", "Data visualization",
+    "Statistics", "Market watching", "Stock trading", "Day trading", "Investing",
+    "Cryptocurrency", "Economics study", "Political analysis", "News junkie",
+    "Documentaries", "True crime", "Mystery solving", "Cold case analysis",
+    "Conspiracy theories", "UFO watching", "Cryptozoology", "Treasure hunting",
+    "Artifact hunting",
+    "Car restoration", "Classic cars", "Hot rods", "Motorcycles",
+    "Motorcycle restoration", "Bicycle repair", "Bicycle building", "Aviation",
+    "Flying planes", "Drone flying", "RC cars", "RC planes", "RC helicopters",
+    "Slot car racing", "Go-karting", "Racing", "Drag racing", "Rally racing",
+    "Drifting", "Car shows", "Bike shows", "Train spotting", "Plane spotting",
+    "Ship spotting",
+    "Hero merchandise collecting", "Hero card collecting", "Hero autograph hunting",
+    "Hero meet-and-greet attending", "Quirk analysis", "Quirk theory crafting",
+    "Quirk combination speculation", "Support item design", "Support gear tinkering",
+    "Hero costume design", "Costume making", "Hero studies",
+    "Villain history research", "Infamous villain case studies",
+    "Hero ranking tracking", "Following hero rankings", "Debating hero rankings",
+    "Pro hero watching", "Watching hero fights", "Analyzing hero techniques",
+    "Rescue simulation practice", "Disaster response training", "Hero news following",
+    "Reading hero magazines", "Hero gossip following", "Support course projects",
+    "Business course networking", "General education activities",
+    "U.A. Sports Festival watching", "Sports Festival speculation",
+    "Hero license exam prep", "Studying hero laws",
+    "Hero Public Safety Commission tracking", "Vigilante history research",
+    "Anti-quirk discrimination activism", "Quirkless rights advocacy",
+    "Heteromorph rights activism", "Mutation-type quirk acceptance work",
+    "Quirk counseling interest", "Quirk marriage ethics debates",
+    "All Might memorabilia collecting", "Symbol of Peace history",
+    "Studying the dawn of quirks", "Pre-quirk era history",
+    "Quirk emergence theories", "Hero school entrance exam prep",
+    "Mock villain battles", "Hero team-up analysis", "Sidekick culture study",
+    "Underground hero appreciation", "Rescue hero fandom", "Combat hero fandom",
+    "Villain rehabilitation interest", "Tartarus prison study",
+    "High-security containment interest",
+    "Dragon Ball hunting", "Isu artifact research", "Isu site exploration",
+    "Animus simulation running", "Genetic memory exploration",
+    "Ancient civilization study (Isu)", "Parkour (Mirror's Edge style)",
+    "Freerunning urban", "Faith's running techniques", "Runner culture",
+    "Anti-surveillance techniques", "Totalitarian regime resistance",
+    "Dishonored simulation gaming", "Chaos vs Clean Hands debates",
+    "Outsider mark theories", "Void magic study (simulated)",
+    "Corvo tactics analysis", "Emily's powers discussion", "Dunwall history",
+    "Karnaca appreciation", "Mushroom Kingdom tourism", "Pipe traveling",
+    "Coin collecting (from kingdoms)", "Power-up research", "Koopa biology study",
+    "Princess Peach following", "Bowser incident tracking", "Kingdom politics",
+    "Star collection", "1-Up hunting", "Warp pipe mapping", "Kryptonian history",
+    "Kryptonian language study", "House of El research", "Phantom Zone study",
+    "Kryptonian technology interest", "Fortress of Solitude lore",
+    "Rao worship study", "Kryptonian culture preservation",
+    "Atomic Betty episode watching", "Galactic Guardian fandom",
+    "Space fashion from the show", "Alien species cataloging (from show)",
+    "Maximus I.Q. theories", "Space travel interest", "Intergalactic politics",
+    "Sonic the Hedgehog racing", "Chaos Emerald hunting", "Ring collecting",
+    "Speed training (Sonic-inspired)", "Chao raising", "Chao garden tending",
+    "Eggman tech analysis", "Badnik studying", "Green Hill Zone tourism",
+    "Special Stage attempts", "Sonic comic reading",
+    "Powerpuff Girls Z watching", "PPGZ merchandise collecting",
+    "Chemical Z theories", "Tokyo City following", "Magical girl genre study",
+    "Peach-Pit character analysis", "Him conspiracy theories",
+    "Mayor's incompetence debates", "Monster-of-the-week discussions",
+    "Assassin history study", "Creed vs Templar debates",
+    "Hidden blade mechanics", "Eagle vision research", "Leap of faith practice",
+    "Assassination techniques (historical)", "Bureau exploration",
+    "Apple of Eden hunting", "Pieces of Eden research",
+    "Templar conspiracy tracking", "Assassin Brotherhood history",
+    "Mentor lineage study", "Historical Assassins research",
+    "Ezio Auditore fandom", "Altair Ibn-La'Ahad study", "Desmond Miles theories",
+    "Bleeding effect study", "First Civilization archaeology",
+    "Isu temple exploration", "Precursor site visiting",
+    "Meditation practice", "Sleep optimization", "Lucid dreaming",
+    "Dream journaling", "Astrology", "Tarot reading", "Fortune telling",
+    "Palm reading", "Crystal healing", "Reiki", "Energy work", "Witchcraft",
+    "Spell casting", "Herbalism", "Natural medicine", "Essential oils",
+    "Perfume making", "Fashion", "Outfit planning", "Wardrobe curation",
+    "Thrifting", "Vintage fashion", "Sneaker collecting", "Watch collecting",
+    "Hat collecting", "Tattoo collecting", "Piercing", "Body modification",
+    "Hair styling", "Nail art", "Self-improvement", "Life coaching",
+    "Motivational speaking", "Journaling practice", "Bullet journaling",
+    "Planning", "Organizing", "Cleaning", "Decluttering", "Minimalism",
+    "Interior design", "Feng shui", "Home staging", "Furniture flipping",
+    "Upcycling furniture"
+  ],
+
+  religion: [
+    "Christianity", "Catholic", "Protestant", "Baptist", "Methodist", "Lutheran",
+    "Presbyterian", "Episcopalian/Anglican", "Pentecostal", "Evangelical",
+    "Orthodox Christianity", "Eastern Orthodox", "Russian Orthodox", "Greek Orthodox",
+    "Coptic Orthodox", "Mormon (Latter-day Saints)", "Jehovah's Witness",
+    "Seventh-day Adventist", "Quaker", "Amish", "Mennonite",
+    "Islam", "Sunni Islam", "Shia Islam", "Sufi Islam", "Ahmadiyya",
+    "Judaism", "Orthodox Judaism", "Conservative Judaism", "Reform Judaism",
+    "Reconstructionist Judaism", "Hasidic Judaism",
+    "Sikhism", "Bahá'í Faith", "Zoroastrianism", "Rastafarianism", "Druze",
+    "Hinduism", "Vaishnavism (Vishnu worship)", "Shaivism (Shiva worship)",
+    "Shaktism (Goddess worship)", "Smartism",
+    "Shinto", "Buddhism", "Theravada Buddhism", "Mahayana Buddhism",
+    "Vajrayana Buddhism", "Zen Buddhism", "Tibetan Buddhism", "Pure Land Buddhism",
+    "Jainism", "Ancient Greek religion", "Ancient Roman religion",
+    "Ancient Egyptian religion", "Norse/Germanic paganism", "Celtic paganism",
+    "Slavic paganism", "Hellenism (modern Greek paganism)",
+    "Kemeticism (modern Egyptian paganism)", "Ásatrú (modern Norse paganism)",
+    "Rodnovery (Slavic native faith)", "Wicca", "Neo-paganism", "Druidry", "Thelema",
+    "Santería", "Vodou (Voodoo)", "Candomblé", "Umbanda", "Yoruba religion", "Ifá",
+    "Orisha worship", "Heathenry", "Reconstructionist paganism",
+    "Taoism", "Confucianism", "Shintoism", "Tenrikyo", "Cao Dai",
+    "Chinese folk religion", "Korean shamanism (Muism)", "Vietnamese folk religion",
+    "Japanese folk religion",
+    "Native American spirituality", "Aboriginal Australian spirituality",
+    "Māori spirituality", "Polynesian spirituality", "African traditional religions",
+    "Amazonian shamanism", "Inuit spirituality", "Animism", "Totemism", "Shamanism",
+    "Ancestor worship", "Nature worship",
+    "Atheism", "Agnosticism", "Secular humanism", "Existentialism", "Stoicism",
+    "Epicureanism", "Skepticism", "Rationalism", "Materialism", "Nihilism", "Deism",
+    "Pantheism", "Panentheism", "Spiritual but not religious",
+    "Unitarian Universalism",
+    "Eckankar", "Scientology", "Theosophy", "Anthroposophy",
+    "Hare Krishna (ISKCON)", "Transcendental Meditation", "New Thought",
+    "Christian Science", "Unity Church", "New Age spirituality", "Universalism",
+    "Omnism (all religions contain truth)",
+    "Worships Palutena (goddess of sex, fertility, creativity, joy and life)",
+    "Worships Hecate (purifier of souls for reincarnation)",
+    "Worships Chronoa (goddess of time)",
+    "Worships Towa (false goddess, time-travelling chaos agent)",
+    "Monotheistic (belief in one god)", "Polytheistic (belief in many gods)",
+    "Henotheistic (worship one god among many)",
+    "Pantheistic (god is everything/nature)",
+    "Panentheistic (god encompasses and transcends universe)",
+    "Nontheistic (no god/gods)", "Agnostic theist (believes but uncertain)",
+    "Agnostic atheist (doesn't believe but uncertain)",
+    "Antitheist (actively opposes religion)", "Apatheist (indifferent to religion)",
+    "Ignostic (concept of god is meaningless)",
+    "Misotheist (believes in god but hates them)",
+    "Dystheist (believes god is not wholly good)", "Maltheist (believes god is evil)",
+    "Autotheist (believes oneself is a god)"
+  ],
+
+  tics: [
+    "Cracks knuckles constantly", "Drums fingers on surfaces", "Taps fingers rhythmically",
+    "Fidgets with rings or jewelry", "Twirls hair around a finger", "Picks at their nails",
+    "Picks at cuticles", "Chews on fingernails", "Bites nails down to the quick",
+    "Rubs hands together", "Wrings hands when nervous", "Flexes fingers repeatedly",
+    "Makes fists and releases", "Counts on fingers unconsciously", "Traces patterns on surfaces",
+    "Snaps fingers", "Cracks each finger individually", "Interlaces and unlaces fingers",
+    "Always has to be holding something", "Spins pens between fingers",
+    "Plays with whatever's in reach", "Pulls at fingers", "Massages own palm",
+    "Taps thumbs together",
+    "Blinks rapidly under stress", "Squints at people when suspicious",
+    "Narrows eyes when thinking", "Twitches eyebrow", "Raises one eyebrow",
+    "Wrinkles nose", "Scrunches face", "Flares nostrils",
+    "Bites the inside of their cheek", "Chews bottom lip", "Licks lips when nervous",
+    "Presses lips together tightly", "Purses lips", "Sucks teeth", "Grinds teeth",
+    "Clenches jaw when angry", "Jaw twitches", "Works jaw side to side",
+    "Touches face constantly", "Rubs eyes", "Rubs nose when lying",
+    "Touches their ear when uncomfortable", "Scratches behind their ear",
+    "Pulls on earlobe", "Rubs temples", "Massages bridge of nose",
+    "Pinches bridge of nose", "Covers mouth when laughing", "Covers mouth when speaking",
+    "Touches chin when thinking", "Strokes chin", "Cups own face", "Puffs out cheeks",
+    "Sucks in cheeks", "Chews on inside of mouth", "Tongue pokes cheek",
+    "Sticks tongue out slightly", "Wets lips constantly", "Smacks lips", "Bites tongue",
+    "Eyes dart around", "Avoids eye contact", "Stares intensely",
+    "Stares off mid-conversation", "Looks away when lying", "Eye twitches",
+    "Winks unconsciously", "Furrows brow constantly", "Raises both eyebrows repeatedly",
+    "Forehead wrinkles when listening",
+    "Hums under their breath", "Hums while thinking", "Whistles tunelessly",
+    "Clicks their tongue", "Tuts disapprovingly", "Clucks tongue",
+    "Sucks air through teeth", "Sighs dramatically", "Sighs constantly",
+    "Exhales loudly", "Sniffs loudly when concentrating", "Sniffles",
+    "Clears throat constantly", "Coughs to fill silence", "Harrumphs", "Grunts",
+    "Makes small noises", "'Mm-hmm' constantly", "'Uh-huh' repeatedly",
+    "Mutters to themselves", "Talks under their breath", "Repeats last word of sentences",
+    "Repeats others' last words", "Echoes phrases", "Makes popping sounds with mouth",
+    "Whistles through teeth", "Hisses when annoyed", "Tsks", "Shushes people",
+    "Laughs nervously", "Giggles at inappropriate times", "Chuckles to themselves",
+    "Snorts when laughing",
+    "Tilts head when listening", "Cocks head to side", "Nods constantly",
+    "Shakes head subtly", "Cracks their neck", "Rolls neck", "Stretches neck",
+    "Tilts head back", "Looks up when thinking", "Looks down when embarrassed",
+    "Turns head away", "Looks over shoulder constantly",
+    "Always looking over their shoulder", "Jerks head", "Head bobs slightly",
+    "Hair flip", "Shakes head to clear thoughts", "Scratches head",
+    "Runs hand through hair repeatedly", "Tugs on hair", "Plays with hair",
+    "Twists hair", "Pulls hair forward", "Pushes hair back",
+    "Touches hair constantly", "Adjusts hair", "Musses own hair",
+    "Taps their foot when thinking", "Bounces their leg when sitting",
+    "Paces when anxious", "Shifts weight constantly", "Rocks back and forth",
+    "Sways slightly", "Rolls their shoulders", "Shrugs constantly",
+    "Hunches shoulders", "Straightens posture repeatedly", "Stretches constantly",
+    "Cracks back", "Arches back", "Crosses arms reflexively",
+    "Uncrosses and recrosses arms", "Wraps arms around self", "Hugs self",
+    "Touches own shoulders", "Adjusts clothing constantly", "Tugs at sleeves",
+    "Pulls at collar", "Straightens shirt", "Smooths down clothing",
+    "Picks at clothing", "Fidgets with hem", "Adjusts waistband", "Fixes tie",
+    "Touches necklace", "Plays with zipper", "Buttons and unbuttons",
+    "Checks pockets", "Pats pockets", "Shifts in seat", "Leans forward",
+    "Leans back", "Crosses and uncrosses legs", "Ankle on knee",
+    "Tucks feet under chair", "Wraps feet around chair legs", "Stands on one foot",
+    "Shifts between feet", "Taps toes", "Wiggles toes (in shoes)", "Heels tap ground",
+    "Paces", "Cannot sit still", "Gets up and sits down repeatedly",
+    "Walks in circles", "Takes unnecessary steps", "Always in motion",
+    "Fidgets constantly", "Squirms", "Twitches", "Random muscle twitches",
+    "Shoulder twitches", "Spasms", "Jerky movements", "Rocks on heels",
+    "Bounces on toes", "Kicks at ground", "Scuffs feet", "Drags feet",
+    "Stamps foot", "Knee bounces", "Restless legs", "Swings arms", "Flaps hands",
+    "Shakes out hands", "Clenches and unclenches fists", "Touches things unnecessarily",
+    "Has to touch certain objects", "Taps walls while walking", "Counts steps",
+    "Avoids cracks in sidewalk", "Steps on every line", "Has to touch doorframes",
+    "Spins when standing", "Does small hops", "Shifts weight rhythmically",
+    "Chews on pen caps or sticks", "Clicks pen repeatedly", "Spins pen",
+    "Taps pen on surface", "Fidgets with pen", "Plays with whatever's on desk",
+    "Straightens papers compulsively", "Stacks and restacks things", "Lines things up",
+    "Has to organize", "Arranges items by size/color", "Touches books on shelf",
+    "Adjusts picture frames", "Straightens crooked things", "Flips coin",
+    "Rolls dice", "Shuffles cards", "Folds and unfolds paper",
+    "Tears paper into strips", "Doodles constantly", "Draws on self",
+    "Picks at labels", "Peels stickers", "Scratches at surfaces", "Taps objects",
+    "Spins objects", "Fidgets with phone", "Checks phone constantly",
+    "Adjusts glasses (even when unnecessary)", "Pushes up glasses",
+    "Takes glasses on and off", "Cleans glasses repeatedly", "Plays with glasses",
+    "Chews on glasses arm", "Fidgets with jewelry", "Twists ring",
+    "Touches necklace", "Plays with earrings", "Adjusts watch", "Winds watch",
+    "Checks watch constantly",
+    "Checks locks multiple times", "Rechecks things", "Counts things",
+    "Has to count to certain number", "Taps in patterns", "Does things in threes",
+    "Symmetry compulsion", "Has to balance actions", "Touches things twice",
+    "Repeats movements", "Retraces steps", "Goes back to check",
+    "Straightens things compulsively", "Organizes and reorganizes",
+    "Alphabetizes things", "Color codes everything", "Lines things up perfectly",
+    "Adjusts until 'just right'", "Ritualistic behaviors", "Same routine always",
+    "Must do things in order", "Panics if routine disrupted",
+    "Picks at scabs", "Picks at skin", "Scratches arms", "Scratches neck",
+    "Rubs arms", "Wraps arms tight", "Grips own arm", "Digs nails into palm",
+    "Pinches self", "Pulls at clothes", "Tugs shirt", "Chews on collar/sleeves",
+    "Covers face", "Hides behind hands", "Peeks through fingers", "Pulls hood up",
+    "Hunches into self", "Makes self small", "Curls up", "Knees to chest",
+    "Defensive posture",
+    "Stares into space", "Zones out", "Looks up and right",
+    "Closes eyes when thinking", "Squints when concentrating",
+    "Bites lip while working", "Tongue sticks out when focused", "Holds breath",
+    "Breathes shallowly", "Mutters while reading", "Mouths words when reading",
+    "Traces text with finger", "Nods along while listening",
+    "Tilts head various angles", "Looks at ceiling", "Paces while thinking",
+    "Walks to think", "Has to move to process", "Taps rhythm while thinking",
+    "Counts on fingers", "Talks through problems aloud", "Narrates own actions",
+    "Repeats phrases", "Catchphrase user",
+    "Verbal filler ('um,' 'uh,' 'like')", "'You know' constantly",
+    "'Basically' before everything", "Ends sentences with 'yeah?'",
+    "Trails off mid-sentence", "Interrupts self", "Corrects self constantly",
+    "Apologizes unnecessarily", "Over-explains", "Rambles when nervous",
+    "Talks faster under stress", "Talks slower deliberately",
+    "Emphasizes random words", "Voice goes up at end (upspeak)",
+    "Pauses mid-word", "Stutters slightly", "Repeats first syllable",
+    "Elongates words", "Clips words short", "Drops letters", "Adds extra syllables"
+  ],
+
+  // Speech is handled differently — each sub-field has its own pool
+  speech: {
+    volume: [
+      "Whisper-quiet, barely audible", "Soft-spoken and measured", "Normal conversational volume",
+      "Tends to be too loud without realizing", "Projects like they're always on stage",
+      "Varies wildly — whispers then suddenly yells", "Mumbles most of the time",
+      "Booming voice that carries across rooms", "Deliberately quiet to make people lean in",
+      "Loud when excited, quiet when serious"
+    ],
+    commonWords: [
+      "Peppers speech with 'honestly' and 'look'", "Uses 'mate' or 'pal' for everyone",
+      "Says 'right' at the end of sentences", "Overuses 'literally'", "Starts sentences with 'So…'",
+      "Says 'you know what I mean?' after everything", "Uses old-fashioned words like 'hence' and 'thus'",
+      "Curses as punctuation — every other word", "Uses 'darling' and 'dear' even for strangers",
+      "Has a catchphrase they don't realize they say", "Uses 'whatever' dismissively",
+      "Says 'interesting' when they don't care", "Calls everyone 'boss' or 'chief'",
+      "Ends statements like questions? With upward inflection?", "Uses big words incorrectly"
+    ],
+    tics: [
+      "Scoffs often", "Clears throat before speaking", "Laughs nervously mid-sentence",
+      "Trails off without finishing thoughts", "Stutters on certain sounds",
+      "Clicks tongue between sentences", "Pauses for too long before answering",
+      "Repeats the last few words of others", "Sighs before every sentence",
+      "Hums while thinking of what to say", "Sniffs between sentences",
+      "Coughs politely to buy time", "Talks faster when nervous", "Goes silent mid-sentence then continues",
+      "Makes small vocal noises like 'mm' or 'ah'"
+    ],
+    emotion: [
+      "Voice cracks when upset", "Goes completely monotone when angry", "Gets louder the more emotional they are",
+      "Goes silent when truly furious", "Voice shakes when lying", "Laughs when nervous or scared",
+      "Speech becomes formal under pressure", "Slurs words when exhausted",
+      "Pitch rises when excited", "Becomes clipped and curt when hurt",
+      "Talks faster when passionate", "Whispers when saying something important",
+      "Voice drops an octave when serious", "Speaks in fragments when overwhelmed",
+      "Becomes overly articulate when angry"
+    ],
+    swearing: [
+      "Never swears — finds it vulgar", "Rarely swears, only when truly upset",
+      "Moderate — swears casually but not excessively", "Swears like a sailor",
+      "Invents their own curse words", "Only swears in another language",
+      "Swears constantly but somehow makes it charming", "Uses archaic or unusual oaths",
+      "Apologizes immediately after swearing", "Only swears around close friends",
+      "Replaces swear words with euphemisms", "Swears under their breath only"
+    ],
+    manner: [
+      "Unfailingly polite, even to enemies", "Dripping with sarcasm", "Blunt and tactless",
+      "Warm and encouraging", "Cold and clinical", "Passive-aggressive",
+      "Flirtatious by default", "Dismissive and bored-sounding", "Overly formal",
+      "Casual to a fault — no filter", "Deliberately insulting, wraps barbs in smiles",
+      "Motherly / fatherly tone with everyone", "Sassy and quick-witted",
+      "Timid and apologetic", "Commanding and authoritative"
+    ],
+    unique: [
+      "Refers to themselves in third person", "Narrates their own actions out loud",
+      "Speaks in questions more than statements", "Quotes proverbs and sayings constantly",
+      "Talks to objects or animals like people", "Whispers secrets to thin air",
+      "Frequently breaks into song mid-sentence", "Speaks in metaphors almost exclusively",
+      "Has a verbal tic of counting things", "Addresses everyone by full title or surname",
+      "Speaks as if telling a story, even for mundane things", "Uses 'we' instead of 'I'",
+      "Speaks in very short, clipped sentences", "Monologues when given the chance",
+      "Asks rhetorical questions then answers them", "None — fairly standard speech"
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  GENERATOR ENGINE
+// ═══════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════
+//  INDEXEDDB — Character Sheet Persistence
+// ═══════════════════════════════════════════════════════════
+
+const DB_NAME = 'CharacterForgeDB';
+const DB_VERSION = 1;
+const STORE_NAME = 'sheets';
+const SHEET_KEY = 'current';
+
+let db = null;
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = (e) => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains(STORE_NAME)) {
+        d.createObjectStore(STORE_NAME);
+      }
+    };
+    req.onsuccess = (e) => { db = e.target.result; resolve(db); };
+    req.onerror = (e) => reject(e.target.error);
+  });
+}
+
+function saveSheet(data) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(data, SHEET_KEY);
+    tx.oncomplete = resolve;
+    tx.onerror = (e) => reject(e.target.error);
+  });
+}
+
+function loadSheet() {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, 'readonly');
+    const req = tx.objectStore(STORE_NAME).get(SHEET_KEY);
+    req.onsuccess = () => resolve(req.result || {});
+    req.onerror = (e) => reject(e.target.error);
+  });
+}
+
+// Sheet state: { savvies: ["Running", ...], speech: [{label: "Volume", value: "..."}], ... }
+let sheet = {};
+
+const CATEGORY_LABELS = {
+  savvies: 'Savvies',
+  ineptitudes: 'Ineptitudes',
+  likes: 'Likes',
+  dislikes: 'Dislikes',
+  vices: 'Vices',
+  flaws: 'Flaws',
+  kinks: 'Kinks & Preferences',
+  speech: 'Speech',
+  pets: 'Pets',
+  hobbies: 'Hobbies',
+  religion: 'Religious Beliefs',
+  tics: 'Tics & Quirks'
+};
+
+// ═══════════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════════
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SHEET RENDERING
+// ═══════════════════════════════════════════════════════════
+
+function renderSheet() {
+  const body = document.getElementById('sheetBody');
+  const countEl = document.getElementById('sheetCount');
+
+  // Count total traits
+  let total = 0;
+  for (const cat in sheet) {
+    if (Array.isArray(sheet[cat])) total += sheet[cat].length;
+  }
+
+  countEl.textContent = total + (total === 1 ? ' trait' : ' traits');
+
+  if (total === 0) {
+    body.innerHTML = `<div class="sheet-empty">
+      <span class="sheet-empty-icon">✦</span>
+      Click the <strong>+</strong> button on any generated trait to add it here.<br>
+      Your sheet saves automatically.
+    </div>`;
+    return;
+  }
+
+  let html = '';
+  const orderedCats = ['savvies','ineptitudes','likes','dislikes','vices','flaws','kinks','speech','pets','hobbies','religion','tics'];
+
+  for (const cat of orderedCats) {
+    if (!sheet[cat] || sheet[cat].length === 0) continue;
+
+    html += `<div class="sheet-category">`;
+    html += `<div class="sheet-category-label">${CATEGORY_LABELS[cat] || cat}</div>`;
+    html += `<div class="sheet-category-tags">`;
+
+    if (cat === 'speech') {
+      sheet[cat].forEach((entry, i) => {
+        html += `<div class="sheet-speech-entry">
+          <span class="speech-sub-label">${entry.label}:</span>
+          <span class="speech-sub-value">${entry.value}</span>
+          <button class="btn-remove-tag" data-cat="${cat}" data-idx="${i}" title="Remove">✕</button>
+        </div>`;
+      });
+    } else {
+      sheet[cat].forEach((item, i) => {
+        html += `<span class="sheet-tag">${item}<button class="btn-remove-tag" data-cat="${cat}" data-idx="${i}" title="Remove">✕</button></span>`;
+      });
+    }
+
+    html += `</div></div>`;
+  }
+
+  body.innerHTML = html;
+
+  // Wire remove buttons
+  body.querySelectorAll('.btn-remove-tag').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cat = btn.dataset.cat;
+      const idx = parseInt(btn.dataset.idx);
+      sheet[cat].splice(idx, 1);
+      if (sheet[cat].length === 0) delete sheet[cat];
+      if (db) saveSheet(sheet);
+      renderSheet();
+      refreshPickerIfOpen();
+      showToast('Trait removed');
+    });
+  });
+}
+
+function addToSheet(category, value) {
+  if (!sheet[category]) sheet[category] = [];
+
+  // Duplicate check
+  if (category === 'speech') {
+    const exists = sheet[category].some(e => e.label === value.label && e.value === value.value);
+    if (exists) { showToast('Already on sheet'); return; }
+    sheet[category].push(value);
+  } else {
+    if (sheet[category].includes(value)) { showToast('Already on sheet'); return; }
+    sheet[category].push(value);
+  }
+
+  if (db) saveSheet(sheet);
+  renderSheet();
+  showToast('Added to sheet ✦');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EXPORT
+// ═══════════════════════════════════════════════════════════
+
+function exportTxt() {
+  const orderedCats = ['savvies','ineptitudes','likes','dislikes','vices','flaws','kinks','speech','pets','hobbies','religion','tics'];
+  let lines = ['═══ CHARACTER SHEET ═══', ''];
+
+  for (const cat of orderedCats) {
+    if (!sheet[cat] || sheet[cat].length === 0) continue;
+    lines.push((CATEGORY_LABELS[cat] || cat).toUpperCase());
+    lines.push('─'.repeat(30));
+    if (cat === 'speech') {
+      sheet[cat].forEach(e => lines.push(`  ${e.label}: ${e.value}`));
+    } else {
+      sheet[cat].forEach(item => lines.push(`  • ${item}`));
+    }
+    lines.push('');
+  }
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  downloadBlob(blob, 'character-sheet.txt');
+}
+
+function exportJson() {
+  const blob = new Blob([JSON.stringify(sheet, null, 2)], { type: 'application/json' });
+  downloadBlob(blob, 'character-sheet.json');
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Exported ✦');
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GENERATOR ENGINE
+// ═══════════════════════════════════════════════════════════
+
+function pickRandom(arr, count) {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled.slice(0, Math.min(count, arr.length));
+}
+
+function pickOne(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function renderTags(container, items, category) {
+  container.innerHTML = '';
+  container.classList.add('result-tags');
+  items.forEach((item, i) => {
+    const tag = document.createElement('span');
+    tag.className = 'result-tag';
+    tag.style.animationDelay = `${i * 0.06}s`;
+    tag.textContent = item;
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn-add-tag';
+    addBtn.textContent = '+';
+    addBtn.title = 'Add to character sheet';
+    addBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      addToSheet(category, item);
+      tag.classList.add('added-flash');
+      setTimeout(() => tag.classList.remove('added-flash'), 600);
+    });
+
+    tag.appendChild(addBtn);
+    container.appendChild(tag);
+  });
+}
+
+function renderSpeech(container) {
+  const s = DATA.speech;
+  const result = {
+    'Volume': pickOne(s.volume),
+    'Common Words & Phrases': pickOne(s.commonWords),
+    'Speech Tics': pickOne(s.tics),
+    'Alterations from Emotion': pickOne(s.emotion),
+    'Swearing': pickOne(s.swearing),
+    'Manner': pickOne(s.manner),
+    'Unique Traits': pickOne(s.unique)
+  };
+
+  container.classList.remove('result-tags');
+  let html = '<div class="result-speech">';
+  const entries = Object.entries(result);
+  entries.forEach(([label, value], i) => {
+    html += `<div class="speech-row" data-speech-label="${label}" data-speech-value="${value}" style="animation-delay:${i*0.05}s">
+      <span class="speech-label">${label}</span>
+      <span class="speech-value">${value}</span>
+      <button class="btn-add-speech" title="Add to character sheet">+</button>
+    </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+
+  // Wire speech add buttons
+  container.querySelectorAll('.btn-add-speech').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const row = btn.closest('.speech-row');
+      const label = row.dataset.speechLabel;
+      const value = row.dataset.speechValue;
+      addToSheet('speech', { label, value });
+      row.classList.add('added-flash');
+      setTimeout(() => row.classList.remove('added-flash'), 600);
+    });
+  });
+}
+
+function clearResults(container, generatorType) {
+  const placeholders = {
+    savvies: 'Click generate to roll savvies…',
+    ineptitudes: 'Click generate to roll ineptitudes…',
+    likes: 'Click generate to roll likes…',
+    dislikes: 'Click generate to roll dislikes…',
+    vices: 'Click generate to roll vices…',
+    flaws: 'Click generate to roll flaws…',
+    kinks: 'Click generate to roll kinks & preferences…',
+    speech: 'Click generate to roll speech patterns…',
+    pets: 'Click generate to roll pets…',
+    hobbies: 'Click generate to roll hobbies…',
+    religion: 'Click generate to roll religious beliefs…',
+    tics: 'Click generate to roll tics & quirks…'
+  };
+  container.classList.add('result-tags');
+  container.innerHTML = `<span class="placeholder-text">${placeholders[generatorType] || 'Click generate…'}</span>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  WIRE UP EACH CARD
+// ═══════════════════════════════════════════════════════════
+
+document.querySelectorAll('.gen-card').forEach(card => {
+  const type = card.dataset.generator;
+  const btnGen = card.querySelector('[data-gen]');
+  const btnClear = card.querySelector('[data-clear]');
+  const btnLock = card.querySelector('[data-lock]');
+  const countSelect = card.querySelector('[data-count]');
+  const resultsContainer = card.querySelector('[data-results]');
+
+  let locked = false;
+
+  btnGen.addEventListener('click', () => {
+    if (locked) return;
+    btnGen.classList.add('rolling');
+
+    setTimeout(() => {
+      if (type === 'speech') {
+        renderSpeech(resultsContainer);
+      } else if (type === 'religion') {
+        renderTags(resultsContainer, [pickOne(DATA[type])], type);
+      } else {
+        const count = countSelect ? parseInt(countSelect.value) : 1;
+        const items = pickRandom(DATA[type], count);
+        renderTags(resultsContainer, items, type);
+      }
+      btnGen.classList.remove('rolling');
+    }, 150);
+  });
+
+  btnClear.addEventListener('click', () => {
+    if (locked) return;
+    clearResults(resultsContainer, type);
+  });
+
+  btnLock.addEventListener('click', () => {
+    locked = !locked;
+    btnLock.classList.toggle('locked', locked);
+    btnLock.textContent = locked ? '🔒' : '🔓';
+    btnLock.title = locked ? 'Unlock results' : 'Lock results';
+  });
+});
+
+// ═══════════════════════════════════════════════════════════
+//  SHEET BUTTONS
+// ═══════════════════════════════════════════════════════════
+
+document.getElementById('btnExportTxt').addEventListener('click', exportTxt);
+document.getElementById('btnExportJson').addEventListener('click', exportJson);
+let clearClickedOnce = false;
+let clearTimer = null;
+document.getElementById('btnClearSheet').addEventListener('click', () => {
+  let total = 0;
+  for (const cat in sheet) {
+    if (Array.isArray(sheet[cat])) total += sheet[cat].length;
+  }
+  if (total === 0) return;
+
+  const btn = document.getElementById('btnClearSheet');
+
+  if (!clearClickedOnce) {
+    clearClickedOnce = true;
+    btn.textContent = 'Confirm Clear?';
+    btn.style.borderColor = '#d45a5a';
+    btn.style.color = '#d45a5a';
+    clearTimer = setTimeout(() => {
+      clearClickedOnce = false;
+      btn.textContent = 'Clear All';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 3000);
+  } else {
+    clearTimeout(clearTimer);
+    clearClickedOnce = false;
+    btn.textContent = 'Clear All';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    sheet = {};
+    if (db) saveSheet(sheet);
+    renderSheet();
+    refreshPickerIfOpen();
+    showToast('Sheet cleared');
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
+//  MANUAL TRAIT PICKER
+// ═══════════════════════════════════════════════════════════
+
+const pickerToggle = document.getElementById('pickerToggle');
+const pickerPanel = document.getElementById('pickerPanel');
+const pickerSearch = document.getElementById('pickerSearch');
+const pickerCategory = document.getElementById('pickerCategory');
+const pickerListArea = document.getElementById('pickerListArea');
+const pickerHint = document.getElementById('pickerHint');
+
+pickerToggle.addEventListener('click', () => {
+  pickerToggle.classList.toggle('open');
+  pickerPanel.classList.toggle('open');
+  if (pickerPanel.classList.contains('open')) {
+    setTimeout(() => pickerSearch.focus(), 100);
+  }
+});
+
+const PICKER_CATEGORIES = ['savvies','ineptitudes','likes','dislikes','vices','flaws','kinks','pets','hobbies','religion','tics'];
+
+let pickerLimit = 80;
+
+function isOnSheet(category, value) {
+  if (!sheet[category]) return false;
+  return sheet[category].includes(value);
+}
+
+function getFilteredItems(catsToShow, query) {
+  const allItems = [];
+  for (const cat of catsToShow) {
+    const pool = DATA[cat];
+    if (!pool || !Array.isArray(pool)) continue;
+    let items;
+    if (query.length >= 2) {
+      items = pool.filter(item => item.toLowerCase().includes(query));
+    } else {
+      items = pool;
+    }
+    if (items.length > 0) {
+      allItems.push({ cat, items });
+    }
+  }
+  return allItems;
+}
+
+function renderPickerList() {
+  const query = pickerSearch.value.toLowerCase().trim();
+  const selectedCat = pickerCategory.value;
+
+  if (!selectedCat && query.length < 2) {
+    pickerListArea.innerHTML = '<div class="picker-list-empty">Select a category to browse, or type to search across all traits.</div>';
+    pickerHint.textContent = '';
+    return;
+  }
+
+  const catsToShow = selectedCat ? [selectedCat] : PICKER_CATEGORIES;
+  const allGroups = getFilteredItems(catsToShow, query);
+
+  let totalAvailable = 0;
+  allGroups.forEach(g => totalAvailable += g.items.length);
+
+  if (totalAvailable === 0) {
+    pickerListArea.innerHTML = '<div class="picker-list-empty">No matching traits found.</div>';
+    pickerHint.textContent = '';
+    return;
+  }
+
+  let html = '';
+  let totalShown = 0;
+
+  for (const group of allGroups) {
+    const remaining = pickerLimit - totalShown;
+    if (remaining <= 0) break;
+
+    const showItems = group.items.slice(0, remaining);
+    totalShown += showItems.length;
+
+    const label = CATEGORY_LABELS[group.cat] || group.cat;
+    html += '<div class="picker-list-group-label">' + label + ' (' + group.items.length + ')</div>';
+
+    for (const item of showItems) {
+      const onSheet = isOnSheet(group.cat, item);
+      html += '<div class="picker-list-item' + (onSheet ? ' on-sheet' : '') + '" data-cat="' + group.cat + '" data-value="' + item.replace(/"/g, '&quot;') + '">';
+      html += '<span class="picker-item-text">' + item + '</span>';
+      html += '<span class="picker-add-icon"><span>' + (onSheet ? '' : '+') + '</span></span>';
+      html += '</div>';
+    }
+  }
+
+  // Show More button
+  if (totalShown < totalAvailable) {
+    html += '<div class="picker-show-more" id="pickerShowMore">Show More (' + (totalAvailable - totalShown) + ' remaining)</div>';
+  }
+
+  pickerListArea.innerHTML = html;
+  pickerHint.textContent = totalShown + ' of ' + totalAvailable + ' traits shown';
+
+  // Wire click handlers for items
+  wirePickerItems();
+
+  // Wire Show More
+  const showMoreBtn = document.getElementById('pickerShowMore');
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', () => {
+      const scrollPos = pickerListArea.scrollTop;
+      pickerLimit += 80;
+      renderPickerList();
+      pickerListArea.scrollTop = scrollPos;
+    });
+  }
+}
+
+function wirePickerItems() {
+  pickerListArea.querySelectorAll('.picker-list-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const cat = el.dataset.cat;
+      const value = el.dataset.value;
+
+      if (isOnSheet(cat, value)) {
+        // Already on sheet — do nothing, toast it
+        showToast('Already on sheet');
+        return;
+      }
+
+      addToSheet(cat, value);
+      // Update this item visually
+      el.classList.add('on-sheet', 'just-added');
+      const icon = el.querySelector('.picker-add-icon');
+      if (icon) icon.innerHTML = '';
+    });
+  });
+}
+
+function refreshPickerIfOpen() {
+  if (pickerPanel.classList.contains('open')) {
+    const scrollPos = pickerListArea.scrollTop;
+    renderPickerList();
+    pickerListArea.scrollTop = scrollPos;
+  }
+}
+
+let pickerDebounce = null;
+pickerSearch.addEventListener('input', () => {
+  clearTimeout(pickerDebounce);
+  pickerLimit = 80; // Reset limit on new search
+  pickerDebounce = setTimeout(renderPickerList, 150);
+});
+
+pickerCategory.addEventListener('change', () => {
+  pickerLimit = 80; // Reset limit on category change
+  renderPickerList();
+  pickerListArea.scrollTop = 0;
+});
+
+// ═══════════════════════════════════════════════════════════
+//  INIT — Load sheet from IndexedDB
+// ═══════════════════════════════════════════════════════════
+
+(async function init() {
+  try {
+    await openDB();
+    const data = await loadSheet();
+    sheet = data || {};
+  } catch(err) {
+    console.warn('IndexedDB unavailable, using memory only:', err);
+    sheet = {};
+  }
+  renderSheet();
+})();
+</script>
+
+</body>
+</html>
