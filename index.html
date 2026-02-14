@@ -64,6 +64,48 @@
   .generator-section.collapsed .section-cards { max-height: 0 !important; opacity: 0; padding: 0; }
 
   /* Section color themes */
+  .section--identity .section-icon { background: rgba(201,168,76,0.15); color: var(--accent-gold); }
+  .section--identity .section-header { border-color: rgba(201,168,76,0.25); }
+  .section--identity .gen-card { --card-accent: var(--accent-gold); }
+  .condition-picker { display: flex; flex-direction: column; gap: 8px; }
+  .condition-search { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; color: var(--text); font-family: 'Alegreya', serif; font-size: 0.95rem; width: 100%; box-sizing: border-box; }
+  .condition-search:focus { outline: none; border-color: var(--accent-gold); }
+  .condition-options { display: flex; flex-wrap: wrap; gap: 5px; max-height: 180px; overflow-y: auto; padding: 4px 0; }
+  .condition-options:empty::after { content: 'Type to search conditions…'; color: var(--muted); font-style: italic; font-size: 0.85rem; }
+  .condition-chip { display: inline-flex; align-items: center; gap: 3px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 3px 10px; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; font-family: 'Alegreya', serif; color: var(--text); }
+  .condition-chip:hover { border-color: var(--accent-gold); background: rgba(201,168,76,0.1); }
+  .condition-chip.selected { background: rgba(201,168,76,0.2); border-color: var(--accent-gold); color: var(--accent-gold); }
+  .condition-chip.selected::before { content: '✓ '; }
+  .condition-selected { display: flex; flex-wrap: wrap; gap: 5px; min-height: 0; }
+  .condition-selected:empty { display: none; }
+  .condition-sel-tag { display: inline-flex; align-items: center; gap: 4px; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); border-radius: 14px; padding: 3px 8px 3px 10px; font-size: 0.8rem; font-family: 'Alegreya', serif; color: var(--accent-gold); }
+  .condition-sel-tag .remove-cond { background: none; border: none; color: var(--accent-gold); cursor: pointer; font-size: 0.9rem; padding: 0 2px; opacity: 0.7; }
+  .condition-sel-tag .remove-cond:hover { opacity: 1; }
+  .section-guide { margin: 0 0 12px 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); }
+  .section-guide-toggle { display: flex; align-items: center; gap: 6px; padding: 8px 14px; cursor: pointer; font-family: 'Alegreya', serif; font-size: 0.85rem; color: var(--muted); transition: color 0.2s; user-select: none; }
+  .section-guide-toggle:hover { color: var(--text); }
+  .section-guide-toggle .guide-icon { font-size: 0.75rem; transition: transform 0.2s; }
+  .section-guide-toggle.open .guide-icon { transform: rotate(90deg); }
+  .section-guide-body { display: none; padding: 0 14px 12px; font-size: 0.82rem; line-height: 1.55; color: var(--muted); }
+  .section-guide-body.open { display: block; }
+  .guide-row { margin-bottom: 8px; }
+  .guide-row strong { color: var(--text); }
+  .guide-vs { color: var(--accent-ember); font-weight: 600; margin: 0 1px; }
+  .top-guides { margin: 0 0 20px; display: flex; flex-direction: column; gap: 6px; }
+  .top-guide { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--bg-card); }
+  .top-guide-toggle { display: flex; align-items: center; gap: 8px; padding: 10px 16px; cursor: pointer; font-family: 'Alegreya SC', serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; color: var(--text-secondary); transition: all 0.2s; user-select: none; }
+  .top-guide-toggle:hover { color: var(--text-primary); background: rgba(255,255,255,0.02); }
+  .top-guide-toggle .guide-icon { font-size: 0.7rem; transition: transform 0.2s; color: var(--accent-primary); }
+  .top-guide-toggle.open .guide-icon { transform: rotate(90deg); }
+  .top-guide-body { display: none; padding: 4px 16px 14px; font-size: 0.82rem; line-height: 1.6; color: var(--text-secondary); }
+  .top-guide-body.open { display: block; }
+  .top-guide-body .guide-row { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .top-guide-body .guide-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .top-guide-body strong { color: var(--text-primary); }
+  .top-guide-body em { color: var(--muted); font-size: 0.78rem; }
+  .section--appearance .section-icon { background: rgba(74,158,130,0.15); color: #4a9e82; }
+  .section--appearance .section-header { border-color: rgba(74,158,130,0.25); }
+  .section--appearance .gen-card { --card-accent: #4a9e82; }
   .section--skills .section-icon { background: rgba(110,220,220,0.15); color: var(--accent-teal); }
   .section--skills .section-header { border-color: rgba(110,220,220,0.25); }
   .section--skills .gen-card { --card-accent: var(--accent-teal); }
@@ -292,6 +334,86 @@
   }
 
   /* ═══════ PRINT ═══════ */
+  /* Identity pickers */
+  .identity-grid { display: flex; flex-direction: column; gap: 10px; padding: 8px 0; }
+  .identity-row { display: flex; align-items: center; gap: 12px; }
+  .identity-label { font-family: 'Alegreya SC', serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); width: 160px; min-width: 160px; flex-shrink: 0; }
+  .identity-select { flex: 1; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); padding: 6px 10px; border-radius: 6px; font-family: 'Alegreya', serif; font-size: 0.85rem; cursor: pointer; max-width: 280px; }
+  .identity-select:focus { border-color: var(--accent-primary); outline: none; }
+
+  /* Body tool */
+  .body-tool { padding: 8px 0; }
+  .body-controls { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+  .body-slider-group { display: flex; flex-direction: column; gap: 4px; }
+  .body-label { font-family: 'Alegreya SC', serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); display: flex; align-items: center; gap: 2px; }
+  .body-editable { display: inline-flex; align-items: center; gap: 1px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; letter-spacing: 0; text-transform: none; font-weight: 400; }
+  .body-inline-input { background: transparent; border: none; border-bottom: 1px dashed transparent; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; width: auto; min-width: 30px; max-width: 90px; text-align: center; padding: 0 1px; border-radius: 0; -moz-appearance: textfield; cursor: text; }
+  .body-inline-input::-webkit-outer-spin-button, .body-inline-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; display: none; }
+  .body-inline-input:hover { border-bottom-color: var(--text-muted); }
+  .body-inline-input:focus { border-bottom: 1px solid var(--accent-primary); outline: none; color: var(--accent-primary); }
+  .body-inline-sm { min-width: 20px; max-width: 40px; }
+  .body-alt-unit { color: var(--text-muted); font-size: 0.78rem; }
+  .body-alt-unit .body-inline-input { color: var(--text-muted); font-size: 0.78rem; min-width: 28px; max-width: 90px; }
+  .body-alt-unit .body-inline-input:focus { color: var(--accent-primary); }
+  .body-slider { width: 100%; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: var(--border); outline: none; cursor: pointer; }
+  .body-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-primary); border: 2px solid var(--bg-card); cursor: pointer; }
+  .body-slider::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--accent-primary); border: 2px solid var(--bg-card); cursor: pointer; }
+  .body-calc-row { padding-top: 10px; border-top: 1px solid var(--border); }
+  .body-calc-controls { display: flex; gap: 8px; margin-top: 6px; align-items: center; flex-wrap: wrap; }
+  .body-calc-controls .identity-select { flex: 1; max-width: 260px; }
+  .body-calc-controls .btn-generate { padding: 6px 14px; font-size: 0.75rem; }
+  .body-bmi-bar { position: relative; display: flex; height: 24px; border-radius: 12px; overflow: hidden; margin-bottom: 4px; }
+  .bmi-zone { height: 100%; }
+  .bmi-extreme-under { background: #7b1fa2; }
+  .bmi-under { background: #e65100; }
+  .bmi-lean { background: #f9a825; }
+  .bmi-average { background: #2e7d32; }
+  .bmi-athletic { background: #1565c0; }
+  .bmi-heavy { background: #f9a825; }
+  .bmi-extreme-over { background: #e65100; }
+  .bmi-unrealistic { background: #7b1fa2; }
+  .bmi-marker { position: absolute; top: -2px; width: 4px; height: 28px; background: #fff; border-radius: 2px; box-shadow: 0 0 6px rgba(0,0,0,0.8); transition: left 0.3s ease; }
+  .bmi-labels { display: flex; font-size: 0.5rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); letter-spacing: 0.03em; text-transform: uppercase; margin-bottom: 10px; }
+  .bmi-labels span { flex: 1; text-align: center; }
+  .body-verdict { font-family: 'Alegreya', serif; font-size: 1rem; font-weight: 700; text-align: center; margin-bottom: 4px; }
+  .body-note { font-family: 'Alegreya', serif; font-size: 0.8rem; color: var(--text-secondary); text-align: center; line-height: 1.4; }
+
+  /* Custom traits info */
+  .custom-traits-section { margin: 30px 0 10px; padding: 0 4px; }
+  .custom-info-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; transition: all 0.3s; }
+  .custom-info-toggle:hover { border-color: var(--text-muted); }
+  .custom-info-icon { font-size: 1rem; }
+  .custom-info-title { font-family: 'Alegreya SC', serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); flex: 1; }
+  .custom-trait-count { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent-primary); background: rgba(200,180,100,0.1); padding: 2px 8px; border-radius: 10px; }
+  .custom-info-body { padding: 16px 20px; margin-top: -1px; background: var(--bg-card); border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; }
+  .custom-info-body p { font-family: 'Alegreya', serif; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 8px; }
+  .custom-info-body p:last-child { margin-bottom: 0; }
+  .custom-info-body strong { color: var(--text-primary); }
+  .custom-info-body code { background: rgba(255,255,255,0.06); padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--accent-primary); }
+  .custom-help { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .custom-import-area { display: flex; flex-direction: column; gap: 8px; }
+  .custom-label { font-family: 'Alegreya SC', serif; font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); letter-spacing: 0.05em; }
+  .custom-category-select { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; color: var(--text-primary); font-family: 'Alegreya', serif; font-size: 0.85rem; cursor: pointer; width: 100%; box-sizing: border-box; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
+  .custom-category-select:focus { border-color: var(--accent-primary); outline: none; }
+  .custom-category-select option { background: var(--bg-card); color: var(--text-primary); }
+  .custom-textarea { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.5; resize: vertical; min-height: 80px; width: 100%; box-sizing: border-box; }
+  .custom-textarea:focus { outline: none; border-color: var(--accent-primary); }
+  .custom-textarea::placeholder { color: var(--muted); font-family: 'Alegreya', serif; font-size: 0.82rem; }
+  .custom-import-actions { display: flex; align-items: center; gap: 10px; }
+  .custom-import-status { font-family: 'Alegreya', serif; font-size: 0.82rem; color: var(--accent-primary); }
+  .custom-pools-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .custom-pool-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+  .custom-pool-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .custom-pool-name { font-family: 'Alegreya SC', serif; font-size: 0.8rem; font-weight: 700; color: var(--text-primary); }
+  .custom-pool-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); }
+  .custom-pool-actions { display: flex; gap: 6px; }
+  .custom-pool-actions button { background: none; border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 0.72rem; color: var(--muted); cursor: pointer; font-family: 'Alegreya', serif; }
+  .custom-pool-actions button:hover { color: var(--text); border-color: var(--text-muted); }
+  .custom-pool-actions button.btn-delete-pool { color: #c44; border-color: rgba(204,68,68,0.3); }
+  .custom-pool-actions button.btn-delete-pool:hover { color: #f66; border-color: #f66; }
+  .custom-pool-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .custom-pool-tag { font-size: 0.75rem; background: rgba(200,180,100,0.1); border: 1px solid rgba(200,180,100,0.2); border-radius: 10px; padding: 2px 8px; color: var(--text-secondary); font-family: 'Alegreya', serif; }
+
   @media print {
     body { background: #fff !important; color: #111 !important; font-size: 12pt; }
     body::before { display: none; }
@@ -347,6 +469,26 @@
 
 <main class="main-container">
 
+  <div class="top-guides">
+    <div class="top-guide">
+      <div class="top-guide-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="guide-icon">▶</span> ❓ Perks vs Virtues vs Savvies — and their negatives</div>
+      <div class="top-guide-body">
+        <div class="guide-row"><strong>Savvies</strong> <span class="guide-vs">vs</span> <strong>Perks</strong> — Savvies are <em>practical skills and abilities</em> — things they can DO. Perks are <em>innate personality advantages</em> — traits they naturally ARE. <em>"Savvy: Lock-picking, first aid, cooking"</em> vs <em>"Perk: Naturally charismatic, unshakeable calm, photographic memory"</em></div>
+        <div class="guide-row"><strong>Perks</strong> <span class="guide-vs">vs</span> <strong>Virtues</strong> — Perks are <em>natural advantages</em> they were born with or developed passively. Virtues are <em>moral ideals</em> they actively hold and strive toward, even when they fail. <em>"Perk: Quick reflexes"</em> vs <em>"Virtue: Justice — believes in fairness even at personal cost"</em></div>
+        <div class="guide-row"><strong>Vices</strong> <span class="guide-vs">vs</span> <strong>Flaws</strong> — Vices are bad habits they <em>willingly choose</em> despite knowing better. Flaws are personality problems they <em>can't easily control</em>. <em>"Vice: Gambling, drinking to excess"</em> vs <em>"Flaw: Crippling jealousy, pathological liar"</em></div>
+        <div class="guide-row"><strong>Ineptitudes</strong> <span class="guide-vs">vs</span> <strong>Flaws</strong> — Ineptitudes are things they're <em>bad at doing</em> (skill gaps). Flaws are who they <em>are</em> (character defects). <em>"Ineptitude: Can't cook, terrible with money"</em> vs <em>"Flaw: Explosive temper, chronic self-sabotage"</em></div>
+      </div>
+    </div>
+    <div class="top-guide">
+      <div class="top-guide-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')"><span class="guide-icon">▶</span> ❓ Physical Quirks vs Tics &amp; Quirks vs Mannerisms</div>
+      <div class="top-guide-body">
+        <div class="guide-row"><strong>Physical Quirks</strong> <span class="guide-vs">vs</span> <strong>Tics &amp; Quirks</strong> — Physical Quirks are <em>whole-body</em> habitual movements — posture, stance, gait, how they hold themselves and move through space. Tics are <em>small-scale involuntary</em> micro-habits — a twitch, a repeated sound, a fidget. <em>"Physical Quirk: Always stands with arms crossed, leans against walls"</em> vs <em>"Tic: Clicks pen constantly, cracks knuckles, taps foot when anxious"</em></div>
+        <div class="guide-row"><strong>Tics &amp; Quirks</strong> <span class="guide-vs">vs</span> <strong>Mannerisms</strong> — Tics are <em>involuntary</em> — they happen whether the person wants them to or not. Mannerisms are <em>deliberate everyday behaviors</em> — how they choose to eat, walk, sit, greet people. <em>"Tic: Bites lip when thinking, eye twitch when stressed"</em> vs <em>"Mannerism: Always eats dessert first, Irish goodbyes, reads the ending of books first"</em></div>
+        <div class="guide-row"><strong>Body Features</strong> <span class="guide-vs">vs</span> <strong>Physical Quirks</strong> — Body Features are <em>structural/visual</em> — what their body looks like standing still. Physical Quirks are <em>behavioral</em> — how their body moves and acts. <em>"Body Feature: Broad shoulders, long limbs"</em> vs <em>"Physical Quirk: Hunches shoulders, bounces on heels"</em></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ SKILLS ═══ -->
   <div class="generator-section section--skills" id="section-skills">
     <div class="section-header" data-collapse="section-skills">
@@ -382,6 +524,41 @@
           </div>
         </div>
         <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll ineptitudes…</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ APPEARANCE ═══ -->
+  <div class="generator-section section--appearance" id="section-appearance">
+    <div class="section-header" data-collapse="section-appearance">
+      <div class="section-icon">👁</div>
+      <h2>Appearance</h2>
+      <span class="section-collapse-icon">▼</span>
+    </div>
+    <div class="section-cards">
+      <div class="gen-card" data-generator="eyeDescriptor">
+        <div class="gen-card-header"><span class="gen-card-title">Eye Descriptor<div class="gen-card-subtitle">Generates a shape + quality + color combination</div></span><div class="gen-card-controls"><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>🎲 Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll eye description…</span></div></div>
+      </div>
+      <div class="gen-card" data-generator="hairDescriptor">
+        <div class="gen-card-header"><span class="gen-card-title">Hair Descriptor<div class="gen-card-subtitle">Generates a style + texture + color combination</div></span><div class="gen-card-controls"><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>🎲 Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll hair description…</span></div></div>
+      </div>
+      <div class="gen-card" data-generator="face">
+        <div class="gen-card-header"><span class="gen-card-title">Facial Features<div class="gen-card-subtitle">Face shape, eyes, nose, mouth, skin &amp; facial hair</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-weight-toggle random" data-mha="face" title="General only. Click to include MHA content.">🌐 General</button><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll facial features…</span></div></div>
+      </div>
+      <div class="gen-card" data-generator="bodyFeatures">
+        <div class="gen-card-header"><span class="gen-card-title">Body Features<div class="gen-card-subtitle">Build, proportions, skin texture &amp; distinctive physical traits</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-weight-toggle random" data-mha="bodyFeatures" title="General only. Click to include MHA content.">🌐 General</button><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll body features…</span></div></div>
+      </div>
+      <div class="gen-card" data-generator="physicalQuirks">
+        <div class="gen-card-header"><span class="gen-card-title">Physical Quirks<div class="gen-card-subtitle">Posture, habits, gestures &amp; body language</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-weight-toggle random" data-mha="physicalQuirks" title="General only. Click to include MHA content.">🌐 General</button><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll physical quirks…</span></div></div>
+      </div>
+      <div class="gen-card" data-generator="identifying">
+        <div class="gen-card-header"><span class="gen-card-title">Identifying Characteristics<div class="gen-card-subtitle">Scars, tattoos, piercings, birthmarks &amp; unique marks</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-weight-toggle random" data-mha="identifying" title="General only. Click to include MHA content.">🌐 General</button><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll identifying characteristics…</span></div></div>
       </div>
     </div>
   </div>
@@ -426,6 +603,10 @@
         <div class="gen-card-header"><span class="gen-card-title">Taboos<div class="gen-card-subtitle">Commonly frowned-upon views or ideals the character holds</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-weight-toggle random" data-mha="taboos" title="General only. Click to include MHA content.">🌐 General</button><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
         <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll taboos…</span></div></div>
       </div>
+      <div class="gen-card" data-generator="intellectual">
+        <div class="gen-card-header"><span class="gen-card-title">Intellectual Characteristics<div class="gen-card-subtitle">How their mind works — learning, thinking &amp; cognition</div></span><div class="gen-card-controls"><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
+        <div class="gen-card-results"><div data-results><span class="placeholder-text">Click generate to roll intellectual profile…</span></div></div>
+      </div>
     </div>
   </div>
 
@@ -456,6 +637,209 @@
       <div class="gen-card" data-generator="tics">
         <div class="gen-card-header"><span class="gen-card-title">Tics &amp; Quirks<div class="gen-card-subtitle">Unconscious habits &amp; physical mannerisms</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
         <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll tics &amp; quirks…</span></div></div>
+      </div>
+      <div class="gen-card" data-generator="mannerisms">
+        <div class="gen-card-header"><span class="gen-card-title">Mannerisms<div class="gen-card-subtitle">How they eat, walk, sit, greet &amp; approach tasks</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll mannerisms…</span></div></div>
+      </div>
+      <div class="gen-card" data-generator="hygiene">
+        <div class="gen-card-header"><span class="gen-card-title">Hygiene<div class="gen-card-subtitle">Cleanliness, grooming habits &amp; personal care</div></span><div class="gen-card-controls"><div class="count-selector"><label>Count</label><select data-count><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div><button class="btn-weight-toggle random" id="hygieneMode" title="Mix of good, bad, and neutral">🔀 Mixed</button><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>Generate</button></div></div>
+        <div class="gen-card-results"><div class="result-tags" data-results><span class="placeholder-text">Click generate to roll hygiene traits…</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ IDENTITY & BODY ═══ -->
+  <div class="generator-section section--identity" id="section-identity">
+    <div class="section-header" data-collapse="section-identity">
+      <div class="section-icon">👤</div>
+      <h2>Identity &amp; Body</h2>
+      <span class="section-collapse-icon">▼</span>
+    </div>
+    <div class="section-cards">
+
+      <!-- Identity Pickers -->
+      <div class="gen-card" data-generator="identity">
+        <div class="gen-card-header"><span class="gen-card-title">Identity<div class="gen-card-subtitle">Gender, sex, presentation &amp; orientation</div></span><div class="gen-card-controls"><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add all to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>🎲 Randomize</button></div></div>
+        <div class="gen-card-results">
+          <div data-results class="identity-grid">
+            <div class="identity-row">
+              <label class="identity-label">Gender Identity</label>
+              <select class="identity-select" id="selGender">
+                <option value="">— Select —</option>
+                <option>Cisgender Man</option><option>Cisgender Woman</option>
+                <option>Transgender Man</option><option>Transgender Woman</option>
+                <option>Non-binary</option><option>Genderqueer</option><option>Genderfluid</option>
+                <option>Agender</option><option>Bigender</option><option>Demigender (Demiboy)</option>
+                <option>Demigender (Demigirl)</option><option>Two-Spirit</option>
+                <option>Neutrois</option><option>Pangender</option><option>Third Gender</option>
+                <option>Androgynous</option><option>Questioning</option><option>Other</option>
+              </select>
+            </div>
+            <div class="identity-row">
+              <label class="identity-label">Biological Sex</label>
+              <select class="identity-select" id="selSex">
+                <option value="">— Select —</option>
+                <option>Male</option><option>Female</option><option>Intersex</option>
+              </select>
+            </div>
+            <div class="identity-row">
+              <label class="identity-label">Presentation</label>
+              <select class="identity-select" id="selPresentation">
+                <option value="">— Select —</option>
+                <option>Masculine</option><option>Feminine</option><option>Androgynous</option>
+                <option>Gender non-conforming</option><option>Fluid / varies</option>
+                <option>Masc-leaning androgynous</option><option>Fem-leaning androgynous</option>
+                <option>Butch</option><option>Femme</option><option>Soft masc</option><option>Soft fem</option>
+              </select>
+            </div>
+            <div class="identity-row">
+              <label class="identity-label">Sexuality</label>
+              <select class="identity-select" id="selSexuality">
+                <option value="">— Select —</option>
+                <option>Heterosexual</option><option>Homosexual (Gay)</option><option>Homosexual (Lesbian)</option>
+                <option>Bisexual</option><option>Pansexual</option><option>Asexual</option>
+                <option>Demisexual</option><option>Greysexual</option><option>Omnisexual</option>
+                <option>Polysexual</option><option>Queer</option><option>Fluid</option>
+                <option>Questioning</option><option>Skoliosexual</option>
+                <option>Androsexual</option><option>Gynesexual</option>
+                <option>Autosexual</option><option>Aceflux</option>
+              </select>
+            </div>
+            <div class="identity-row">
+              <label class="identity-label">Romantic Preference</label>
+              <select class="identity-select" id="selRomantic">
+                <option value="">— Select —</option>
+                <option>Heteroromantic</option><option>Homoromantic</option>
+                <option>Biromantic</option><option>Panromantic</option>
+                <option>Aromantic</option><option>Demiromantic</option>
+                <option>Greyromantic</option><option>Polyamorous</option>
+                <option>Quoiromantic</option><option>Cupioromantic</option>
+                <option>Aroflux</option><option>Questioning</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Height & Weight Tool -->
+      <div class="gen-card" data-generator="body">
+        <div class="gen-card-header"><span class="gen-card-title">Height &amp; Weight<div class="gen-card-subtitle">Build plausibility checker — see how realistic your numbers are</div></span><div class="gen-card-controls"><button class="btn-weight-toggle random" id="btnRealism" title="Realistic mode. Click for anime/fantasy.">🌍 Realistic</button><button class="btn-lock" title="Lock" data-lock>🔓</button><button class="btn-add-all-card" title="Add to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button><button class="btn-generate" data-gen>🎲 Randomize</button></div></div>
+        <div class="gen-card-results">
+          <div data-results class="body-tool">
+            <div class="body-controls">
+              <div class="body-slider-group">
+                <label class="body-label">Height: <span class="body-editable" id="heightDisplay"><input type="number" class="body-inline-input body-inline-sm" id="heightFt" min="0" value="5">′<input type="number" class="body-inline-input body-inline-sm" id="heightIn" min="0" max="11" value="7">″ <span class="body-alt-unit">/ <input type="number" class="body-inline-input" id="heightCm" min="1" value="170"> cm</span></span></label>
+                <input type="range" class="body-slider" id="heightSlider" min="60" max="275" value="170" step="1">
+              </div>
+              <div class="body-slider-group">
+                <label class="body-label">Weight: <span class="body-editable" id="weightDisplay"><input type="number" class="body-inline-input" id="weightLbs" min="1" value="150"> lbs <span class="body-alt-unit">/ <input type="number" class="body-inline-input" id="weightKg" min="1" value="68"> kg</span></span></label>
+                <input type="range" class="body-slider" id="weightSlider" min="15" max="350" value="68" step="1">
+              </div>
+              <div class="body-calc-row">
+                <label class="body-label">Calculate missing value:</label>
+                <div class="body-calc-controls">
+                  <select class="identity-select" id="calcBuildType">
+                    <option value="">— Pick a build —</option>
+                    <option value="13">Emaciated (BMI ~13)</option>
+                    <option value="15">Dangerously Thin (BMI ~15)</option>
+                    <option value="17">Underweight (BMI ~17)</option>
+                    <option value="19.5">Lean (BMI ~19.5)</option>
+                    <option value="22">Average (BMI ~22)</option>
+                    <option value="25">Athletic / Stocky (BMI ~25)</option>
+                    <option value="28">Heavy (BMI ~28)</option>
+                    <option value="33">Obese (BMI ~33)</option>
+                    <option value="40">Extremely Obese (BMI ~40)</option>
+                    <option value="50">Immobile (BMI ~50)</option>
+                  </select>
+                  <button class="btn-generate" id="btnCalc">Calculate</button>
+                </div>
+              </div>
+            </div>
+            <div class="body-result" id="bodyResult">
+              <div class="body-bmi-bar">
+                <div class="bmi-zone bmi-extreme-under" style="width:8%"></div>
+                <div class="bmi-zone bmi-under" style="width:10%"></div>
+                <div class="bmi-zone bmi-lean" style="width:12%"></div>
+                <div class="bmi-zone bmi-average" style="width:20%"></div>
+                <div class="bmi-zone bmi-athletic" style="width:15%"></div>
+                <div class="bmi-zone bmi-heavy" style="width:15%"></div>
+                <div class="bmi-zone bmi-extreme-over" style="width:10%"></div>
+                <div class="bmi-zone bmi-unrealistic" style="width:10%"></div>
+                <div class="bmi-marker" id="bmiMarker"></div>
+              </div>
+              <div class="bmi-labels">
+                <span>Emaciated</span><span>Under</span><span>Lean</span><span>Average</span><span>Athletic</span><span>Heavy</span><span>Obese</span><span>Extreme</span>
+              </div>
+              <div class="body-verdict" id="bodyVerdict"></div>
+              <div class="body-note" id="bodyNote"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditions Pickers -->
+      <div class="gen-card" data-generator="physicalConditions">
+        <div class="gen-card-header"><span class="gen-card-title">Physical Conditions<div class="gen-card-subtitle">Chronic conditions, disabilities &amp; physical health</div></span><div class="gen-card-controls"><button class="btn-add-all-card" title="Add selected to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button></div></div>
+        <div class="gen-card-results">
+          <div data-results class="condition-picker">
+            <input type="text" class="condition-search" id="physCondSearch" placeholder="Search physical conditions…" autocomplete="off">
+            <div class="condition-options" id="physCondOptions"></div>
+            <div class="condition-selected" id="physCondSelected"></div>
+          </div>
+        </div>
+      </div>
+      <div class="gen-card" data-generator="mentalConditions">
+        <div class="gen-card-header"><span class="gen-card-title">Mental &amp; Neurological Conditions<div class="gen-card-subtitle">Neurodivergence, mental health &amp; cognitive differences</div></span><div class="gen-card-controls"><button class="btn-add-all-card" title="Add selected to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button></div></div>
+        <div class="gen-card-results">
+          <div data-results class="condition-picker">
+            <input type="text" class="condition-search" id="mentalCondSearch" placeholder="Search mental/neurological conditions…" autocomplete="off">
+            <div class="condition-options" id="mentalCondOptions"></div>
+            <div class="condition-selected" id="mentalCondSelected"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="custom-traits-section" id="customTraitsSection">
+    <div class="custom-info-toggle" id="customInfoToggle">
+      <span class="custom-info-icon">🔧</span>
+      <span class="custom-info-title">Custom Traits</span>
+      <span class="custom-trait-count" id="customTraitCount"></span>
+      <span class="section-collapse-icon">▶</span>
+    </div>
+    <div class="custom-info-body" id="customInfoBody" style="display:none;">
+      <div class="custom-help">
+        <p><strong>How Custom Traits Work</strong></p>
+        <p>Every custom trait needs two things: <strong>which generator</strong> it appears in (e.g. Savvies, Identifying Characteristics, Likes) and an optional <strong>pool name</strong> for organizing groups of traits together.</p>
+        <p><strong>Step 1:</strong> Pick which generator card these traits should roll in using the <strong>"Add to generator"</strong> dropdown. This is required — it determines where the trait actually appears.</p>
+        <p><strong>Step 2:</strong> Write your traits, one per line. Optionally add <code> - Pool Name</code> to group traits (e.g. for a specific fandom). Traits without a pool name go into <strong>"Custom"</strong>.</p>
+        <p><strong>Examples:</strong><br>
+        <code>Has the Mark of the Outsider - Dishonored</code> → appears in whichever generator you selected, filed under the "Dishonored" pool<br>
+        <code>Super strength</code> → appears in whichever generator you selected, filed under "Custom"</p>
+        <p>When the <strong>🔧 Custom</strong> toggle is enabled on a generator card, your custom traits are mixed into that generator's rolls. When disabled, only built-in traits are used.</p>
+        <p style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border);"><strong>Other ways to add traits:</strong></p>
+        <p><strong>Manual Trait Search:</strong> Use the collapsible search bar above the character sheet to find and add any existing built-in trait directly to your sheet.</p>
+        <p><strong>Sheet Notes:</strong> Any freeform traits that don't fit categories can be written into the Notes section at the bottom of the sheet. These export with your character.</p>
+      </div>
+      <div class="custom-import-area">
+        <label class="custom-label">Add to generator (required):</label>
+        <select class="custom-category-select" id="customCatSelect">
+          <option value="">— Select a generator —</option>
+        </select>
+        <textarea class="custom-textarea" id="customTextarea" rows="6" placeholder="Enter traits, one per line:&#10;Has the Mark of the Outsider - Dishonored&#10;Can Blink between locations - Dishonored&#10;Enhanced reflexes&#10;Sees through walls - Dishonored"></textarea>
+        <div class="custom-import-actions">
+          <button class="btn-generate" id="btnImportCustom">Import Traits</button>
+          <span class="custom-import-status" id="customImportStatus"></span>
+        </div>
+      </div>
+      <div class="custom-pools-list" id="customPoolsList"></div>
+      <div class="custom-pool-io" id="customPoolIO" style="display:none; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:center;">
+        <button class="btn-generate" id="btnExportPools" style="font-size:0.78rem; padding:5px 12px;">Export Pools (.json)</button>
+        <button class="btn-generate" id="btnImportPools" style="font-size:0.78rem; padding:5px 12px;">Import Pools (.json)</button>
+        <input type="file" id="poolFileInput" accept=".json" style="display:none;">
+        <button class="btn-generate btn-delete-pool" id="btnClearAllPools" style="font-size:0.78rem; padding:5px 12px;">Delete All Pools</button>
       </div>
     </div>
   </div>
@@ -495,7 +879,7 @@
     <div class="picker-toggle" id="pickerToggle"><span class="picker-toggle-icon">▶</span><span class="picker-toggle-label">Manual Trait Search</span></div>
     <div class="picker-panel" id="pickerPanel">
       <div class="picker-inner">
-        <div class="picker-controls"><input type="text" class="picker-search" id="pickerSearch" placeholder="Search traits… or browse by category" autocomplete="off"><select class="picker-category-select" id="pickerCategory"><option value="">— Select Category —</option><option value="savvies">Savvies</option><option value="ineptitudes">Ineptitudes</option><option value="likes">Likes</option><option value="dislikes">Dislikes</option><option value="vices">Vices</option><option value="flaws">Flaws</option><option value="kinks">Kinks & Preferences</option><option value="virtues">Virtues</option><option value="perks">Perks</option><option value="pets">Pets</option><option value="hobbies">Hobbies</option><option value="religion">Religious Beliefs</option><option value="tics">Tics & Quirks</option><option value="taboos">Taboos</option></select></div>
+        <div class="picker-controls"><input type="text" class="picker-search" id="pickerSearch" placeholder="Search traits… or browse by category" autocomplete="off"><select class="picker-category-select" id="pickerCategory"><option value="">— Select Category —</option><option value="face">Facial Features</option><option value="bodyFeatures">Body Features</option><option value="physicalQuirks">Physical Quirks</option><option value="identifying">Identifying Characteristics</option><option value="savvies">Savvies</option><option value="ineptitudes">Ineptitudes</option><option value="likes">Likes</option><option value="dislikes">Dislikes</option><option value="vices">Vices</option><option value="flaws">Flaws</option><option value="kinks">Kinks & Preferences</option><option value="virtues">Virtues</option><option value="perks">Perks</option><option value="pets">Pets</option><option value="hobbies">Hobbies</option><option value="religion">Religious Beliefs</option><option value="tics">Tics & Quirks</option><option value="mannerisms">Mannerisms</option><option value="intellectual">Intellectual Characteristics</option><option value="hygiene">Hygiene</option><option value="taboos">Taboos</option></select></div>
         <div class="picker-list-area" id="pickerListArea"><div class="picker-list-empty">Select a category to browse, or type to search across all traits.</div></div>
         <div class="picker-info"><span class="picker-hint" id="pickerHint"></span></div>
       </div>
@@ -1799,6 +2183,778 @@ const DATA = {
     "Elongates words", "Clips words short", "Drops letters", "Adds extra syllables"
   ],
 
+  face: {
+    general: [
+    "Round face",     "Oval face",     "Square face",     "Heart-shaped face",     "Diamond-shaped face",
+    "Triangular face",     "Oblong face",     "Rectangular face",     "Pear-shaped face",     "Long face",
+    "Wide face",     "Narrow face",     "Soft features",     "Sharp features",     "Angular features",
+    "Delicate features",     "Strong features",     "Chiseled features",     "Gaunt face",     "Sunken features",
+    "Full face",     "Chubby cheeks",     "Hollow cheeks",     "High cheekbones",     "Prominent cheekbones",
+    "Flat cheekbones",     "Wide-set features",     "Close-set features",     "Symmetrical face",     "Asymmetrical face",
+    "Lopsided features",     "Almond-shaped eyes",     "Round eyes",     "Hooded eyes",     "Deep-set eyes",
+    "Protruding eyes",     "Close-set eyes",     "Wide-set eyes",     "Upturned eyes",     "Downturned eyes",
+    "Monolid eyes",     "Double eyelids",     "Heavy-lidded eyes",     "Large eyes",     "Small eyes",
+    "Doe eyes",     "Sleepy eyes",     "Piercing eyes",     "Bright eyes",     "Sharp eyes",
+    "Squinty eyes",     "One eye smaller than the other",     "Blue eyes",     "Green eyes",     "Brown eyes",
+    "Hazel eyes",     "Amber eyes",     "Gray eyes",     "Black eyes",     "Pale blue eyes",
+    "Dark blue eyes",     "Light blue eyes",     "Bright green eyes",     "Dark green eyes",     "Olive green eyes",
+    "Sea green eyes",     "Light brown eyes",     "Dark brown eyes",     "Golden brown eyes",     "Honey-colored eyes",
+    "Yellow eyes",     "Red eyes",     "Purple eyes",     "Violet eyes",     "Orange eyes",
+    "Heterochromia (two different colored eyes)",     "Central heterochromia (ring of different color around pupil)",     "Sectoral heterochromia (partial color difference in one eye)",     "Pale eyes",     "Milky eyes",
+    "Cloudy eyes",     "Long eyelashes",     "Short eyelashes",     "Thick eyelashes",     "Sparse eyelashes",
+    "Curly eyelashes",     "Straight eyelashes",     "Dark eyelashes",     "Light eyelashes",     "No eyelashes",
+    "White eyelashes",     "Thin eyebrows",     "Thick eyebrows",     "Bushy eyebrows",     "Arched eyebrows",
+    "Straight eyebrows",     "Low-set eyebrows",     "High-set eyebrows",     "Unibrow",     "Split eyebrow",
+    "Scarred eyebrow",     "Shaved eyebrow slit",     "No eyebrows",     "Pierced eyebrow",     "Dark eyebrows",
+    "Light eyebrows",     "Gray eyebrows",     "White eyebrows",     "Crow's feet",     "Dark circles under eyes",
+    "Bags under eyes",     "Puffy eyes",     "Sunken eye sockets",     "Laugh lines around eyes",     "Small nose",
+    "Large nose",     "Button nose",     "Aquiline nose (eagle-like curve)",     "Roman nose (prominent bridge)",     "Snub nose",
+    "Upturned nose",     "Hooked nose",     "Crooked nose",     "Previously broken nose",     "Wide nose",
+    "Narrow nose",     "Flat nose",     "Pointed nose",     "Bulbous nose",     "Long nose",
+    "Short nose",     "Prominent nose",     "Delicate nose",     "Wide nostrils",     "Narrow nostrils",
+    "Flared nostrils",     "High nose bridge",     "Low nose bridge",     "Flat nose bridge",     "Bumpy nose bridge",
+    "Scarred nose",     "Nose piercing",     "Septum piercing",     "Nostril piercing",     "Bridge piercing",
+    "Freckled nose",     "Perpetually red nose",     "Full lips",     "Thin lips",     "Plump lips",
+    "Bow-shaped lips",     "Heart-shaped lips",     "Wide mouth",     "Small mouth",     "Pronounced cupid's bow",
+    "No cupid's bow",     "Upper lip fuller than lower",     "Lower lip fuller than upper",     "Even lips",     "Pouty lips",
+    "Chapped lips",     "Scarred lips",     "Split lip scar",     "Cleft lip (repaired)",     "Cleft lip (unrepaired)",
+    "Lip piercing",     "Snake bite piercings",     "Labret piercing",     "Monroe piercing",     "Medusa piercing",
+    "Dark lips",     "Pale lips",     "Naturally pink lips",     "Naturally red lips",     "Wide smile",
+    "Small smile",     "Crooked smile",     "Lopsided smile",     "Smirk",     "Toothy grin",
+    "Closed-mouth smile",     "Gap between front teeth",     "Straight teeth",     "Crooked teeth",     "Overlapping teeth",
+    "Buck teeth",     "Overbite",     "Underbite",     "Perfect teeth",     "Yellowed teeth",
+    "Bright white teeth",     "Stained teeth",     "Missing teeth",     "Gold tooth",     "Silver tooth",
+    "Chipped tooth",     "Sharp canines",     "Pointed teeth",     "Small teeth",     "Large teeth",
+    "Gummy smile",     "Dimples when smiling",     "Single dimple",     "Deep dimples",     "Smile lines",
+    "Strong jawline",     "Soft jawline",     "Square jaw",     "Sharp jawline",     "Defined jawline",
+    "Undefined jawline",     "Wide jaw",     "Narrow jaw",     "Prominent jaw",     "Receding jaw",
+    "Double chin",     "Prominent chin",     "Receding chin",     "Pointed chin",     "Square chin",
+    "Rounded chin",     "Cleft chin",     "Small chin",     "Large chin",     "Pale skin",
+    "Fair skin",     "Light skin",     "Medium skin",     "Tan skin",     "Olive skin",
+    "Brown skin",     "Dark brown skin",     "Deep brown skin",     "Ebony skin",     "Alabaster skin",
+    "Porcelain skin",     "Golden skin",     "Bronze skin",     "Copper skin",     "Warm undertones",
+    "Cool undertones",     "Neutral undertones",     "Ruddy complexion",     "Sallow complexion",     "Ashen complexion",
+    "Rosy cheeks",     "Reddish skin",     "Smooth skin",     "Rough skin",     "Leathery skin",
+    "Weathered skin",     "Sun-damaged skin",     "Clear skin",     "Acne-prone skin",     "Acne scars",
+    "Pockmarked skin",     "Freckled face",     "Heavy freckles",     "Light freckles",     "Freckles across nose and cheeks",
+    "Beauty mark on face",     "Mole on face",     "Multiple facial moles",     "Birthmark on face",     "Port wine stain on face",
+    "Vitiligo",     "Wrinkled face",     "Fine lines",     "Deep wrinkles",     "Forehead wrinkles",
+    "Frown lines",     "No wrinkles despite age",     "Youthful skin",     "Aged skin",     "Oily skin",
+    "Dry skin",     "Rosacea",     "Clean-shaven",     "Five o'clock shadow",     "Light stubble",
+    "Heavy stubble",     "Goatee",     "Van Dyke beard",     "Full beard",     "Short beard",
+    "Long beard",     "Bushy beard",     "Scraggly beard",     "Patchy beard",     "Well-groomed beard",
+    "Unkempt beard",     "Braided beard",     "Handlebar mustache",     "Pencil mustache",     "Horseshoe mustache",
+    "Walrus mustache",     "Chevron mustache",     "Fu Manchu mustache",     "Mutton chops",     "Long sideburns",
+    "Soul patch",     "Chin strap beard",     "Peach fuzz",     "Cannot grow facial hair",     "Gray beard",
+    "White beard",     "Salt and pepper beard",     "High forehead",     "Low forehead",     "Wide forehead",
+    "Narrow forehead",     "Prominent forehead",     "Widow's peak",     "Straight hairline",     "Receding hairline",
+    "Scarred forehead",     "Forehead birthmark",     "Small ears",     "Large ears",     "Prominent ears",
+    "Protruding ears",     "Flat ears",     "Rounded ears",     "Cauliflower ears",     "Scarred ears",
+    "Notched ear",     "Torn ear",     "Pierced ears",     "Multiple ear piercings",     "Stretched earlobes (gauges)",
+    "Industrial piercing",     "Helix piercing",     "Tragus piercing",     "Attached earlobes",     "Detached earlobes",
+    "Large earlobes",     "Asymmetrical ears",     "Missing ear",     "Partial ear"
+    ],
+    mha: [
+    "Animal ears instead of human ears",     "Cat ears",     "Dog ears",     "Fox ears",     "Rabbit ears",
+    "Wolf ears",     "Bear ears",     "Deer ears with antlers",     "Horns on head",     "Single horn",
+    "Multiple horns",     "Curled horns",     "Straight horns",     "Broken horn",     "Bull horns",
+    "Ram horns",     "Goat horns",     "Dragon horns",     "Scales on face",     "Reptilian scales",
+    "Feathers on face",     "Feathered eyebrows",     "Beak instead of nose",     "Sharp beak",     "Hooked beak",
+    "Pronounced tusks",     "Retractable fangs",     "Venom fangs",     "Multiple rows of teeth",     "Shark-like teeth",
+    "No nose (just nostril slits)",     "Snake-like nostrils",     "Reptilian slit pupils",     "Cat-slit pupils",     "Insect compound eyes",
+    "Multiple eyes",     "Third eye on forehead",     "All-black eyes (no whites)",     "No visible pupils",     "Glowing eyes (emit actual light)",
+    "Crystalline eyes",     "Metallic eyes",     "Fire-colored irises",     "Stone face",     "Rock-textured features",
+    "Crystal formations on face",     "Metal plates on face",     "Wooden features",     "Plant growth on face",     "Flowers growing from facial skin",
+    "Vines across face",     "Fur covering face",     "Feathered face",     "Scaled patches on face",     "Transparent skin showing skull",
+    "Partially see-through face",     "Face partially made of fire",     "Face partially made of water",     "Face partially made of ice",     "Face partially made of shadow",
+    "Face partially made of light",     "Tentacles instead of hair",     "Snake hair (Medusa-like)",     "Fire for hair",     "Living animated hair",
+    "Morphing facial features",     "Shapeshifting face",     "Multiple faces on head",     "Face on back of head",     "Blank featureless face",
+    "Constantly changing face",     "Screen or display for face",     "Holographic face",     "Ghostly transparent features",     "Mechanical face parts",
+    "Cyborg facial elements",     "Stitched-together face",     "Mismatched skin tones across face",     "Two-tone face (split down middle)",     "Half skeletal half flesh",
+    "Chimera face (mixed animal features)"
+    ]
+  },
+
+  bodyFeatures: {
+    general: [
+    "Petite build",     "Willowy build",     "Stocky build",     "Burly build",     "Slender build",
+    "Well-built",     "Muscular build",     "Lean build",     "Thin build",     "Skinny",
+    "Emaciated",     "Gaunt",     "Overweight",     "Heavyset",     "Chubby",
+    "Plump",     "Big-boned frame",     "Small-boned frame",     "Delicate frame",     "Sturdy frame",
+    "Athletic build",     "Swimmer's build",     "Runner's build",     "Gymnast build",     "Weightlifter build",
+    "Powerlifter build",     "Dad bod",     "Soft body",     "Compact build",     "Lanky build",
+    "Wiry build",     "Unusual proportions",     "Disproportionate build",     "Toned and defined",     "Ripped with visible muscle definition",
+    "Soft undefined middle",     "Beer belly",     "Flat stomach",     "Visible six-pack abs",     "Love handles",
+    "Broad chest",     "Narrow chest",     "Barrel chest",     "Flat chest",     "Sunken chest",
+    "Muscular chest",     "Stretch marks",     "Visible cellulite",     "Excess loose skin",     "Tight firm skin",
+    "Broad shoulders",     "Narrow shoulders",     "Sloped shoulders",     "Square shoulders",     "Uneven shoulders (one higher)",
+    "Prominent collarbone",     "V-taper torso (wide shoulders, narrow waist)",     "Box-shaped torso",     "Strong muscular back",     "Long arms",
+    "Short arms",     "Arms too long for body",     "Thin arms",     "Thick muscular arms",     "Defined biceps",
+    "Vascular forearms",     "Hairy arms",     "Hairless arms",     "Thick wrists",     "Thin wrists",
+    "Delicate wrists",     "Big hands",     "Small hands",     "Long elegant fingers",     "Short stubby fingers",
+    "Thick fingers",     "Working hands (rough and calloused)",     "Soft smooth hands",     "Scarred hands",     "Veiny hands",
+    "Prominent knuckles",     "Scarred knuckles",     "Manicured nails",     "Bitten-down nails",     "Long nails",
+    "Ink-stained fingers",     "Paint-stained hands",     "Perpetually dirty hands",     "Perpetually clean hands",     "Visible scoliosis (curved spine)",
+    "Kyphosis (rounded upper back)",     "Lordosis (swayback)",     "Back dimples (dimples of Venus)",     "Hairy back",     "Smooth hairless back",
+    "Long torso",     "Short torso",     "Thick waist",     "Thin waist",     "Narrow defined waist",
+    "Hourglass waist",     "Blocky straight waist",     "Wide hips",     "Narrow hips",     "Prominent hip bones",
+    "Hip dips",     "Thick thighs",     "Thin thighs",     "Muscular thighs",     "Thigh gap",
+    "Thunder thighs",     "Long legs",     "Short legs",     "Legs too long for body",     "Legs too short for body",
+    "Muscular legs",     "Skinny legs",     "Large defined calves",     "Skinny calves",     "Bowed legs",
+    "Knock knees",     "Chicken legs (skinny legs on bigger body)",     "Tree-trunk legs",     "Hairy legs",     "Smooth hairless legs",
+    "Thick ankles",     "Thin delicate ankles",     "Big feet",     "Small feet",     "Wide feet",
+    "Narrow feet",     "Flat feet",     "High arches",     "Calloused feet",     "Bunions",
+    "Dancer's feet",     "Smooth skin everywhere",     "Rough skin patches",     "Leathery tough skin",     "Thin delicate skin",
+    "Bruises easily",     "Scars easily (keloid-prone)",     "Sunburns easily",     "Tans easily",     "Never burns or tans",
+    "Moles all over body",     "Freckles all over body",     "Visible veins throughout body",     "Spider veins on legs",     "Vitiligo pattern",
+    "Hyperpigmentation patches",     "Completely hairless body",     "Full thick body hair",     "Moderate body hair",     "Sparse body hair",
+    "Hairy chest",     "Hairless chest",     "Treasure trail (happy trail)",     "Hairy back and shoulders",     "Shaved/waxed body",
+    "Unkempt wild body hair",     "Dark body hair",     "Light body hair",     "Gray or white body hair",     "Red body hair",
+    "Long limbs relative to body",     "Short limbs relative to body",     "Gangly and awkward proportions",     "Well-proportioned",     "Long torso with short legs",
+    "Short torso with long legs",     "Top-heavy build",     "Bottom-heavy build",     "Symmetrical body",     "Noticeably asymmetrical body",
+    "One side visibly bigger/stronger",     "Long neck",     "Short thick neck",     "No visible neck",     "Swan-like graceful neck",
+    "Bull neck",     "Prominent Adam's apple",     "No visible Adam's apple",     "Very flexible body",     "Very inflexible/stiff body",
+    "Hypermobile double-jointed",     "Stiff arthritic joints",     "Creaky popping joints",     "Prominent bony joints",     "Visible musculature definition",
+    "No visible muscle definition",     "Very vascular (veiny)",     "Not vascular at all"
+    ],
+    mha: [
+    "Prehensile tail",     "Long tail",     "Short tail",     "Scaled tail",     "Furred tail",
+    "Feathered tail",     "Multiple tails",     "Spiked tail",     "Cat tail",     "Dog tail",
+    "Fox tail",     "Lizard tail",     "Monkey tail",     "Fish tail (mermaid lower half)",     "Scorpion stinger tail",
+    "Whip-thin tail",     "Feathered wings",     "Bat-like wings",     "Insect wings",     "Dragon wings",
+    "Butterfly wings",     "Tiny vestigial wings (can't fly)",     "Large flight-capable wings",     "Retractable wings",     "Wings that can't fold flat",
+    "Crystalline wings",     "Ethereal translucent wings",     "Four arms",     "Six arms",     "Eight arms",
+    "Extra legs",     "Centaur lower body",     "Spider lower body (eight legs)",     "Satyr legs (goat lower half)",     "Lamia/Naga serpent lower body",
+    "Tentacles instead of arms",     "Tentacles instead of legs",     "Additional tentacles alongside limbs",     "Retractable tentacles",     "No arms",
+    "No legs",     "Mechanical prosthetic limbs",     "Robotic body parts",     "Scales covering entire body",     "Partial scale patches",
+    "Feathers covering body",     "Partial feather patches",     "Fur covering entire body",     "Partial fur patches",     "Exoskeleton",
+    "Shell on back (turtle-like)",     "Natural bone armor plating",     "Chitinous insect plates",     "Metal plating on body",     "Skin changes color (chameleon)",
+    "Transparent body parts",     "Crystal formations on body",     "Rock-like skin",     "Metal skin",     "Wooden bark-like skin",
+    "Plant growths on body",     "Flowers blooming from skin",     "Vines as limbs or growing from body",     "Bioluminescent skin",     "Glowing skin patterns",
+    "Iridescent shimmering skin",     "Metallic sheen skin",     "Body partially made of fire",     "Body partially made of water",     "Body partially made of ice",
+    "Body made of shadow",     "Body made of light",     "Gaseous or smoke-like form",     "Shapeshifting form",     "Constantly shifting unstable form",
+    "Ghostly ethereal body",     "Holographic projected body",     "Partially intangible",     "Size-shifting ability",     "Elastic stretchy body",
+    "Can inflate body parts",     "Flat two-dimensional appearance",     "Dragon-like build",     "Minotaur build",     "Unicorn horn on body",
+    "Kitsune multiple tails",     "Oni horns and build",     "Living skeleton",     "Zombie-like decaying body",     "Stitched-together patchwork body",
+    "Floats slightly off the ground",     "Exists in multiple places simultaneously",     "Flickers in and out of visibility"
+    ]
+  },
+  physicalQuirks: {
+    general: [
+    "Perfect posture",     "Slouches constantly",     "Hunched shoulders",     "Ramrod straight back",     "Leans to one side habitually",
+    "Shifts weight constantly while standing",     "Rocks back and forth",     "Sways while standing",     "Crosses arms when standing",     "Hands always in pockets",
+    "Hands-on-hips stance",     "Wide stance",     "Pigeon-toed",     "Duck-footed walk",     "Walks on tiptoes habitually",
+    "Heavy footfalls",     "Near-silent footsteps",     "Stomps when walking",     "Shuffles feet",     "Drags feet when walking",
+    "Bouncy walk",     "Confident strut",     "Swagger in walk",     "Timid walk",     "Always in a hurry",
+    "Leisurely pace always",     "Long strides",     "Short quick steps",     "Military-precise walk",     "Limps slightly",
+    "Favors one leg",     "Uneven gait",     "Graceful movement",     "Jerky movements",     "Stiff walk",
+    "Gangly uncoordinated walk",     "Athletic fluid movement",     "Cracks knuckles constantly",     "Wrings hands when nervous",     "Steeples fingers when thinking",
+    "Drums fingers on surfaces",     "Picks at nails",     "Bites nails",     "Flexes fingers repeatedly",     "Clenches fists unconsciously",
+    "Gestures wildly when talking",     "Talks with hands constantly",     "Keeps hands perfectly still",     "Arms always crossed",     "Arms clasped behind back",
+    "Shaky hands",     "Steady surgeon's hands",     "Trembling hands",     "Drops things frequently",     "Catches things reflexively",
+    "Ambidextrous",     "Left-handed",     "Strong grip",     "Gentle touch always",     "Heavy-handed with everything",
+    "Constantly adjusts rings or jewelry",     "Plays with jewelry when nervous",     "Bandaged hands often",     "Perpetually bruised knuckles",     "Double-jointed fingers",
+    "Missing finger(s)",     "Bounces leg when sitting",     "Taps foot rhythmically",     "Picks at skin when anxious",     "Scratches neck when nervous",
+    "Rubs back of neck",     "Rolls shoulders frequently",     "Cracks neck",     "Cracks back",     "Stretches constantly",
+    "Yawns frequently",     "Sighs often",     "Holds breath without realizing",     "Hyperventilates when nervous",     "Hiccups when nervous",
+    "Sneezes in sunlight (photic sneeze reflex)",     "Always sneezes in pairs or triples",     "Shivers easily",     "Sweats easily",     "Blushes readily",
+    "Goes pale when startled",     "Always seems too hot",     "Always seems too cold",     "Gets goosebumps easily",     "Perpetually clammy hands",
+    "Perpetually cold hands",     "Perpetually warm hands",     "Tilts head when listening",     "Cocks head like a bird",     "Nods constantly while others talk",
+    "Shakes head while talking",     "Noticeable head bob when walking",     "Looks over shoulder frequently",     "Constantly scanning the room",     "Intense unbroken eye contact",
+    "Avoids eye contact",     "Stares without realizing",     "Gazes off into distance",     "Daydreams visibly (zones out mid-conversation)",     "Chin always up",
+    "Chin always down (looks through eyebrows)",     "Looks down when walking",     "Habitual side-eye",     "Resting angry face",     "Resting sad face",
+    "Expressionless face by default",     "Extremely expressive face",     "Perpetual smirk",     "Frowns when concentrating",     "Scowls at nothing",
+    "Winces at loud noises",     "Bites lip habitually",     "Licks lips frequently",     "Chews inside of cheek",     "Jaw clenches when stressed",
+    "Grinds teeth visibly",     "Mouth always slightly open",     "Sticks tongue out when concentrating",     "Nose scrunches when thinking",     "Nostrils flare when angry",
+    "One eyebrow always slightly raised",     "Eye twitches when stressed",     "Winks unconsciously",     "Doesn't blink enough",     "Blinks rapidly when lying",
+    "Covers face when embarrassed",     "Hides face in hands",     "Chin-in-hand thinking pose",     "Always looks tired",     "Always looks alert",
+    "Looks angry when deep in thought",     "Looks sad when neutral",     "Cannot hide emotions — face gives everything away",     "Completely unreadable poker face",     "Mouth breather",
+    "Audible heavy breathing",     "Wheezes slightly",     "Whistling breath through nose",     "Sighs dramatically",     "Sharp inhales when surprised",
+    "Visible breathing exercises when stressed",     "Out of breath easily",     "Never seems out of breath",     "Hiccups frequently",     "Burps without shame",
+    "Yawns contagiously and loudly",     "Full-body yawns with stretching",     "Sniffles constantly",     "Always sounds congested",     "Throat-clearing tic",
+    "Chronic dry cough",     "Gags easily (strong gag reflex)",     "Hypersensitive to smells",     "Cannot smell anything (anosmia)",     "Very touchy-feely person",
+    "Maintains large personal bubble",     "No concept of personal space",     "Invades space without realizing",     "Leans in uncomfortably close when talking",     "Flinches away from touch",
+    "Actively seeks physical contact",     "Touch-averse",     "Touch-starved behavior",     "Bone-crushing handshake",     "Limp handshake",
+    "Avoids handshakes entirely",     "Hugs everyone freely",     "Hugs reluctantly and awkwardly",     "Hugs too tight",     "Lifts people during hugs",
+    "Pats people on the back",     "Hand on shoulder constantly",     "Touches people while talking",     "Taps or nudges to get attention",     "Holds hands easily with anyone",
+    "Leans on people when standing",     "Rests head on people's shoulders",     "Uses people as furniture",     "Always asks before touching",     "Touches without thinking to ask",
+    "Has to touch every texture they see",     "Feels fabric of everything",     "Seeks warm things to touch",     "Seeks cold things to touch",     "Perpetually tired appearance",
+    "Never looks tired",     "Falls asleep anywhere easily",     "Obviously insomniac",     "Naps in odd places and positions",     "Can't nap at all",
+    "Needs caffeine to function (always has a cup)",     "Natural boundless energy",     "Crashes hard in the afternoon",     "Hyperactive — can't sit still",     "Lethargic slow movements",
+    "Restless — always fidgeting",     "Can stay perfectly still like a statue",     "Economical efficient movements",     "Wasteful flailing movements"
+    ],
+    mha: [
+    "Tail wags when happy",     "Tail droops when sad",     "Tail puffs up when scared",     "Tail lashes when angry",     "Tail curls around things for comfort",
+    "Tail constantly moving",     "Tail knocks things over",     "Tail wraps around people affectionately",     "Wings flare when startled",     "Wings droop when tired",
+    "Wings puff up to appear larger",     "Wings wrap around self when cold",     "Wings flutter when excited",     "Wings knock things over in tight spaces",     "Preens feathers/wings habitually",
+    "Extra arms gesture independently",     "Extra arms fidget while main arms work",     "Tentacles move unconsciously",     "Tentacles reach for things without thinking",     "Scales rustle audibly when moving",
+    "Fur bristles when emotional",     "Skin color shifts with mood involuntarily",     "Glows brighter when emotional",     "Sparks or crackles when agitated",     "Leaves scorch marks when upset",
+    "Frost forms nearby when angry",     "Plants grow near them when calm",     "Small tremors when stressed",     "Phases through things accidentally",     "Floats when relaxed or sleeping",
+    "Size fluctuates with emotion",     "Form destabilizes when stressed",     "Purrs when content",     "Growls when threatened",     "Hisses when angry",
+    "Chirps or trills when happy",     "Ears swivel toward sounds",     "Ears flatten when upset",     "Pupils dilate dramatically with emotion",     "Sheds scales/feathers/fur seasonally",
+    "Needs to bask in sun for energy",     "Nocturnal sleep patterns",     "Nests or burrows when sleeping",     "Territorial marking behavior",     "Instinctive prey-chasing response",
+    "Freezes completely when frightened (prey response)"
+    ]
+  },
+
+  identifying: {
+    general: [
+    "Scar across face",     "Scar on forehead",     "Scar through eyebrow",     "Scar across eye",     "Scar on cheek",
+    "Scar across nose",     "Scar on chin",     "Scar across lips",     "Scar on neck",     "Scar across throat",
+    "Scar on shoulder",     "Scar on chest",     "Scar across back",     "Scars down spine",     "Scar on forearm",
+    "Scar on wrist",     "Scars on hands",     "Scars on knuckles",     "Scar on leg",     "Scar on torso",
+    "Scar on abdomen",     "Thin clean scar",     "Thick raised scar",     "Keloid scar",     "Surgical scar",
+    "Stitch mark scars",     "Burn scar",     "Chemical burn scar",     "Brand mark scar",     "Bite scar",
+    "Claw mark scars",     "Slash scar",     "Stab wound scar",     "Bullet wound scar",     "Shrapnel scars",
+    "Jagged poorly-healed scar",     "Old faded scar",     "Fresh pink scar",     "Puckered scar",     "X-shaped scar",
+    "Star-shaped scar",     "Web of many small scars",     "Network of crossing scars",     "One large dramatic scar",     "Many scattered scars",
+    "Parallel scars",     "Defensive wound scars on forearms",     "Fighting scars",     "Childhood accident scar",     "Half face scarred",
+    "Both hands scarred",     "Forearms covered in scars",     "Back completely scarred",     "Full body scarring",     "Minimal scarring",
+    "Lightning-pattern Lichtenberg scars (from electrocution)",     "Ritual scarification patterns",     "Decorative intentional scarring",     "Whip or lash scars on back",     "Birthmark on face",
+    "Birthmark on neck",     "Birthmark on shoulder",     "Birthmark on arm",     "Birthmark on back",     "Birthmark on chest",
+    "Small birthmark",     "Large birthmark",     "Port wine stain",     "Café au lait spot",     "Raised birthmark",
+    "Flat birthmark",     "Shaped birthmark (resembles something recognizable)",     "Map-like birthmark",     "Beauty mark above lip",     "Mole on cheek",
+    "Mole on chin",     "Mole on neck",     "Mole on shoulder",     "Prominent raised mole",     "Multiple facial moles",
+    "Constellation pattern of moles",     "Distinguished beauty mark",     "Face covered in freckles",     "Freckles across nose and cheeks only",     "Freckles everywhere",
+    "Heavy dense freckles",     "Light sparse freckles",     "Seasonal freckles (appear in sun)",     "Freckles on shoulders and arms",     "Freckles on back and chest",
+    "Dark freckles",     "Faded freckles",     "Face tattoo",     "Neck tattoo",     "Full sleeve tattoo",
+    "Half sleeve tattoo",     "Forearm tattoo",     "Hand tattoos",     "Knuckle tattoos",     "Finger tattoos",
+    "Chest piece tattoo",     "Full back piece",     "Spine tattoo",     "Rib tattoo",     "Shoulder tattoo",
+    "Thigh tattoo",     "Full leg sleeve",     "Ankle tattoo",     "Wrist tattoo",     "Tribal style tattoo",
+    "Traditional (old school) tattoo",     "Japanese irezumi style",     "Photorealistic tattoo",     "Blackwork tattoo",     "Dotwork tattoo",
+    "Fine line tattoo",     "Bold line tattoo",     "Geometric tattoo",     "Watercolor style tattoo",     "Biomechanical tattoo",
+    "Black and gray tattoo",     "Full color tattoo",     "Minimalist tattoo",     "Heavily detailed tattoo",     "Stick and poke tattoo",
+    "Prison tattoo",     "Professional high-quality tattoo",     "Amateur rough tattoo",     "Faded old tattoo",     "Fresh vibrant tattoo",
+    "Cover-up tattoo",     "Meaningful personal tattoo",     "Impulse regret tattoo",     "Matching tattoo with someone",     "Sleeve that tells a story",
+    "Dragon tattoo",     "Snake tattoo",     "Wolf tattoo",     "Tiger or lion tattoo",     "Bird tattoo",
+    "Phoenix tattoo",     "Skull tattoo",     "Rose or flower tattoo",     "Tree tattoo",     "Compass or nautical tattoo",
+    "Anchor tattoo",     "Crown tattoo",     "Heart tattoo",     "Dagger or sword tattoo",     "Flames tattoo",
+    "Stars tattoo",     "Moon tattoo",     "Sun tattoo",     "Religious symbol tattoo",     "Angel or wings tattoo",
+    "Clock or hourglass tattoo",     "Infinity or ouroboros tattoo",     "Yin yang tattoo",     "Koi fish tattoo",     "Cherry blossom tattoo",
+    "Celtic knot tattoo",     "Runes or ancient symbols tattoo",     "Barbed wire tattoo",     "Tribal patterns tattoo",     "Portrait tattoo of someone",
+    "Coordinates or location tattoo",     "Fandom or pop culture tattoo",     "Music-related tattoo",     "Science or formula tattoo",     "Literary quote tattoo",
+    "Eyebrow piercing",     "Bridge piercing",     "Nostril piercing",     "Septum piercing",     "Double nostril piercings",
+    "Lip piercing",     "Labret piercing",     "Snake bite lip piercings",     "Monroe piercing",     "Medusa piercing",
+    "Cheek piercings",     "Tongue piercing",     "Standard lobe piercings",     "Multiple lobe piercings",     "Stretched earlobes (gauges)",
+    "Helix piercing",     "Industrial piercing",     "Tragus piercing",     "Rook piercing",     "Daith piercing",
+    "Conch piercing",     "Full ear with many piercings",     "Belly button piercing",     "Nipple piercings",     "Surface piercings",
+    "Dermal anchor piercings",     "Nape piercing",     "Extra finger (polydactyly)",     "Missing finger",     "Webbed fingers",
+    "Extra toe",     "Missing toe",     "Cleft lip (repaired)",     "Lazy eye",     "Heterochromia (different colored eyes)",
+    "Differently sized pupils (anisocoria)",     "Vitiligo",     "Albinism",     "Prominent protruding ears",     "Missing ear",
+    "Cauliflower ears (from fighting)",     "Missing limb",     "Curved visible spine (scoliosis)",     "Crooked previously-broken nose",     "Missing teeth",
+    "Gold teeth",     "Dental grill",     "Gap between front teeth",     "Branded mark (from branding iron)",     "Frostbite scars",
+    "Lightning strike scar",     "Perfectly circular scar",     "Unusually shaped scar",     "Tattoo removal scarring",     "Ritual or ceremonial markings",
+    "Permanent face paint or markings",     "Permanent skin dye or staining",     "Uneven skin tone",     "Two-tone skin",     "Patchy pigmentation",
+    "Streak of white hair",     "Gray streak in hair",     "Natural streak of different colored hair",     "Bald patches (alopecia)",     "Unusual hairline pattern",
+    "Widow's peak",     "No body hair at all",     "Excessive body hair",     "Hair growing in unusual pattern"
+    ],
+    mha: [
+    "Scales in unique fingerprint-like pattern",     "Color-changing scale patches",     "Iridescent scales",
+    "Metallic sheen to skin",     "Pearlescent skin",     "Bioluminescent patterns on skin",
+    "Glowing quirk activation marks",     "Luminous birthmarks that react to quirk use",     "Quirk-related scarring",
+    "Scars from quirk overuse",     "Scars from quirk awakening",     "Burn scars from a fire-type quirk",
+    "Frostbite patterns from an ice-type quirk",     "Electrical Lichtenberg scars from a lightning quirk",     "Permanent discoloration from chemical quirk exposure",
+    "Skin hardened or textured by a defensive quirk",     "Veins that glow when quirk is active",     "Marks that appear only when quirk activates",
+    "Cracks or fractures in skin from a hardening quirk",     "Animal-pattern markings (stripes, spots, rosettes)",     "Tiger stripe markings",
+    "Leopard spot markings",     "Reptilian scale pattern across body",     "Feather-pattern skin markings",
+    "Fur color patches that form unique patterns",     "Horn growth rings (like tree rings, showing age)",     "Tail scarring from childhood accidents",
+    "Wing molt patterns",     "Shed scale patches revealing new color underneath",     "Unique ear shape distinguishing from similar mutation types",
+    "Heterochromatic mutation markings (different colors on different body parts)",     "Scars from a famous villain encounter",     "Battle damage scarring",
+    "Support gear contact marks (where equipment presses against skin)",     "Costume tan lines from hero suit",     "Calluses shaped by specific weapon use",
+    "Chemical staining from support gear maintenance",     "Branding or mark from a villain organization",     "Hero license tattoo or ID marking",
+    "Training scars from quirk development",     "Scars from rescue operations",     "Burns from a hero/villain with a fire quirk",
+    "Impact crater scars from a strength-type quirk hit",     "Crystalline growths on body from quirk buildup",     "Gem-like formations embedded in skin",
+    "Metal deposits visible under skin from a metal quirk",     "Bark-textured patches from a plant-based quirk",     "Permanent plant growth on skin from a nature quirk",
+    "Vine-like patterns where quirk energy flows",     "Frost patterns that never fully fade",     "Permanent static charge visible as hair standing on end",
+    "Shadow-stained skin from a dark-type quirk",     "Light-bleached patches from an emitter quirk",     "Erosion or weathering marks from an elemental quirk",
+    "Circuitry-like patterns under skin from an energy quirk",     "Visible quirk energy lines across body",     "Residual glow from a light-producing quirk",
+    "Constellation-like pattern of glowing spots",     "Star-map birthmarks unique to their mutation",     "Binary or digital-looking marks from a tech-based quirk",
+    "Glitch-like visual artifacts on skin (from a reality-warping quirk)",     "Data-stream patterns visible under skin"
+    ]
+  },
+  hygiene: {
+    good: [
+      "Impeccably clean at all times",       "Germaphobe-level obsessive cleanliness",       "Compulsively cleans themselves",       "Showers twice daily without fail",       "Daily shower, strict routine",
+      "Showers after any physical activity",       "Meticulous hair care routine",       "Washes and styles hair daily",       "Hair always looks perfect",       "Uses expensive hair products religiously",
+      "Gets professional haircuts regularly",       "Healthy well-maintained hair",       "Brushes teeth religiously (twice daily, flosses, mouthwash)",       "Flosses daily",       "Always has fresh breath",
+      "Bright white well-maintained teeth",       "Regular dental checkups",       "Perfectly manicured nails always",       "Nails are clean and trimmed",       "Gets professional manicures/pedicures",
+      "Long well-maintained nails",       "Elaborate multi-step skincare routine",       "Wears sunscreen religiously",       "Always removes makeup thoroughly",       "Uses expensive serums and treatments",
+      "Moisturizes regularly",       "Treats skin problems proactively",       "Moisturizes entire body daily",       "Maintains body hair carefully",       "Immaculately groomed at all times",
+      "Looks polished and refined",       "High-maintenance grooming routine",       "Always smells amazing",       "Has a signature fragrance",       "Subtle pleasant fragrance",
+      "Smells clean — like soap and laundry",       "Fresh clean outfit every single day",       "Clothes are always pressed and wrinkle-free",       "Takes excellent care of clothing",       "Clothes always smell like fresh laundry",
+      "Organized closet — everything has its place"
+    ],
+    bad: [
+      "Rarely bothers with hygiene",       "Perpetually dirty or grimy",       "Could stand to shower more often",       "Survival-level hygiene only",       "Only cleans up for special occasions",
+      "Showers a few times a week at best",       "Rarely showers or bathes",       "Forgets to bathe regularly",       "Hates getting wet — avoids bathing",       "Bathes only when they start to smell",
+      "Rarely washes hair (greasy look)",       "Never washes hair — believes in natural oils",       "Never styles hair — whatever it does is fine",       "Hair always looks like they just woke up",       "Tangled messy hair from never brushing",
+      "Cuts own hair (with mixed results)",       "Hair is clearly damaged from neglect",       "Greasy hair",       "Dry frizzy hair",       "Brushes once a day if they remember",
+      "Brushes sometimes at best",       "Rarely brushes teeth",       "Has never flossed in their life",       "Chronic bad breath",       "Bad breath they\'re unaware of",
+      "Yellow or stained teeth from poor care",       "Avoids the dentist at all costs",       "Bitten-down nails",       "Dirt perpetually under fingernails",       "Nails are cracked or broken",
+      "Never does anything with nails",       "Neglects toenails entirely",       "Washes face with whatever soap is nearby",       "No skincare routine whatsoever",       "Has never used sunscreen",
+      "Sleeps in makeup regularly",       "Never moisturizes — perpetually dry/ashy skin",       "Ignores all skin issues",       "Never uses lotion",       "Natural body hair — no removal or maintenance",
+      "Clearly doesn\'t try",       "Scruffy and unkempt",       "Looks rough around the edges",       "Noticeable body odor",       "Strong body odor they\'ve gone nose-blind to",
+      "Forgets deodorant frequently",       "Wears no fragrance — and probably should",       "Smells perpetually of cigarette smoke",       "Smells like whatever they last ate",       "Overpowering cheap fragrance",
+      "Rewears clothes if they pass the sniff test",       "Wears the same outfit multiple days in a row",       "Clothes are perpetually wrinkled",       "Visible stains on clothes regularly",       "Ruins clothes quickly through neglect",
+      "Clothes smell like mildew (forgot in the washer)",       "Has a floordrobe instead of a wardrobe",       "Can\'t tell clean clothes from dirty",       "Washes clothes way too infrequently"
+    ],
+    neutral: [
+      "Generally clean and presentable",       "Clean enough — gets the job done",       "Situationally clean (depends on context)",       "Clean in public but messy in private",       "Showers every other day",
+      "Quick five-minute showers",       "Hour-long showers (wastes all the hot water)",       "Takes freezing cold showers",       "Scalding hot showers only",       "Prefers long hot baths over showers",
+      "Loves water — showers are meditative",       "Washes hair every few days",       "Basic shampoo, nothing else",       "Dry shampoo between washes",       "Styles hair carefully every day",
+      "Never uses heat — air dries only",       "Heat styles daily (straightener, curler)",       "Brushes twice a day, no extras",       "Constantly chewing gum or mints",       "Nails are functional — trimmed when needed",
+      "Paints nails regularly",       "Basic wash-and-moisturize routine",       "Only moisturizes hands and face",       "Inconsistent body hair maintenance",       "Razor bumps and ingrown hairs from hasty grooming",
+      "Somewhat put-together",       "Low-maintenance — minimum effort",       "Well-groomed when it matters, messy otherwise",       "Wears too much cologne/perfume",       "Wears no fragrance — natural scent only",
+      "Sweats heavily — needs strong deodorant",       "Barely sweats — rarely smells",       "Reapplies deodorant throughout the day",       "Smells like their workplace (smoke, grease, chemicals, etc.)",       "Smells like their hobbies (paint, motor oil, cooking, etc.)",
+      "Smells like their pets",       "Fragrance fades by midday",       "Overwashes clothes (they fade fast)",       "Piles of dirty laundry everywhere but person is clean"
+    ]
+  },
+  eyeDescriptor: {
+    shape: [
+      "Almond-shaped",       "Round",       "Hooded",       "Deep-set",       "Protruding",
+      "Close-set",       "Wide-set",       "Upturned",       "Downturned",       "Monolid",
+      "Heavy-lidded",       "Doe-like",       "Cat-like",       "Fox-like",       "Narrow",
+      "Angular",       "Soft",       "Large",       "Small",       "Sleepy"
+    ],
+    quality: [
+      "Piercing",       "Intense",       "Soft",       "Gentle",       "Kind",
+      "Cold",       "Warm",       "Sharp",       "Bright",       "Sparkling",
+      "Glittering",       "Shimmering",       "Luminous",       "Vivid",       "Muted",
+      "Clear",       "Cloudy",       "Glassy",       "Watery",       "Tired",
+      "Alert",       "Keen",       "Watchful",       "Guarded",       "Wary",
+      "Trusting",       "Innocent",       "Wise",       "Haunted",       "Sad",
+      "Melancholy",       "Joyful",       "Cheerful",       "Amused",       "Playful",
+      "Mischievous",       "Cunning",       "Calculating",       "Intelligent",       "Thoughtful",
+      "Contemplative",       "Dreamy",       "Distant",       "Vacant",       "Hollow",
+      "Lifeless",       "Lively",       "Expressive",       "Passionate",       "Fiery",
+      "Smoldering",       "Icy",       "Calm",       "Serene",       "Stormy",
+      "Wild",       "Fierce",       "Predatory",       "Dangerous",       "Commanding",
+      "Vulnerable",       "Steady",       "Determined",       "Steely",       "Unyielding",
+      "Fearful",       "Brave",       "Bold",       "Shy",       "Flirtatious",
+      "Sultry",       "Welcoming",       "Hostile",       "Flinty",       "Stony",
+      "Mesmerizing",       "Hypnotic",       "Captivating",       "Striking",       "Stunning",
+      "Forgettable",       "Distinctive"
+    ],
+    color: [
+      "Pale blue",       "Sky blue",       "Cerulean",       "Azure",       "Sapphire blue",
+      "Cobalt blue",       "Royal blue",       "Navy blue",       "Deep blue",       "Steel blue",
+      "Ice blue",       "Electric blue",       "Stormy blue",       "Ocean blue",       "Aquamarine",
+      "Pale green",       "Bright green",       "Emerald green",       "Jade green",       "Sea green",
+      "Forest green",       "Olive green",       "Moss green",       "Sage green",       "Light brown",
+      "Dark brown",       "Chocolate brown",       "Golden brown",       "Honey brown",       "Amber brown",
+      "Chestnut brown",       "Warm brown",       "Rich brown",       "Hazel",       "Golden hazel",
+      "Green hazel",       "Amber hazel",       "Light gray",       "Dark gray",       "Slate gray",
+      "Steel gray",       "Silver gray",       "Stormy gray",       "Blue-gray",       "Amber",
+      "Golden",       "Honey",       "Copper",       "Tawny",       "Black",
+      "Jet black",       "Obsidian",       "Red",       "Crimson",       "Ruby red",
+      "Violet",       "Purple",       "Amethyst",       "Orange",       "White",
+      "Milky",       "Silver",       "Color-changing",       "Heterochromatic (two different colors)",       "Sectoral heterochromia (partial color split)",
+      "Central heterochromia (ring of different color)"
+    ]
+  },
+  hairDescriptor: {
+    style: [
+      "Bald",       "Shaved",       "Buzzed",       "Very short",       "Short",
+      "Cropped",       "Chin-length",       "Shoulder-length",       "Medium",       "Chest-length",
+      "Long",       "Very long",       "Waist-length",       "Hip-length",       "Floor-length",
+      "Pixie cut",       "Bob cut",       "Layered",       "Choppy",       "Shaggy",
+      "Asymmetrical",       "Undercut",       "Shaved sides",       "Fade",       "Mohawk",
+      "Mullet",       "Loose and flowing",       "Messy and tousled",       "Windswept",       "Slicked back",
+      "Pushed back",       "Side-swept",       "In a bun",       "In a messy bun",       "In a top knot",
+      "High ponytail",       "Low ponytail",       "In braids",       "In a single braid",       "In pigtails",
+      "French braided",       "In cornrows",       "In box braids",       "In dreadlocks",       "In twists",
+      "Half-up half-down",       "Pinned back",       "With blunt bangs",       "With curtain bangs",       "With side-swept bangs",
+      "With wispy bangs"
+    ],
+    texture: [
+      "Straight",       "Pin-straight",       "Slightly wavy",       "Wavy",       "Beach-waved",
+      "Curly",       "Tight curls",       "Ringlets",       "Coily",       "Kinky",
+      "Silky",       "Smooth",       "Soft",       "Coarse",       "Wiry",
+      "Fine",       "Thick",       "Frizzy",       "Flyaway",       "Glossy",
+      "Shiny",       "Dull",       "Greasy",       "Dry",       "Brittle",
+      "Fluffy",       "Bouncy",       "Limp",       "Voluminous",       "Flat",
+      "Wild",       "Unruly",       "Sleek",       "Tousled",       "Healthy",
+      "Damaged",       "Well-maintained",       "Neglected",       "Tangled"
+    ],
+    color: [
+      "Platinum blonde",       "Ice blonde",       "Ash blonde",       "Golden blonde",       "Honey blonde",
+      "Strawberry blonde",       "Dirty blonde",       "Sandy blonde",       "Light brown",       "Medium brown",
+      "Dark brown",       "Chestnut",       "Chocolate brown",       "Coffee brown",       "Caramel",
+      "Auburn",       "Black",       "Jet black",       "Blue-black",       "Soft black",
+      "Red",       "Ginger",       "Copper",       "Burgundy",       "Cherry red",
+      "Rust",       "Cinnamon",       "Gray",       "Silver",       "Salt-and-pepper",
+      "Prematurely gray",       "White",       "Snow white",       "Dyed blue",       "Dyed green",
+      "Dyed purple",       "Dyed pink",       "Dyed red",       "Dyed orange",       "Dyed teal",
+      "Pastel-colored",       "Neon-colored",       "Rainbow",       "Two-toned",       "Ombre (light to dark)",
+      "Balayage highlights",       "Streaked with color",       "Tips dyed",       "With grown-out roots"
+    ]
+  },
+  intellectual: {
+    learningStyle: [
+      "Visual learner — needs to see it to understand it",
+      "Auditory learner — absorbs information through listening",
+      "Kinesthetic learner — has to physically do it to learn",
+      "Learns best by reading and writing",
+      "Learns by watching others first",
+      "Learns through trial and error",
+      "Learns by teaching others",
+      "Learns through discussion and debate",
+      "Needs repetition to retain information",
+      "Learns through immersion — throw them in the deep end",
+      "Self-directed learner — teaches themselves everything",
+      "Needs structured instruction with clear steps",
+      "Collaborative learner — thinks best with others",
+      "Competitive learner — needs rivalry to engage",
+      "Requires hands-on experimentation"
+    ],
+    thinkingPattern: [
+      "Linear thinker — follows logical A-to-B-to-C chains",
+      "Lateral thinker — approaches problems sideways",
+      "Abstract thinker — comfortable with theoretical concepts",
+      "Concrete thinker — needs tangible real-world examples",
+      "Big-picture thinker — sees the forest, misses the trees",
+      "Detail-oriented thinker — sees the trees, misses the forest",
+      "Systems thinker — sees how everything connects",
+      "Compartmentalizes — keeps thoughts in neat separate boxes",
+      "Stream-of-consciousness thinker — thoughts flow associatively",
+      "Sees patterns everywhere (sometimes where there aren't any)",
+      "Overthinks everything to paralysis",
+      "Black-and-white thinker — struggles with nuance",
+      "Nuanced thinker — sees gray areas in everything",
+      "Thinks in metaphors and analogies",
+      "Very literal thinker — takes things at face value",
+      "Connects disparate ideas others wouldn't link",
+      "Single-track mind — can only hold one thread at a time",
+      "Parallel processor — juggles multiple thought threads"
+    ],
+    problemSolving: [
+      "Methodical problem-solver — step by step",
+      "Intuitive problem-solver — goes with gut feeling",
+      "Analytical approach — breaks everything into data",
+      "Creative problem-solver — finds novel unconventional solutions",
+      "Research-first approach — won't start until fully informed",
+      "Trial-and-error approach — just tries things until something works",
+      "Plans extensively before acting",
+      "Jumps right in and figures it out as they go",
+      "Collaborative problem-solver — seeks input from others",
+      "Solo problem-solver — figures it out alone",
+      "Evidence-based decision-maker",
+      "Goes with gut instinct over data",
+      "Iterative approach — refines solutions through multiple passes",
+      "First answer is always their final answer",
+      "Questions every assumption before proceeding",
+      "Accepts things at face value and moves on"
+    ],
+    memory: [
+      "Photographic memory — remembers visual details exactly",
+      "Excellent long-term memory but poor short-term",
+      "Strong short-term memory but forgets over time",
+      "Selective memory — remembers what interests them, forgets the rest",
+      "Terrible memory for names but remembers every face",
+      "Remembers faces perfectly but forgets every name",
+      "Remembers numbers and dates with ease",
+      "Cannot remember numbers to save their life",
+      "Emotional memory — remembers how things felt, not the details",
+      "Procedural memory — remembers how to DO things, not facts",
+      "Memory triggered by smells or music",
+      "Unreliable memory — confident in false recollections",
+      "Foggy memory — everything is vague and approximate",
+      "Remembers everything they've ever read",
+      "Forgets conversations almost immediately",
+      "Tip-of-the-tongue syndrome constantly"
+    ],
+    processingSpeed: [
+      "Lightning-fast thinker",
+      "Slow and deliberate processor",
+      "Quick on the uptake — grasps things instantly",
+      "Needs time to process — understanding comes later",
+      "Thinks on their feet easily",
+      "Needs time alone to think before responding",
+      "Racing thoughts — mind never stops",
+      "Measured careful thoughts — each one deliberate",
+      "Quick learner — picks things up on the first try",
+      "Slow study — needs many exposures but retention is deep",
+      "Impulsive thinker — blurts out first thought"
+    ],
+    attention: [
+      "Hyperfocus capable — loses hours to one task",
+      "Sustained laser focus for long periods",
+      "Short attention span — jumps between topics",
+      "Easily distracted by anything novel",
+      "Hard to distract once locked in",
+      "Scattered attention — monitors everything at once",
+      "Tunnel vision — blocks out everything else",
+      "Daydreams constantly — mind wanders freely",
+      "Extremely present and mindful",
+      "Absent-minded — sharp mind but forgets where they put things",
+      "Notices tiny details others miss",
+      "Misses obvious things right in front of them",
+      "Needs silence to concentrate",
+      "Focuses better with background noise or chaos",
+      "Achieves flow state easily",
+      "Cannot achieve flow — constantly self-interrupting"
+    ],
+    cognitiveStrength: [
+      "Exceptional pattern recognition",
+      "Strong spatial reasoning",
+      "Powerful logical reasoning",
+      "Gifted verbal and linguistic ability",
+      "Natural mathematical ability",
+      "Musical intelligence — thinks in rhythms and patterns",
+      "Strong emotional intelligence — reads people effortlessly",
+      "High social intelligence — navigates group dynamics naturally",
+      "Practical intelligence — street smart",
+      "Strategic thinking — always planning several moves ahead",
+      "Strong critical thinking skills",
+      "Synthesizes information from multiple sources easily",
+      "Excellent at simplifying complex ideas",
+      "Grasps complex systems intuitively",
+      "Predicts people's behavior accurately",
+      "Reads between the lines — catches subtext easily",
+      "Visualizes complex things clearly in their mind",
+      "Strong sense of direction and spatial awareness",
+      "Natural troubleshooter"
+    ],
+    cognitiveWeakness: [
+      "Struggles with abstract concepts",
+      "Poor spatial awareness — gets lost easily",
+      "Difficulty with numbers and math",
+      "Struggles to read social cues",
+      "Poor at explaining their own thoughts",
+      "Cannot simplify complex ideas for others",
+      "Misses subtext and implications",
+      "Poor at predicting consequences of actions",
+      "Struggles with long-term planning",
+      "Difficulty distinguishing correlation from causation",
+      "Takes everything literally — misses figurative language",
+      "Overgeneralizes from single experiences",
+      "Cannot prioritize — everything feels equally important",
+      "Struggles with ambiguity — needs clear answers",
+      "Poor theory of mind — can't see others' perspectives easily",
+      "Difficulty transferring skills from one domain to another"
+    ],
+    curiosity: [
+      "Insatiably curious about everything",
+      "Selectively curious — deep interest in specific topics",
+      "Asks questions constantly — always wants to know why",
+      "Completely indifferent to learning",
+      "Reads voraciously — always has a book",
+      "Never reads unless forced",
+      "Deep-dives obsessively into topics",
+      "Surface-level interest only — moves on quickly",
+      "Renaissance mind — interested in everything",
+      "Specialist — knows one thing deeply and doesn't care about the rest",
+      "Autodidact — taught themselves everything they know",
+      "Only learns when required to",
+      "Seeks knowledge for its own sake",
+      "Only interested in practical useful knowledge",
+      "Challenges assumptions and conventional wisdom",
+      "Accepts what they're told without questioning"
+    ],
+    comprehension: [
+      "Grasps new concepts almost instantly",
+      "Needs multiple explanations from different angles",
+      "Understands intuitively — can't explain how they know",
+      "Must reason through every step explicitly",
+      "Contextual understanding — gets it in context but not isolation",
+      "Literal understanding — needs things spelled out exactly",
+      "Deep comprehension — truly understands underlying principles",
+      "Surface understanding — gets the gist but not the depth",
+      "Dunning-Kruger tendency — overestimates own understanding",
+      "Imposter syndrome — underestimates own knowledge",
+      "Knows what they don't know",
+      "Doesn't know what they don't know"
+    ],
+    flexibility: [
+      "Mentally flexible — adapts thinking readily",
+      "Mentally rigid — set in their ways",
+      "Changes mind easily with new evidence",
+      "Almost never changes their mind",
+      "Growth mindset — believes abilities can be developed",
+      "Fixed mindset — believes abilities are innate",
+      "Open to radically new ideas",
+      "Resistant to ideas that challenge existing beliefs",
+      "Breaks out of thinking patterns easily",
+      "Stuck in mental ruts — same approaches every time",
+      "Comfortable with uncertainty and ambiguity",
+      "Needs certainty and clear answers to function",
+      "Forward-thinking — always looking ahead",
+      "Backward-looking — relies on past experience and tradition"
+    ],
+    creativity: [
+      "Artistic creativity — expressive and aesthetic",
+      "Scientific creativity — innovative hypotheses and experiments",
+      "Practical creativity — finds clever real-world solutions",
+      "Inventive — comes up with truly original ideas",
+      "Derivative — combines and remixes existing ideas well",
+      "Not particularly creative",
+      "Creative but can't execute their ideas",
+      "Great executor but needs others' ideas to work from"
+    ],
+    mentalStamina: [
+      "Can sustain deep thought for hours",
+      "Mental stamina runs out quickly — needs frequent breaks",
+      "Hyperfocus endurance — can think through marathon sessions",
+      "Burns out fast under cognitive load",
+      "Thinks best in short intense bursts",
+      "Slow burn thinker — builds momentum over time"
+    ]
+  },
+  physicalConditions: [
+    "Chronic pain", "Chronic fatigue syndrome", "Fibromyalgia",
+    "Arthritis", "Rheumatoid arthritis", "Osteoarthritis",
+    "Asthma", "COPD", "Cystic fibrosis",
+    "Diabetes (Type 1)", "Diabetes (Type 2)",
+    "Epilepsy", "Seizure disorder",
+    "Heart condition", "Heart murmur", "Arrhythmia",
+    "High blood pressure", "Low blood pressure",
+    "Anemia", "Sickle cell disease", "Hemophilia",
+    "Lupus", "Multiple sclerosis", "Muscular dystrophy",
+    "Cerebral palsy", "Spina bifida",
+    "Crohn's disease", "Ulcerative colitis", "IBS (Irritable Bowel Syndrome)",
+    "Celiac disease", "Lactose intolerance", "Food allergies",
+    "Severe environmental allergies", "Anaphylaxis risk",
+    "Eczema (chronic)", "Psoriasis (chronic)", "Vitiligo",
+    "Albinism", "Alopecia",
+    "Chronic migraines", "Cluster headaches",
+    "Tinnitus", "Hearing loss (partial)", "Deafness",
+    "Poor vision", "Legally blind", "Blind",
+    "Color blindness", "Night blindness",
+    "Prosthetic limb", "Missing limb (no prosthetic)",
+    "Wheelchair user", "Cane/walker user", "Crutch user",
+    "Paralysis (partial)", "Paralysis (full — paraplegic)", "Paralysis (full — quadriplegic)",
+    "Spinal cord injury", "Nerve damage", "Neuropathy",
+    "Chronic back pain", "Scoliosis", "Kyphosis",
+    "Joint hypermobility (Ehlers-Danlos)", "Brittle bone disease (Osteogenesis imperfecta)",
+    "Dwarfism", "Gigantism / Acromegaly",
+    "Autoimmune condition (unspecified)", "Immunocompromised",
+    "Cancer survivor", "In cancer treatment",
+    "Organ transplant recipient", "On dialysis",
+    "Sleep apnea", "Narcolepsy", "Chronic insomnia",
+    "Chronic vertigo", "Balance disorder",
+    "Speech impediment (physical cause — e.g. cleft palate)",
+    "Tracheotomy / Voice box condition",
+    "Chronic skin condition", "Burn survivor",
+    "Limb difference (congenital)", "Limb difference (acquired)",
+    "Clubfoot", "Flat feet (severe/painful)",
+    "Tremor (essential tremor)", "Parkinson's disease",
+    "Tourette's syndrome", "Tic disorder",
+    "Hyperthyroidism", "Hypothyroidism",
+    "PCOS (Polycystic Ovary Syndrome)", "Endometriosis",
+    "Infertility", "Chronic UTIs",
+    "Raynaud's phenomenon", "Circulation issues",
+    "Phantom limb pain", "Complex regional pain syndrome",
+    "Sensory processing disorder (physical)", "Hyperacusis (sound sensitivity)"
+  ],
+  mentalConditions: [
+    "ADHD (primarily inattentive)", "ADHD (primarily hyperactive-impulsive)", "ADHD (combined type)",
+    "Autism spectrum (low support needs)", "Autism spectrum (medium support needs)", "Autism spectrum (high support needs)",
+    "Dyslexia", "Dyscalculia", "Dysgraphia", "Dyspraxia",
+    "Auditory processing disorder", "Visual processing disorder",
+    "Synesthesia", "Aphantasia (cannot visualize mentally)",
+    "Hyperphantasia (extremely vivid mental imagery)",
+    "Prosopagnosia (face blindness)",
+    "SDAM (Severely Deficient Autobiographical Memory)",
+    "HSAM (Highly Superior Autobiographical Memory)",
+    "Intellectually gifted", "Twice exceptional (gifted + learning difference)",
+    "Savant abilities in specific domain",
+    "Anxiety disorder (generalized)", "Social anxiety disorder",
+    "Panic disorder", "Phobia (specific)",
+    "OCD (Obsessive-Compulsive Disorder)", "Body dysmorphia",
+    "PTSD (Post-Traumatic Stress Disorder)", "C-PTSD (Complex PTSD)",
+    "Depression (major depressive disorder)", "Persistent depressive disorder (dysthymia)",
+    "Seasonal affective disorder (SAD)",
+    "Bipolar I disorder", "Bipolar II disorder", "Cyclothymia",
+    "Borderline personality disorder", "Antisocial personality disorder",
+    "Narcissistic personality disorder", "Avoidant personality disorder",
+    "Dependent personality disorder", "Schizoid personality disorder",
+    "Histrionic personality disorder", "Obsessive-compulsive personality disorder",
+    "Schizophrenia", "Schizoaffective disorder",
+    "Dissociative identity disorder (DID)", "Dissociative amnesia",
+    "Depersonalization/derealization disorder",
+    "Eating disorder — anorexia nervosa", "Eating disorder — bulimia nervosa",
+    "Eating disorder — binge eating disorder", "ARFID (Avoidant/Restrictive Food Intake Disorder)",
+    "Selective mutism", "Stuttering / Stammering",
+    "Insomnia (mental health related)", "Nightmare disorder",
+    "Attachment disorder", "Reactive attachment disorder",
+    "Oppositional defiant disorder", "Conduct disorder",
+    "Intellectual disability (mild)", "Intellectual disability (moderate)", "Intellectual disability (severe)",
+    "Traumatic brain injury (TBI) — cognitive effects",
+    "Memory disorder", "Amnesia (retrograde)", "Amnesia (anterograde)",
+    "Misophonia", "Maladaptive daydreaming",
+    "Hoarding disorder", "Trichotillomania (hair pulling)", "Dermatillomania (skin picking)",
+    "Addiction / Substance use disorder", "Gambling disorder",
+    "Gender dysphoria", "Body integrity dysphoria",
+    "Alexithymia (difficulty identifying emotions)",
+    "Aphasia (language processing disorder)",
+    "Agoraphobia", "Claustrophobia",
+    "Dyscalculia", "Non-verbal learning disorder",
+    "Sensory processing disorder (neurological)",
+    "Executive function disorder",
+    "Hyperlexia (advanced reading, difficulty with comprehension)"
+  ],
+  mannerisms: [
+    "Eats extremely quickly — barely chews",     "Savors every single bite slowly",     "Picks at food — rearranges more than eats",
+    "Always clears their plate completely",     "Takes tiny precise bites",     "Takes enormous bites",
+    "Chews with mouth open",     "Cuts everything into tiny pieces before eating",     "Mixes all food together into one pile",
+    "Keeps all foods strictly separated on plate",     "Eats things one at a time in order",     "Saves the best bite for last",
+    "Eats the best thing first in case someone takes it",     "Smells every dish before eating it",     "Examines food closely before eating",
+    "Pushes food around plate without eating much",     "Protective of their plate — guards food",     "Shares food freely with everyone",
+    "Never lets anyone taste their food",     "Talks with mouth full constantly",     "Slurps soups and noodles loudly",
+    "Uses sleeve as napkin",     "Holds utensils in an unusual way",     "Eats with hands whenever possible",
+    "Very adventurous eater — tries everything",     "Extremely picky eater",     "Drowns everything in hot sauce",
+    "Puts ketchup on everything",     "Adds salt before tasting",     "Sips drinks incredibly slowly — nurse a cup for hours",
+    "Gulps drinks down immediately",     "Never finishes a drink — leaves them everywhere",     "Always has a water bottle or drink on hand",
+    "Forgets to drink anything all day",     "Holds warm cups with both hands",     "Drinks everything through a straw",
+    "Drinks straight from the bottle or carton",     "Uses the same mug for everything",     "Pinky out when drinking",
+    "Spills drinks frequently",     "Always overfills cups",     "Shares drinks without thinking",
+    "Would never share a drink",     "Walks extremely fast — people struggle to keep up",     "Leisurely slow pace — never rushes anywhere",
+    "Long confident strides",     "Short quick steps",     "Stomps everywhere — announces their arrival",
+    "Near-silent footsteps — sneaks up on people",     "Shuffles feet when walking",     "Bounces when walking — almost skipping",
+    "Walks with a noticeable swagger",     "Marches with military precision",     "Trudges everywhere like it\'s a chore",
+    "Looks down at the ground while walking",     "Looks straight ahead with tunnel vision",     "Constantly looking around at everything while walking",
+    "Avoids stepping on cracks",     "Counts steps while walking",     "Follows the exact same routes every day",
+    "Always takes new routes and explores",     "Bumps into things and people regularly",     "Walks close to walls and edges",
+    "Sits with perfect posture",     "Slouches deeply into every seat",     "Sits on the very edge of every chair",
+    "Crosses legs immediately upon sitting",     "Never crosses legs",     "Sits cross-legged in chairs",
+    "Sits backwards straddling chairs",     "Kneels or sits on one leg in chairs",     "Bounces leg constantly when sitting",
+    "Cannot stay seated — gets up every few minutes",     "Can sit in one place for hours without moving",     "Fidgets nonstop when seated",
+    "Always chooses the same seat",     "Sprawls out taking up maximum space",     "Makes themselves as small as possible when sitting",
+    "Leans back with arms behind head",     "Always leans forward engaged",     "Adjusts and readjusts seat constantly",
+    "Shifts weight constantly when standing",     "Rocks back and forth on heels",     "Leans against everything — walls, counters, people",
+    "Stands perfectly still like a statue",     "Hands always in pockets when standing",     "Hands on hips — power stance",
+    "Arms crossed when standing",     "Stands with one hip popped out",     "Stands at attention — military bearing",
+    "Fidgets constantly when standing",     "Stands on tiptoes habitually",     "Greets everyone with a big enthusiastic wave",
+    "Small quiet nod of acknowledgment",     "Hugs everyone they meet",     "Firm confident handshake",
+    "Limp awkward handshake",     "Bone-crushing handshake",     "Fist bumps instead of handshakes",
+    "Bows slightly when greeting",     "Salutes casually",     "Remembers and uses everyone\'s name",
+    "Forgets names immediately after hearing them",     "Overly enthusiastic greetings even for strangers",     "Barely acknowledges people when they arrive",
+    "Cannot end a conversation — lingering goodbyes",     "Irish goodbye — disappears without saying bye",     "Announces departure formally",
+    "Sneaks away without anyone noticing",     "Always makes specific follow-up plans when parting",     "Vague \'see you around\' and disappears",
+    "Waves and says goodbye multiple times while leaving",     "Answers phone immediately — always available",     "Lets phone ring multiple times before answering",
+    "Always checks caller ID first",     "Paces around while talking on the phone",     "Gestures with free hand even though no one can see",
+    "Uses speakerphone for everything",     "Talks way too loud on the phone",     "Mumbles on the phone — hard to hear",
+    "Cannot end a phone call — talks forever",     "Ends calls abruptly mid-conversation",     "Leaves extremely long rambling voicemails",
+    "Leaves concise to-the-point voicemails",     "Never answers phone — always texts back instead",     "Avoids voicemails entirely",
+    "Speed reader — devours books",     "Slow careful reader — savors every word",     "Skims everything — gets the gist",
+    "Reads the ending first",     "Avoids spoilers at all costs",     "Reads multiple books simultaneously",
+    "Must finish every book they start no matter what",     "Abandons books freely if they lose interest",     "Dog-ears pages",
+    "Uses elaborate bookmark system",     "Annotates and highlights everything",     "Writes notes in margins",
+    "Reads anywhere — any conditions",     "Needs perfect quiet silence to read",     "Reads while walking or eating",
+    "Reads aloud under their breath",     "Cracks book spines without hesitation",     "Treats books as sacred objects — handles carefully",
+    "Writes quickly in messy illegible handwriting",     "Writes slowly in neat precise handwriting",     "Beautiful calligraphic handwriting",
+    "Mix of print and cursive",     "ALL CAPS writer",     "All lowercase writer",
+    "Perfect grammar and spelling always",     "Terrible grammar — writes how they talk",     "Writes to think — needs to see thoughts on paper",
+    "Edits obsessively — rewrites everything multiple times",     "Never edits — first draft is final draft",     "Concise writer — as few words as possible",
+    "Rambling writer — buries the point",     "Types extremely fast",     "Hunt-and-peck typist",
+    "Specific writing ritual (certain pen, certain place, etc.)",     "Jumps into tasks immediately without planning",     "Plans and researches extensively before starting",
+    "Makes detailed to-do lists for everything",     "Never makes lists — keeps it all in their head",     "Completes every task fully before starting the next",
+    "Starts many projects and finishes few",     "Perfectionist — nothing is ever good enough",     "Good-enough approach — moves on quickly",
+    "Goes above and beyond what\'s asked",     "Does the absolute bare minimum",     "Takes extreme care and time with tasks",
+    "Rushes through everything",     "Procrastinates until the last possible moment",     "Self-starter — doesn\'t need to be told to begin",
+    "Needs external push or deadline to act",     "Works best under pressure",     "Falls apart under pressure",
+    "Passionate about tasks they care about, apathetic about the rest"
+  ],
   virtues: [
     "Honesty", "Integrity", "Loyalty", "Compassion", "Empathy", "Generosity", "Kindness",
     "Patience", "Humility", "Gratitude", "Forgiveness", "Courage", "Bravery", "Perseverance",
@@ -2171,6 +3327,12 @@ const DATA = {
 
 };
 
+// ═══════ CUSTOM DATA & POOL MODES (must be before any function that references them) ═══════
+let customData = { pools: {} };
+const CUSTOM_STORAGE_KEY = 'charforge_custom_traits';
+let customEnabled = true; // master toggle: mix custom traits into General/MHA pools
+const poolModes = { savvies:'general', ineptitudes:'general', likes:'general', dislikes:'general', hobbies:'general', taboos:'general', religion:'general', face:'general', bodyFeatures:'general', physicalQuirks:'general', identifying:'general' };
+
 const EXCLUSION_PAIRS = { likes: 'dislikes', dislikes: 'likes' };
 
 // ═══════ INDEXEDDB — Multi-Profile ═══════
@@ -2210,6 +3372,8 @@ async function loadProfile(id) {
   document.getElementById('sheetNameInput').value = sheet._name || '';
   document.getElementById('sheetNotes').value = sheet._notes || '';
   loadImage();
+  if (window._loadIdentity) window._loadIdentity();
+  if (window._loadBody) window._loadBody();
   renderSheet();
   refreshPickerIfOpen();
   await renderProfileSelect();
@@ -2251,9 +3415,9 @@ async function renderProfileSelect() {
   }
 }
 
-const CATEGORY_LABELS = { savvies:'Savvies', ineptitudes:'Ineptitudes', likes:'Likes', dislikes:'Dislikes', virtues:'Virtues', perks:'Perks', vices:'Vices', flaws:'Flaws', kinks:'Kinks & Preferences', taboos:'Taboos', speech:'Speech', pets:'Pets', hobbies:'Hobbies', religion:'Religious Beliefs', tics:'Tics & Quirks' };
-const ORDERED_CATS = ['savvies','ineptitudes','likes','dislikes','virtues','perks','vices','flaws','kinks','taboos','speech','pets','hobbies','religion','tics'];
-const META_KEYS = new Set(['_name', '_notes', '_image']);
+const CATEGORY_LABELS = { savvies:'Savvies', ineptitudes:'Ineptitudes', likes:'Likes', dislikes:'Dislikes', virtues:'Virtues', perks:'Perks', vices:'Vices', flaws:'Flaws', kinks:'Kinks & Preferences', taboos:'Taboos', speech:'Speech', intellectual:'Intellectual Characteristics', pets:'Pets', hobbies:'Hobbies', religion:'Religious Beliefs', tics:'Tics & Quirks', mannerisms:'Mannerisms', hygiene:'Hygiene', identity:'Identity', body:'Build', eyeDescriptor:'Eyes', hairDescriptor:'Hair', face:'Facial Features', bodyFeatures:'Body Features', physicalQuirks:'Physical Quirks', identifying:'Identifying Characteristics', physicalConditions:'Physical Conditions', mentalConditions:'Mental & Neurological Conditions' };
+const ORDERED_CATS = ['eyeDescriptor','hairDescriptor','face','bodyFeatures','physicalQuirks','identifying','savvies','ineptitudes','likes','dislikes','virtues','perks','vices','flaws','kinks','taboos','speech','intellectual','pets','hobbies','religion','tics','mannerisms','hygiene','physicalConditions','mentalConditions'];
+const META_KEYS = new Set(['_name', '_notes', '_image', '_identity', '_body']);
 
 let toastTimer = null;
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 1800); }
@@ -2305,7 +3469,7 @@ function renderHistory() {
   inner.innerHTML = html;
   inner.querySelectorAll('.history-entry-tag').forEach(el => {
     el.addEventListener('click', () => {
-      if (el.dataset.cat === 'speech') { try { addToSheet(el.dataset.cat, JSON.parse(el.dataset.raw)); } catch(e) {} }
+      if (el.dataset.cat === 'speech' || el.dataset.cat === 'intellectual') { try { addToSheet(el.dataset.cat, JSON.parse(el.dataset.raw)); } catch(e) {} }
       else addToSheet(el.dataset.cat, el.dataset.value);
     });
   });
@@ -2322,16 +3486,46 @@ function renderSheet() {
   for (const cat in sheet) { if (META_KEYS.has(cat)) continue; if (Array.isArray(sheet[cat])) total += sheet[cat].length; }
   countEl.textContent = total + (total === 1 ? ' trait' : ' traits');
 
-  if (total === 0) {
+  if (total === 0 && !sheet._identity && !sheet._body) {
     body.innerHTML = '<div class="sheet-empty"><span class="sheet-empty-icon">✦</span>Click the <strong>+</strong> button on any generated trait to add it here.<br>Your sheet saves automatically.</div>';
     return;
   }
 
   let html = '';
+
+  // Render identity if present
+  if (sheet._identity && Object.keys(sheet._identity).length > 0) {
+    const idLabels = { gender:'Gender Identity', sex:'Biological Sex', presentation:'Presentation', sexuality:'Sexuality', romantic:'Romantic Preference' };
+    html += '<div class="sheet-category"><div class="sheet-category-label">Identity</div><div class="sheet-category-tags">';
+    for (const [key, label] of Object.entries(idLabels)) {
+      if (sheet._identity[key]) {
+        html += '<span class="sheet-tag"><span class="speech-sub-label">' + label + ':</span> ' + sheet._identity[key] + '</span>';
+      }
+    }
+    html += '</div></div>';
+  }
+
+  // Render body if present
+  if (sheet._body) {
+    const cm = sheet._body.cm;
+    const kg = sheet._body.kg;
+    const totalIn = cm / 2.54;
+    const ft = Math.floor(totalIn / 12);
+    const inches = Math.round(totalIn % 12);
+    const ftIn = inches === 12 ? `${ft+1}'0"` : `${ft}'${inches}"`;
+    const lbs = Math.round(kg * 2.205);
+    const m = cm / 100;
+    const bmi = kg / (m * m);
+    html += '<div class="sheet-category"><div class="sheet-category-label">Build</div><div class="sheet-category-tags">';
+    html += '<span class="sheet-tag"><span class="speech-sub-label">Height:</span> ' + ftIn + ' / ' + cm + ' cm</span>';
+    html += '<span class="sheet-tag"><span class="speech-sub-label">Weight:</span> ' + lbs + ' lbs / ' + kg + ' kg</span>';
+    html += '<span class="sheet-tag"><span class="speech-sub-label">BMI:</span> ' + bmi.toFixed(1) + '</span>';
+    html += '</div></div>';
+  }
   for (const cat of ORDERED_CATS) {
     if (!sheet[cat] || sheet[cat].length === 0) continue;
     html += '<div class="sheet-category" data-sheet-cat="' + cat + '"><div class="sheet-category-label">' + (CATEGORY_LABELS[cat]||cat) + '</div><div class="sheet-category-tags" data-drop-cat="' + cat + '">';
-    if (cat === 'speech') {
+    if (cat === 'speech' || cat === 'intellectual') {
       sheet[cat].forEach((entry, i) => {
         html += '<div class="sheet-speech-entry" draggable="true" data-cat="'+cat+'" data-idx="'+i+'"><span class="speech-sub-label">'+entry.label+':</span> <span class="speech-sub-value">'+entry.value+'</span><button class="btn-remove-tag" data-cat="'+cat+'" data-idx="'+i+'">✕</button></div>';
       });
@@ -2413,10 +3607,30 @@ function exportTxt() {
   let lines = ['═══ CHARACTER SHEET ═══'];
   if (name) lines.push('Name: ' + name);
   lines.push('');
+  // Identity
+  if (sheet._identity && Object.keys(sheet._identity).length > 0) {
+    const idLabels = { gender:'Gender Identity', sex:'Biological Sex', presentation:'Presentation', sexuality:'Sexuality', romantic:'Romantic Preference' };
+    lines.push('IDENTITY'); lines.push('─'.repeat(30));
+    for (const [key, label] of Object.entries(idLabels)) {
+      if (sheet._identity[key]) lines.push('  ' + label + ': ' + sheet._identity[key]);
+    }
+    lines.push('');
+  }
+  // Body
+  if (sheet._body) {
+    const cm = sheet._body.cm, kg = sheet._body.kg;
+    const totalIn = cm / 2.54, ft = Math.floor(totalIn / 12), inches = Math.round(totalIn % 12);
+    const ftIn = inches === 12 ? `${ft+1}'0"` : `${ft}'${inches}"`;
+    const lbs = Math.round(kg * 2.205);
+    lines.push('BUILD'); lines.push('─'.repeat(30));
+    lines.push('  Height: ' + ftIn + ' / ' + cm + ' cm');
+    lines.push('  Weight: ' + lbs + ' lbs / ' + kg + ' kg');
+    lines.push('');
+  }
   for (const cat of ORDERED_CATS) {
     if (!sheet[cat] || sheet[cat].length === 0) continue;
     lines.push((CATEGORY_LABELS[cat]||cat).toUpperCase()); lines.push('─'.repeat(30));
-    if (cat === 'speech') sheet[cat].forEach(e => lines.push('  ' + e.label + ': ' + e.value));
+    if (cat === 'speech' || cat === 'intellectual') sheet[cat].forEach(e => lines.push('  ' + e.label + ': ' + e.value));
     else sheet[cat].forEach(item => lines.push('  • ' + item));
     lines.push('');
   }
@@ -2472,9 +3686,23 @@ function getOpinionPool(type) {
 }
 
 function pickWeightedOpinions(count, type) {
-  const mha = mhaStates[type] || false;
+  const mode = poolModes[type] || 'general';
+
+  // If in a custom pool mode, just return from that pool
+  if (mode !== 'general' && mode !== 'mha') {
+    const pool = customData.pools[mode];
+    const items = (pool && pool[type]) ? [...pool[type]] : [];
+    return pickRandom(items, Math.min(count, items.length));
+  }
+
+  const mha = mode === 'mha';
   const likedPool = mha ? [...DATA.opinions.liked.mha] : [...DATA.opinions.liked.general];
   const dislikedPool = mha ? [...DATA.opinions.disliked.mha] : [...DATA.opinions.disliked.general];
+  // Inject custom traits into the general/mha pool
+  const customLikes = getCustomTraitsForCategory('likes');
+  const customDislikes = getCustomTraitsForCategory('dislikes');
+  if (type === 'likes') likedPool.push(...customLikes);
+  else dislikedPool.push(...customDislikes);
   const isWeighted = weightStates[type];
   const results = [];
   const used = new Set();
@@ -2510,10 +3738,17 @@ function pickWeightedOpinions(count, type) {
   return results;
 }
 
-// Helper to get the right pool for any category (handles split general/mha structures)
-const mhaStates = { savvies:false, ineptitudes:false, likes:false, dislikes:false, hobbies:false, taboos:false, religion:false };
-function getPool(category) {
-  const mha = mhaStates[category] || false;
+// Pool mode per category: 'general', 'mha', or a custom pool name
+
+function getPoolForMode(category) {
+  const mode = poolModes[category] || 'general';
+  if (mode !== 'general' && mode !== 'mha') {
+    // Custom pool mode — return only that pool's traits for this category
+    const pool = customData.pools[mode];
+    if (pool && pool[category]) return [...pool[category]];
+    return [];
+  }
+  const mha = mode === 'mha';
   if (category === 'likes' || category === 'dislikes') {
     const liked = mha ? [...DATA.opinions.liked.mha] : [...DATA.opinions.liked.general];
     const disliked = mha ? [...DATA.opinions.disliked.mha] : [...DATA.opinions.disliked.general];
@@ -2522,6 +3757,25 @@ function getPool(category) {
   const d = DATA[category];
   if (d && d.general) return mha ? [...d.mha] : [...d.general];
   return d;
+}
+
+function getPool(category) {
+  const base = getPoolForMode(category);
+  // When in general or mha mode, also include enabled custom traits
+  const mode = poolModes[category] || 'general';
+  if (mode === 'general' || mode === 'mha') {
+    const custom = getCustomTraitsForCategory(category);
+    if (custom.length > 0 && Array.isArray(base)) return [...base, ...custom];
+  }
+  return base;
+}
+
+function getCustomPoolNamesForCategory(category) {
+  const names = [];
+  for (const [name, pool] of Object.entries(customData.pools)) {
+    if (pool[category] && pool[category].length > 0) names.push(name);
+  }
+  return names;
 }
 
 function renderTags(container, items, category) {
@@ -2560,28 +3814,111 @@ function renderSpeech(container) {
   });
 }
 
+function renderIntellectual(container) {
+  const s = DATA.intellectual;
+  const LABELS = {
+    learningStyle: 'Learning Style',
+    thinkingPattern: 'Thinking Pattern',
+    problemSolving: 'Problem-Solving',
+    memory: 'Memory',
+    processingSpeed: 'Processing Speed',
+    attention: 'Attention',
+    cognitiveStrength: 'Cognitive Strength',
+    cognitiveWeakness: 'Cognitive Weakness',
+    curiosity: 'Curiosity',
+    comprehension: 'Comprehension',
+    flexibility: 'Mental Flexibility',
+    creativity: 'Creativity',
+    mentalStamina: 'Mental Stamina'
+  };
+  container.classList.remove('result-tags');
+  let html = '<div class="result-speech">';
+  Object.entries(LABELS).forEach(([key, label], i) => {
+    const value = pickOne(s[key]);
+    html += '<div class="speech-row" data-speech-label="'+label+'" data-speech-value="'+value.replace(/"/g,'&quot;')+'" data-sub-pool="'+key+'" data-pool-type="intellectual"><span class="speech-label">'+label+'</span><span class="speech-value">'+value+'</span><span class="speech-actions"><button class="btn-reroll-tag" title="Reroll">↻</button><button class="btn-add-tag" title="Add">+</button></span></div>';
+  });
+  container.innerHTML = html + '</div>';
+  container.querySelectorAll('.speech-row').forEach(row => {
+    row.querySelector('.btn-add-tag').addEventListener('click', (e) => { e.stopPropagation(); addToSheet('intellectual', { label: row.dataset.speechLabel, value: row.querySelector('.speech-value').textContent }); row.classList.add('added-flash'); setTimeout(() => row.classList.remove('added-flash'), 600); });
+    row.querySelector('.btn-reroll-tag').addEventListener('click', (e) => { e.stopPropagation(); const p = DATA.intellectual[row.dataset.subPool]; if (!p) return; const nv = pickOne(p); row.querySelector('.speech-value').textContent = nv; row.dataset.speechValue = nv; row.classList.add('added-flash'); setTimeout(() => row.classList.remove('added-flash'), 400); });
+  });
+}
+
 function clearResults(container, type) {
-  const ph = { savvies:'savvies', ineptitudes:'ineptitudes', likes:'likes', dislikes:'dislikes', vices:'vices', flaws:'flaws', kinks:'kinks & preferences', virtues:'virtues', perks:'perks', taboos:'taboos', speech:'speech patterns', pets:'pets', hobbies:'hobbies', religion:'religious beliefs', tics:'tics & quirks' };
+  const ph = { savvies:'savvies', ineptitudes:'ineptitudes', likes:'likes', dislikes:'dislikes', vices:'vices', flaws:'flaws', kinks:'kinks & preferences', virtues:'virtues', perks:'perks', taboos:'taboos', speech:'speech patterns', intellectual:'intellectual traits', pets:'pets', hobbies:'hobbies', religion:'religious beliefs', tics:'tics & quirks', mannerisms:'mannerisms', hygiene:'hygiene traits', eyeDescriptor:'eye description', hairDescriptor:'hair description', face:'facial features', bodyFeatures:'body features', physicalQuirks:'physical quirks', identifying:'identifying characteristics' };
   container.classList.add('result-tags'); container.innerHTML = '<span class="placeholder-text">Click generate to roll '+(ph[type]||type)+'…</span>';
 }
 
 function getCardResults(card) {
   const type = card.dataset.generator, items = [];
-  if (type === 'speech') card.querySelectorAll('.speech-row').forEach(r => items.push({label:r.dataset.speechLabel, value:r.querySelector('.speech-value').textContent}));
+  if (type === 'speech' || type === 'intellectual') card.querySelectorAll('.speech-row').forEach(r => items.push({label:r.dataset.speechLabel, value:r.querySelector('.speech-value').textContent}));
   else card.querySelectorAll('.result-tag').forEach(t => { const v = t.childNodes[0]?.textContent?.trim(); if (v) items.push(v); });
   return items;
 }
 
 // ═══════ WIRE CARDS ═══════
 const cardInstances = {};
+// ═══════ EYE & HAIR DESCRIPTOR GENERATORS ═══════
+const DESCRIPTOR_TYPES = ['eyeDescriptor', 'hairDescriptor'];
+
+// ═══════ HYGIENE MODE TOGGLE ═══════
+let hygieneMode = 'mixed'; // 'mixed', 'good', 'bad'
+const hygieneModeBtn = document.getElementById('hygieneMode');
+if (hygieneModeBtn) {
+  hygieneModeBtn.addEventListener('click', () => {
+    if (hygieneMode === 'mixed') { hygieneMode = 'good'; hygieneModeBtn.textContent = '✨ Good'; hygieneModeBtn.classList.remove('random'); hygieneModeBtn.title = 'Good hygiene only. Click for bad.'; }
+    else if (hygieneMode === 'good') { hygieneMode = 'bad'; hygieneModeBtn.textContent = '🗑 Bad'; hygieneModeBtn.classList.add('random'); hygieneModeBtn.title = 'Bad hygiene only. Click for mixed.'; }
+    else { hygieneMode = 'mixed'; hygieneModeBtn.textContent = '🔀 Mixed'; hygieneModeBtn.classList.add('random'); hygieneModeBtn.title = 'Mix of good, bad, and neutral.'; }
+  });
+}
+
+function getHygienePool() {
+  const d = DATA.hygiene;
+  let base;
+  if (hygieneMode === 'good') base = [...d.good, ...d.neutral];
+  else if (hygieneMode === 'bad') base = [...d.bad, ...d.neutral];
+  else base = [...d.good, ...d.bad, ...d.neutral];
+  const custom = getCustomTraitsForCategory('hygiene');
+  return custom.length > 0 ? [...base, ...custom] : base;
+}
+
 document.querySelectorAll('.gen-card').forEach(card => {
-  const type = card.dataset.generator, btnGen = card.querySelector('[data-gen]'), btnClear = card.querySelector('[data-clear]'), btnLock = card.querySelector('[data-lock]'), btnAddAll = card.querySelector('[data-addall]'), countSelect = card.querySelector('[data-count]'), rc = card.querySelector('[data-results]');
+  const type = card.dataset.generator;
+  if (type === 'identity' || type === 'body' || type === 'physicalConditions' || type === 'mentalConditions') return; // handled separately
+  const btnGen = card.querySelector('[data-gen]'), btnClear = card.querySelector('[data-clear]'), btnLock = card.querySelector('[data-lock]'), btnAddAll = card.querySelector('[data-addall]'), countSelect = card.querySelector('[data-count]'), rc = card.querySelector('[data-results]');
   let locked = false;
   function generate() {
     if (locked) return; btnGen.classList.add('rolling');
     setTimeout(() => {
       let hi;
-      if (type === 'speech') { renderSpeech(rc); hi = []; rc.querySelectorAll('.speech-row').forEach(r => hi.push({label:r.dataset.speechLabel, value:r.querySelector('.speech-value').textContent})); }
+      if (type === 'eyeDescriptor' || type === 'hairDescriptor') {
+        const d = DATA[type];
+        const keys = Object.keys(d);
+        const parts = keys.map(k => d[k][Math.floor(Math.random() * d[k].length)]);
+        const combo = parts.join(', ');
+        rc.innerHTML = ''; rc.classList.add('result-tags');
+        const tag = document.createElement('span'); tag.className = 'result-tag'; tag.textContent = combo;
+        const actions = document.createElement('span'); actions.className = 'tag-actions';
+        const rb = document.createElement('button'); rb.className = 'btn-reroll-tag'; rb.textContent = '↻'; rb.title = 'Reroll';
+        rb.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const np = keys.map(k => d[k][Math.floor(Math.random() * d[k].length)]).join(', ');
+          tag.childNodes[0].textContent = np;
+          tag.classList.add('added-flash'); setTimeout(() => tag.classList.remove('added-flash'), 400);
+        });
+        const ab = document.createElement('button'); ab.className = 'btn-add-tag'; ab.textContent = '+'; ab.title = 'Add to sheet';
+        ab.addEventListener('click', (e) => { e.stopPropagation(); addToSheet(type, tag.childNodes[0].textContent.trim()); tag.classList.add('added-flash'); setTimeout(() => tag.classList.remove('added-flash'), 600); });
+        actions.appendChild(rb); actions.appendChild(ab); tag.appendChild(actions); rc.appendChild(tag);
+        hi = [combo];
+      }
+      else if (type === 'hygiene') {
+        const c = countSelect ? parseInt(countSelect.value) : 1;
+        const pool = getHygienePool();
+        const it = pickRandomExcluding(pool, c, type);
+        renderTags(rc, it, type); hi = it;
+      }
+      else if (type === 'intellectual') { renderIntellectual(rc); hi = []; rc.querySelectorAll('.speech-row').forEach(r => hi.push({label:r.dataset.speechLabel, value:r.querySelector('.speech-value').textContent})); }
+      else if (type === 'speech') { renderSpeech(rc); hi = []; rc.querySelectorAll('.speech-row').forEach(r => hi.push({label:r.dataset.speechLabel, value:r.querySelector('.speech-value').textContent})); }
       else if (type === 'religion') { const pool = getPool(type); const it = [pickOne(pool)]; renderTags(rc, it, type); hi = it; }
       else if (type === 'likes' || type === 'dislikes') { const c = countSelect ? parseInt(countSelect.value) : 1; const it = pickWeightedOpinions(c, type); renderTags(rc, it, type); hi = it; }
       else { const c = countSelect ? parseInt(countSelect.value) : 1; const pool = getPool(type); const it = pickRandomExcluding(pool, c, type); renderTags(rc, it, type); hi = it; }
@@ -2594,14 +3931,86 @@ document.querySelectorAll('.gen-card').forEach(card => {
   if (btnAddAll) btnAddAll.addEventListener('click', () => {
     const items = getCardResults(card); if (!items.length) return;
     let added = 0; if (!sheet[type]) sheet[type] = [];
-    items.forEach(item => { if (type==='speech') { if (!sheet[type].some(e => e.label===item.label && e.value===item.value)) { sheet[type].push(item); added++; } } else { if (!sheet[type].includes(item)) { sheet[type].push(item); added++; } } });
+    items.forEach(item => { if (type==='speech'||type==='intellectual') { if (!sheet[type].some(e => e.label===item.label && e.value===item.value)) { sheet[type].push(item); added++; } } else { if (!sheet[type].includes(item)) { sheet[type].push(item); added++; } } });
     if (added > 0) { saveCurrentSheet(); renderSheet(); showToast(added + ' added ✦'); } else showToast('All already on sheet');
   });
   cardInstances[type] = { generate, locked: () => locked };
 });
 
+// ═══════ CONDITION PICKERS ═══════
+function wireConditionPicker(searchId, optionsId, selectedId, dataKey) {
+  const searchInput = document.getElementById(searchId);
+  const optionsDiv = document.getElementById(optionsId);
+  const selectedDiv = document.getElementById(selectedId);
+  const allItems = DATA[dataKey];
+  let selected = new Set();
+
+  function renderOptions(filter) {
+    if (!filter || filter.length < 1) { optionsDiv.innerHTML = ''; return; }
+    const lower = filter.toLowerCase();
+    const matches = allItems.filter(item => item.toLowerCase().includes(lower)).slice(0, 30);
+    optionsDiv.innerHTML = matches.map(item =>
+      '<span class="condition-chip' + (selected.has(item) ? ' selected' : '') + '" data-val="' + item.replace(/"/g, '&quot;') + '">' + item + '</span>'
+    ).join('');
+    optionsDiv.querySelectorAll('.condition-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const val = chip.dataset.val;
+        if (selected.has(val)) { selected.delete(val); chip.classList.remove('selected'); }
+        else { selected.add(val); chip.classList.add('selected'); }
+        renderSelected();
+      });
+    });
+  }
+
+  function renderSelected() {
+    selectedDiv.innerHTML = Array.from(selected).map(item =>
+      '<span class="condition-sel-tag">' + item + '<button class="remove-cond" data-val="' + item.replace(/"/g, '&quot;') + '">×</button></span>'
+    ).join('');
+    selectedDiv.querySelectorAll('.remove-cond').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selected.delete(btn.dataset.val);
+        renderSelected();
+        renderOptions(searchInput.value);
+      });
+    });
+  }
+
+  searchInput.addEventListener('input', () => renderOptions(searchInput.value));
+
+  // Wire addAll button
+  const card = searchInput.closest('.gen-card');
+  const btnAddAll = card.querySelector('[data-addall]');
+  if (btnAddAll) btnAddAll.addEventListener('click', () => {
+    if (selected.size === 0) { showToast('Select conditions first'); return; }
+    if (!sheet[dataKey]) sheet[dataKey] = [];
+    let added = 0;
+    selected.forEach(item => { if (!sheet[dataKey].includes(item)) { sheet[dataKey].push(item); added++; } });
+    if (added > 0) { saveCurrentSheet(); renderSheet(); showToast(added + ' added ✦'); } else showToast('All already on sheet');
+  });
+
+  // Wire clear button
+  const btnClear = card.querySelector('[data-clear]');
+  if (btnClear) btnClear.addEventListener('click', () => {
+    selected.clear();
+    searchInput.value = '';
+    optionsDiv.innerHTML = '';
+    renderSelected();
+  });
+
+  return { getSelected: () => Array.from(selected), setSelected: (items) => { selected = new Set(items); renderSelected(); } };
+}
+
+const physCondPicker = wireConditionPicker('physCondSearch', 'physCondOptions', 'physCondSelected', 'physicalConditions');
+const mentalCondPicker = wireConditionPicker('mentalCondSearch', 'mentalCondOptions', 'mentalCondSelected', 'mentalConditions');
+
 // ═══════ COLLAPSE ═══════
 document.querySelectorAll('[data-collapse]').forEach(h => { h.addEventListener('click', () => document.getElementById(h.dataset.collapse).classList.toggle('collapsed')); });
+document.getElementById('customInfoToggle').addEventListener('click', () => {
+  const body = document.getElementById('customInfoBody');
+  const icon = document.querySelector('#customInfoToggle .section-collapse-icon');
+  if (body.style.display === 'none') { body.style.display = 'block'; icon.textContent = '▼'; }
+  else { body.style.display = 'none'; icon.textContent = '▶'; }
+});
 
 // ═══════ GENERATE ALL / ADD ALL ═══════
 document.getElementById('btnGenAll').addEventListener('click', () => Object.values(cardInstances).forEach(c => c.generate()));
@@ -2610,7 +4019,7 @@ document.getElementById('btnAddAllVisible').addEventListener('click', () => {
   document.querySelectorAll('.gen-card').forEach(card => {
     const type = card.dataset.generator, items = getCardResults(card); if (!items.length) return;
     if (!sheet[type]) sheet[type] = [];
-    items.forEach(item => { if (type==='speech') { if (!sheet[type].some(e => e.label===item.label && e.value===item.value)) { sheet[type].push(item); tot++; } } else { if (!sheet[type].includes(item)) { sheet[type].push(item); tot++; } } });
+    items.forEach(item => { if (type==='speech'||type==='intellectual') { if (!sheet[type].some(e => e.label===item.label && e.value===item.value)) { sheet[type].push(item); tot++; } } else { if (!sheet[type].includes(item)) { sheet[type].push(item); tot++; } } });
   });
   if (tot > 0) { saveCurrentSheet(); renderSheet(); showToast(tot + ' traits added ✦'); } else showToast('Nothing new');
 });
@@ -2630,26 +4039,404 @@ document.querySelectorAll('.btn-weight-toggle[data-weight]').forEach(btn => {
   });
 });
 
-// ═══════ PER-CARD MHA TOGGLES ═══════
+// ═══════ PER-CARD POOL MODE TOGGLES ═══════
+function getPoolCycle(cat) {
+  // Build the cycle: general → mha → [custom pools for this cat] → general
+  const cycle = ['general'];
+  // Only add mha if this category has mha data
+  const d = DATA[cat];
+  const hasLikesMha = (cat === 'likes' || cat === 'dislikes') && DATA.opinions.liked.mha;
+  if ((d && d.mha) || hasLikesMha) cycle.push('mha');
+  // Add custom pools that have traits for this category
+  const customNames = getCustomPoolNamesForCategory(cat);
+  cycle.push(...customNames);
+  return cycle;
+}
+
+function updatePoolButton(btn, cat) {
+  const mode = poolModes[cat] || 'general';
+  const cycle = getPoolCycle(cat);
+  const count = getPool(cat).length;
+  if (mode === 'general') {
+    btn.textContent = '🌐 General (' + count + ')';
+    btn.classList.add('random');
+    btn.title = 'General pool. Click to cycle.';
+  } else if (mode === 'mha') {
+    btn.textContent = '🦸 +MHA (' + count + ')';
+    btn.classList.remove('random');
+    btn.title = 'MHA pool. Click to cycle.';
+  } else {
+    btn.textContent = '🔧 ' + mode + ' (' + count + ')';
+    btn.classList.remove('random');
+    btn.title = 'Custom pool: ' + mode + '. Click to cycle.';
+  }
+}
+
+function refreshPoolButtons() {
+  document.querySelectorAll('[data-mha]').forEach(btn => {
+    const cat = btn.dataset.mha;
+    // Reset to general if current mode is a deleted pool
+    if (poolModes[cat] !== 'general' && poolModes[cat] !== 'mha') {
+      if (!customData.pools[poolModes[cat]]) poolModes[cat] = 'general';
+    }
+    updatePoolButton(btn, cat);
+  });
+}
+
 document.querySelectorAll('[data-mha]').forEach(btn => {
   const cat = btn.dataset.mha;
-  // Set initial count
-  btn.textContent = '🌐 General (' + getPool(cat).length + ')';
+  updatePoolButton(btn, cat);
   btn.addEventListener('click', (e) => {
     e.stopPropagation();
-    mhaStates[cat] = !mhaStates[cat];
-    const count = getPool(cat).length;
-    if (mhaStates[cat]) {
-      btn.textContent = '🦸 +MHA (' + count + ')';
-      btn.classList.remove('random');
-      btn.title = 'MHA items included. Click for general only.';
-    } else {
-      btn.textContent = '🌐 General (' + count + ')';
-      btn.classList.add('random');
-      btn.title = 'General only. Click to include MHA content.';
-    }
+    const cycle = getPoolCycle(cat);
+    const currentIdx = cycle.indexOf(poolModes[cat] || 'general');
+    const nextIdx = (currentIdx + 1) % cycle.length;
+    poolModes[cat] = cycle[nextIdx];
+    updatePoolButton(btn, cat);
   });
 });
+
+// ═══════ IDENTITY & BODY TOOLS ═══════
+(function() {
+  // Identity card
+  const idCard = document.querySelector('[data-generator="identity"]');
+  if (idCard) {
+    const selects = {
+      gender: document.getElementById('selGender'),
+      sex: document.getElementById('selSex'),
+      presentation: document.getElementById('selPresentation'),
+      sexuality: document.getElementById('selSexuality'),
+      romantic: document.getElementById('selRomantic')
+    };
+
+    // Save identity to sheet on change
+    Object.values(selects).forEach(sel => {
+      sel.addEventListener('change', () => { saveIdentityToSheet(); });
+    });
+
+    function saveIdentityToSheet() {
+      const data = {};
+      for (const [key, sel] of Object.entries(selects)) {
+        if (sel.value) data[key] = sel.value;
+      }
+      sheet._identity = Object.keys(data).length ? data : undefined;
+      saveCurrentSheet(); renderSheet();
+    }
+
+    function loadIdentityFromSheet() {
+      const data = sheet._identity || {};
+      for (const [key, sel] of Object.entries(selects)) {
+        sel.value = data[key] || '';
+      }
+    }
+
+    // Randomize
+    const btnGen = idCard.querySelector('[data-gen]');
+    const btnClear = idCard.querySelector('[data-clear]');
+    const btnAddAll = idCard.querySelector('[data-addall]');
+    let locked = false;
+    const btnLock = idCard.querySelector('[data-lock]');
+
+    btnGen.addEventListener('click', () => {
+      if (locked) return;
+      Object.values(selects).forEach(sel => {
+        const opts = [...sel.options].filter(o => o.value);
+        sel.value = opts[Math.floor(Math.random() * opts.length)].value;
+      });
+      saveIdentityToSheet();
+      showToast('Identity randomized ✦');
+    });
+
+    btnClear.addEventListener('click', () => {
+      if (locked) return;
+      Object.values(selects).forEach(sel => sel.value = '');
+      delete sheet._identity;
+      saveCurrentSheet(); renderSheet();
+    });
+
+    btnAddAll.addEventListener('click', () => {
+      saveIdentityToSheet();
+      showToast('Identity saved ✦');
+    });
+
+    btnLock.addEventListener('click', () => {
+      locked = !locked;
+      btnLock.classList.toggle('locked', locked);
+      btnLock.textContent = locked ? '🔒' : '🔓';
+    });
+
+    // Register with cardInstances for Generate All
+    cardInstances['identity'] = {
+      generate: () => { if (!locked) { btnGen.click(); } },
+      locked: () => locked
+    };
+
+    // Load on profile switch
+    window._loadIdentity = loadIdentityFromSheet;
+  }
+
+  // Body card
+  const bodyCard = document.querySelector('[data-generator="body"]');
+  if (bodyCard) {
+    const hSlider = document.getElementById('heightSlider');
+    const wSlider = document.getElementById('weightSlider');
+    const hCm = document.getElementById('heightCm');
+    const hFt = document.getElementById('heightFt');
+    const hIn = document.getElementById('heightIn');
+    const wKg = document.getElementById('weightKg');
+    const wLbs = document.getElementById('weightLbs');
+    const bmiMarker = document.getElementById('bmiMarker');
+    const bodyVerdict = document.getElementById('bodyVerdict');
+    const bodyNote = document.getElementById('bodyNote');
+    const btnCalc = document.getElementById('btnCalc');
+    const calcBuild = document.getElementById('calcBuildType');
+    const btnRealism = document.getElementById('btnRealism');
+    let animeMode = false;
+    let syncing = false;
+
+    function updateSliderRanges() {
+      if (animeMode) {
+        hSlider.min = 10; hSlider.max = 6100;
+        wSlider.min = 1; wSlider.max = 100000;
+      } else {
+        hSlider.min = 60; hSlider.max = 275;
+        wSlider.min = 15; wSlider.max = 350;
+      }
+      // Clamp current values to new range for slider display only
+      const cm = parseFloat(hCm.value) || 0;
+      const kg = parseFloat(wKg.value) || 0;
+      if (cm > 0) hSlider.value = Math.min(Math.max(cm, parseInt(hSlider.min)), parseInt(hSlider.max));
+      if (kg > 0) wSlider.value = Math.min(Math.max(kg, parseInt(wSlider.min)), parseInt(wSlider.max));
+    }
+
+    function cmToFtParts(cm) {
+      const ti = cm / 2.54;
+      let ft = Math.floor(ti / 12);
+      let inches = Math.round(ti % 12);
+      if (inches >= 12) { ft++; inches = 0; }
+      return [ft, inches];
+    }
+    function cmToFtIn(cm) { const [f,i] = cmToFtParts(cm); return f+"'"+i+'"'; }
+    function kgToLbs(kg) { return Math.round(kg * 2.205); }
+    function lbsToKg(lbs) { return Math.round(lbs / 2.205); }
+
+    function autoSizeInputs() {
+      [hFt, hIn, hCm, wLbs, wKg].forEach(inp => {
+        const len = Math.max(2, String(inp.value).length);
+        inp.style.width = (len + 1) + 'ch';
+      });
+    }
+
+    function syncFromCmKg() {
+      if (syncing) return; syncing = true;
+      const cm = parseFloat(hCm.value) || 0;
+      const kg = parseFloat(wKg.value) || 0;
+      if (cm > 0) { const [ft, inches] = cmToFtParts(cm); hFt.value = ft; hIn.value = inches; }
+      if (kg > 0) wLbs.value = kgToLbs(kg);
+      if (cm > 0) hSlider.value = Math.min(Math.max(cm, parseInt(hSlider.min)), parseInt(hSlider.max));
+      if (kg > 0) wSlider.value = Math.min(Math.max(kg, parseInt(wSlider.min)), parseInt(wSlider.max));
+      syncing = false;
+      autoSizeInputs();
+      updateBody();
+    }
+
+    // Slider -> update everything
+    hSlider.addEventListener('input', () => {
+      if (syncing) return; syncing = true;
+      const cm = parseInt(hSlider.value);
+      hCm.value = cm;
+      const [ft, inches] = cmToFtParts(cm);
+      hFt.value = ft; hIn.value = inches;
+      syncing = false; autoSizeInputs(); updateBody();
+    });
+    wSlider.addEventListener('input', () => {
+      if (syncing) return; syncing = true;
+      const kg = parseInt(wSlider.value);
+      wKg.value = kg; wLbs.value = kgToLbs(kg);
+      syncing = false; autoSizeInputs(); updateBody();
+    });
+
+    // Cm input -> sync
+    hCm.addEventListener('input', syncFromCmKg);
+
+    // Ft/In inputs -> sync to cm
+    function syncFromFtIn() {
+      if (syncing) return; syncing = true;
+      const ft = parseInt(hFt.value) || 0;
+      const inches = parseInt(hIn.value) || 0;
+      const cm = Math.round((ft * 12 + inches) * 2.54);
+      hCm.value = cm;
+      hSlider.value = Math.min(Math.max(cm, parseInt(hSlider.min)), parseInt(hSlider.max));
+      syncing = false; autoSizeInputs(); updateBody();
+    }
+    hFt.addEventListener('input', syncFromFtIn);
+    hIn.addEventListener('input', syncFromFtIn);
+
+    // Kg input -> sync
+    wKg.addEventListener('input', () => {
+      if (syncing) return; syncing = true;
+      const kg = parseFloat(wKg.value) || 0;
+      if (kg > 0) wLbs.value = kgToLbs(kg);
+      wSlider.value = Math.min(Math.max(kg, parseInt(wSlider.min)), parseInt(wSlider.max));
+      syncing = false; autoSizeInputs(); updateBody();
+    });
+
+    // Lbs input -> sync to kg
+    wLbs.addEventListener('input', () => {
+      if (syncing) return; syncing = true;
+      const lbs = parseFloat(wLbs.value) || 0;
+      const kg = lbsToKg(lbs);
+      if (kg > 0) wKg.value = kg;
+      wSlider.value = Math.min(Math.max(kg, parseInt(wSlider.min)), parseInt(wSlider.max));
+      syncing = false; autoSizeInputs(); updateBody();
+    });
+
+    // Realism toggle
+    btnRealism.addEventListener('click', () => {
+      animeMode = !animeMode;
+      if (animeMode) {
+        btnRealism.textContent = '🌸 Anime'; btnRealism.classList.remove('random');
+        btnRealism.title = 'Anime/fantasy mode. Click for realistic.';
+      } else {
+        btnRealism.textContent = '🌍 Realistic'; btnRealism.classList.add('random');
+        btnRealism.title = 'Realistic mode. Click for anime/fantasy.';
+      }
+      updateSliderRanges();
+      updateBody();
+    });
+
+    function updateBody() {
+      const cm = parseFloat(hCm.value) || 0;
+      const kg = parseFloat(wKg.value) || 0;
+      if (cm <= 0 || kg <= 0) {
+        bodyVerdict.textContent = 'Enter both height and weight';
+        bodyVerdict.style.color = 'var(--text-muted)';
+        bodyNote.textContent = '';
+        bmiMarker.style.display = 'none';
+        return;
+      }
+      bmiMarker.style.display = 'block';
+      const lbs = kgToLbs(kg);
+      const m = cm / 100;
+      const bmi = kg / (m * m);
+      let category, color, note, pct;
+      if (animeMode) {
+        if (bmi < 10) { category = 'Impossibly Light'; color = '#7b1fa2'; pct = (bmi/10)*5; note = 'Even by anime standards, extremely light. Fine for supernatural/non-human.'; }
+        else if (bmi < 14) { category = 'Anime Thin'; color = '#e65100'; pct = 5+((bmi-10)/4)*10; note = 'Very common in anime. Looks normal in art, would be gaunt IRL.'; }
+        else if (bmi < 18.5) { category = 'Slim'; color = '#f9a825'; pct = 15+((bmi-14)/4.5)*12; note = 'Standard anime protagonist build. Most shonen characters land here.'; }
+        else if (bmi < 24) { category = 'Standard'; color = '#2e7d32'; pct = 27+((bmi-18.5)/5.5)*25; note = 'Normal range. Works for any character type.'; }
+        else if (bmi < 30) { category = 'Built / Muscular'; color = '#1565c0'; pct = 52+((bmi-24)/6)*20; note = 'Muscular or heavyset. Think All Might, Endeavor.'; }
+        else if (bmi < 40) { category = 'Large'; color = '#f9a825'; pct = 72+((bmi-30)/10)*15; note = 'Very large build. Fatgum (slim form), stocky fighters.'; }
+        else if (bmi < 60) { category = 'Massive'; color = '#e65100'; pct = 87+((bmi-40)/20)*8; note = 'Enormous. Fatgum (fat form), sumo, Mount Lady at human scale.'; }
+        else { category = 'Colossal'; color = '#7b1fa2'; pct = 95+Math.min(((bmi-60)/40)*5,5); note = 'Beyond normal scale. Giant characters, kaiju-scale.'; }
+      } else {
+        if (bmi < 12) { category = 'Incompatible with Life'; color = '#7b1fa2'; pct = (bmi/12)*5; note = 'Not survivable for a human at this height.'; }
+        else if (bmi < 16) { category = 'Dangerously Emaciated'; color = '#7b1fa2'; pct = 5+((bmi-12)/4)*8; note = 'Severe starvation territory.'; }
+        else if (bmi < 18.5) { category = 'Underweight'; color = '#e65100'; pct = 13+((bmi-16)/2.5)*10; note = 'Noticeably thin. Naturally slim, malnourished, or very lean.'; }
+        else if (bmi < 21) { category = 'Lean'; color = '#f9a825'; pct = 23+((bmi-18.5)/2.5)*12; note = 'Slim but healthy. Runner or swimmer build.'; }
+        else if (bmi < 25) { category = 'Average'; color = '#2e7d32'; pct = 35+((bmi-21)/4)*15; note = 'Normal healthy range. Soft to moderately fit.'; }
+        else if (bmi < 28) { category = 'Athletic / Stocky'; color = '#1565c0'; pct = 50+((bmi-25)/3)*15; note = 'Muscular, heavyset. Fighters, laborers, rugby players.'; }
+        else if (bmi < 32) { category = 'Heavy'; color = '#f9a825'; pct = 65+((bmi-28)/4)*15; note = 'Significantly above average. Bodybuilder or overweight.'; }
+        else if (bmi < 40) { category = 'Obese'; color = '#e65100'; pct = 80+((bmi-32)/8)*10; note = 'Very heavy. Major impact on mobility.'; }
+        else if (bmi < 60) { category = 'Extremely Obese'; color = '#7b1fa2'; pct = 90+((bmi-40)/20)*7; note = 'Extreme weight. Severely limited mobility.'; }
+        else { category = 'Unrealistic'; color = '#7b1fa2'; pct = 97+Math.min(((bmi-60)/40)*3,3); note = 'Beyond realistic human range.'; }
+      }
+      pct = Math.max(1, Math.min(99, pct));
+      bmiMarker.style.left = pct + '%';
+      bodyVerdict.textContent = category;
+      bodyVerdict.style.color = color;
+      const tag = animeMode ? '🌸 Anime' : '🌍 Realistic';
+      bodyNote.innerHTML = note + '<br><span style="opacity:0.6;font-size:0.7rem;">BMI: '+bmi.toFixed(1)+' — '+cmToFtIn(cm)+', '+lbs+' lbs ('+kg+' kg) ['+tag+']</span>';
+    }
+
+    // Calculate: fill missing value
+    btnCalc.addEventListener('click', () => {
+      const targetBmi = parseFloat(calcBuild.value);
+      if (!targetBmi) { showToast('Pick a build type first'); return; }
+      const cm = parseFloat(hCm.value) || 0;
+      const kg = parseFloat(wKg.value) || 0;
+      if (cm > 0 && kg <= 0) {
+        const newKg = Math.round(targetBmi * (cm/100) * (cm/100));
+        wKg.value = newKg; wLbs.value = kgToLbs(newKg);
+        wSlider.value = Math.min(Math.max(newKg, parseInt(wSlider.min)), parseInt(wSlider.max));
+        updateBody(); showToast('Weight: ' + kgToLbs(newKg) + ' lbs / ' + newKg + ' kg');
+      } else if (kg > 0 && cm <= 0) {
+        const newCm = Math.round(Math.sqrt(kg / targetBmi) * 100);
+        hCm.value = newCm;
+        const [ft, inches] = cmToFtParts(newCm);
+        hFt.value = ft; hIn.value = inches;
+        hSlider.value = Math.min(Math.max(newCm, parseInt(hSlider.min)), parseInt(hSlider.max));
+        updateBody(); showToast('Height: ' + cmToFtIn(newCm) + ' / ' + newCm + ' cm');
+      } else if (cm > 0 && kg > 0) {
+        showToast('Clear one field first — fills the missing value');
+      } else {
+        showToast('Enter height or weight first');
+      }
+    });
+
+    const btnGen = bodyCard.querySelector('[data-gen]');
+    const btnClear = bodyCard.querySelector('[data-clear]');
+    const btnAddAll = bodyCard.querySelector('[data-addall]');
+    let locked = false;
+    const btnLock = bodyCard.querySelector('[data-lock]');
+
+    btnGen.addEventListener('click', () => {
+      if (locked) return;
+      let h, w;
+      if (animeMode) {
+        // Anime: 4'0" (122cm) to 8'0" (244cm) bell curve centered at 165cm
+        h = Math.round(Math.max(122, Math.min(244, 165 + (Math.random()+Math.random()+Math.random()-1.5)*40)));
+        // BMI range 14-26 for anime (lean to athletic)
+        w = Math.round((14 + Math.random() * 12) * (h/100) * (h/100));
+      } else {
+        h = Math.round(Math.max(145, Math.min(210, 170 + (Math.random()+Math.random()+Math.random()-1.5)*20)));
+        w = Math.round((19 + Math.random() * 8) * (h/100) * (h/100));
+      }
+      hCm.value = h; wKg.value = w;
+      syncFromCmKg();
+      saveBodyToSheet();
+      showToast('Build randomized ✦');
+    });
+
+    btnClear.addEventListener('click', () => {
+      if (locked) return;
+      hCm.value = ''; hFt.value = ''; hIn.value = '';
+      wKg.value = ''; wLbs.value = '';
+      hSlider.value = 170; wSlider.value = 68;
+      delete sheet._body;
+      saveCurrentSheet(); renderSheet(); updateBody();
+    });
+
+    btnAddAll.addEventListener('click', () => { saveBodyToSheet(); showToast('Build saved ✦'); });
+    btnLock.addEventListener('click', () => {
+      locked = !locked; btnLock.classList.toggle('locked', locked); btnLock.textContent = locked ? '🔒' : '🔓';
+    });
+
+    function saveBodyToSheet() {
+      const cm = parseFloat(hCm.value) || 0;
+      const kg = parseFloat(wKg.value) || 0;
+      if (cm > 0 && kg > 0) { sheet._body = { cm, kg }; saveCurrentSheet(); renderSheet(); }
+    }
+
+    function loadBodyFromSheet() {
+      const data = sheet._body;
+      if (data && data.cm && data.kg) {
+        hCm.value = data.cm; wKg.value = data.kg;
+        syncFromCmKg();
+      } else {
+        hCm.value = ''; hFt.value = ''; hIn.value = '';
+        wKg.value = ''; wLbs.value = '';
+        hSlider.value = 170; wSlider.value = 68;
+      }
+      updateBody();
+    }
+
+    cardInstances['body'] = { generate: () => { if (!locked) btnGen.click(); }, locked: () => locked };
+    window._loadBody = loadBodyFromSheet;
+    updateSliderRanges();
+    updateBody();
+  }
+})();
 
 // ═══════ SHEET BUTTONS ═══════
 document.getElementById('btnExportTxt').addEventListener('click', exportTxt);
@@ -2721,7 +4508,7 @@ document.getElementById('btnDeleteProfile').addEventListener('click', async () =
 const pickerToggle = document.getElementById('pickerToggle'), pickerPanel = document.getElementById('pickerPanel');
 const pickerSearch = document.getElementById('pickerSearch'), pickerCategory = document.getElementById('pickerCategory');
 const pickerListArea = document.getElementById('pickerListArea'), pickerHint = document.getElementById('pickerHint');
-const PICKER_CATEGORIES = ORDERED_CATS.filter(c => c !== 'speech');
+const PICKER_CATEGORIES = ORDERED_CATS.filter(c => c !== 'speech' && c !== 'intellectual' && c !== 'eyeDescriptor' && c !== 'hairDescriptor' && c !== 'hygiene');
 let pickerLimit = 80;
 pickerToggle.addEventListener('click', () => { pickerToggle.classList.toggle('open'); pickerPanel.classList.toggle('open'); if (pickerPanel.classList.contains('open')) setTimeout(() => pickerSearch.focus(), 100); });
 function isOnSheet(cat, val) { return sheet[cat] && sheet[cat].includes(val); }
@@ -2749,6 +4536,231 @@ function refreshPickerIfOpen() { if (pickerPanel.classList.contains('open')) { c
 let pickerDebounce = null;
 pickerSearch.addEventListener('input', () => { clearTimeout(pickerDebounce); pickerLimit = 80; pickerDebounce = setTimeout(renderPickerList, 150); });
 pickerCategory.addEventListener('change', () => { pickerLimit = 80; renderPickerList(); pickerListArea.scrollTop = 0; });
+
+// ═══════ CUSTOM TRAITS SYSTEM ═══════
+// Storage: { pools: { "Custom": { "savvies": ["trait1"], "_all": ["trait2"] }, "Charmed": { "_all": ["trait3"] } } }
+// Every custom trait ALWAYS goes into the general generation pool.
+// Named pools (Custom, Charmed, etc.) are just organizational labels for managing.
+
+function loadCustomData() {
+  try { const raw = localStorage.getItem(CUSTOM_STORAGE_KEY); if (raw) customData = JSON.parse(raw); } catch(e) { customData = { pools: {} }; }
+}
+function saveCustomData() {
+  try { localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(customData)); } catch(e) {}
+}
+
+// Get ALL custom traits for a given generator category (used when in general/mha mode)
+function getCustomTraitsForCategory(category) {
+  if (!customEnabled) return [];
+  const traits = [];
+  for (const pool of Object.values(customData.pools)) {
+    if (pool[category]) traits.push(...pool[category]);
+  }
+  return [...new Set(traits)]; // dedupe
+}
+
+function getTotalCustomCount() {
+  let count = 0;
+  for (const pool of Object.values(customData.pools)) {
+    for (const arr of Object.values(pool)) count += arr.length;
+  }
+  return count;
+}
+
+
+// Populate category select dropdown — generator selection is REQUIRED
+function populateCustomCatSelect() {
+  const sel = document.getElementById('customCatSelect');
+  sel.innerHTML = '<option value="">— Select a generator —</option>';
+  // All tag-based generators that make sense for custom traits
+  const customizable = ['savvies','ineptitudes','likes','dislikes','virtues','perks','vices','flaws','kinks','taboos','face','bodyFeatures','physicalQuirks','identifying','pets','hobbies','religion','tics','mannerisms','hygiene'];
+  customizable.forEach(cat => {
+    sel.innerHTML += '<option value="' + cat + '">' + (CATEGORY_LABELS[cat] || cat) + '</option>';
+  });
+}
+
+// Import traits from textarea
+function importCustomTraits() {
+  const textarea = document.getElementById('customTextarea');
+  const catSelect = document.getElementById('customCatSelect');
+  const status = document.getElementById('customImportStatus');
+  const text = textarea.value.trim();
+  const targetGen = catSelect.value;
+
+  if (!targetGen) { status.textContent = '⚠ Select a generator first'; status.style.color = '#c44'; setTimeout(() => { status.textContent = ''; status.style.color = ''; }, 3000); return; }
+  if (!text) { status.textContent = 'Nothing to import'; return; }
+
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  let added = 0;
+
+  for (const line of lines) {
+    let trait, poolName;
+    const dashIdx = line.lastIndexOf(' - ');
+    if (dashIdx > 0 && dashIdx < line.length - 3) {
+      trait = line.substring(0, dashIdx).trim();
+      poolName = line.substring(dashIdx + 3).trim();
+    } else {
+      trait = line;
+      poolName = 'Custom';
+    }
+    if (!trait) continue;
+
+    // Store under: pools -> poolName -> generatorKey -> [traits]
+    if (!customData.pools[poolName]) customData.pools[poolName] = {};
+    if (!customData.pools[poolName][targetGen]) customData.pools[poolName][targetGen] = [];
+    if (!customData.pools[poolName][targetGen].includes(trait)) {
+      customData.pools[poolName][targetGen].push(trait);
+      added++;
+    }
+  }
+
+  saveCustomData();
+  textarea.value = '';
+  const genLabel = CATEGORY_LABELS[targetGen] || targetGen;
+  status.textContent = added + ' trait' + (added !== 1 ? 's' : '') + ' added to ' + genLabel + ' ✦';
+  status.style.color = '';
+  setTimeout(() => { status.textContent = ''; }, 3000);
+  renderCustomPoolsList(); refreshPoolButtons(); updateCustomToggleButtons();
+  
+  updateCustomCount();
+}
+
+function renderCustomPoolsList() {
+  const container = document.getElementById('customPoolsList');
+  const ioBar = document.getElementById('customPoolIO');
+  if (!container) return;
+  const pools = Object.entries(customData.pools);
+  if (pools.length === 0) { container.innerHTML = ''; if (ioBar) ioBar.style.display = 'none'; return; }
+  if (ioBar) ioBar.style.display = 'flex';
+
+  let html = '<div class="custom-label" style="margin-bottom:6px">Your Custom Pools:</div>';
+  for (const [name, pool] of pools) {
+    const genKeys = Object.keys(pool);
+    let totalCount = 0;
+    for (const arr of Object.values(pool)) totalCount += arr.length;
+
+    html += '<div class="custom-pool-item" data-pool="' + name.replace(/"/g, '&quot;') + '">';
+    html += '<div class="custom-pool-header"><span class="custom-pool-name">' + name + '</span><span class="custom-pool-meta">' + totalCount + ' trait' + (totalCount !== 1 ? 's' : '') + '</span>';
+    html += '<div class="custom-pool-actions"><button class="btn-delete-pool" data-pool="' + name.replace(/"/g, '&quot;') + '">Delete Pool</button></div></div>';
+
+    // Show traits grouped by generator
+    for (const genKey of genKeys) {
+      const traits = pool[genKey];
+      const genLabel = CATEGORY_LABELS[genKey] || genKey;
+      html += '<div style="margin-top:4px;"><span style="font-size:0.72rem;color:var(--muted);font-family:\'Alegreya SC\',serif;letter-spacing:0.04em;">' + genLabel + ':</span></div>';
+      html += '<div class="custom-pool-tags">' + traits.slice(0, 10).map(t => '<span class="custom-pool-tag">' + t + '</span>').join('') + (traits.length > 10 ? '<span class="custom-pool-tag">+' + (traits.length - 10) + ' more</span>' : '') + '</div>';
+    }
+    html += '</div>';
+  }
+  container.innerHTML = html;
+
+  container.querySelectorAll('.btn-delete-pool').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.dataset.pool;
+      delete customData.pools[name];
+      saveCustomData(); renderCustomPoolsList(); refreshPoolButtons(); updateCustomToggleButtons(); updateCustomCount();
+      showToast('Pool "' + name + '" deleted');
+    });
+  });
+}
+
+function updateCustomCount() {
+  const el = document.getElementById('customTraitCount');
+  if (!el) return;
+  const count = getTotalCustomCount();
+  el.textContent = count > 0 ? count + ' custom trait' + (count !== 1 ? 's' : '') : '';
+}
+
+// Add custom toggle buttons to gen cards
+function updateCustomToggleButtons() {
+  document.querySelectorAll('.btn-custom-toggle').forEach(b => b.remove());
+  const totalCustom = getTotalCustomCount();
+  if (totalCustom === 0) return;
+
+  document.querySelectorAll('.gen-card').forEach(card => {
+    const type = card.dataset.generator;
+    // Skip non-tag generators
+    if (type === 'identity' || type === 'body' || type === 'physicalConditions' || type === 'mentalConditions' || type === 'eyeDescriptor' || type === 'hairDescriptor' || type === 'speech' || type === 'intellectual') return;
+    const controls = card.querySelector('.gen-card-controls');
+    if (!controls) return;
+
+    // Count custom traits for this category (temporarily enable to count)
+    const was = customEnabled; customEnabled = true;
+    const customCount = getCustomTraitsForCategory(type).length;
+    customEnabled = was;
+    if (customCount === 0) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'btn-weight-toggle btn-custom-toggle';
+    btn.classList.toggle('random', !customEnabled);
+    btn.textContent = customEnabled ? '🔧 +Custom (' + customCount + ')' : '🔧 Custom Off';
+    btn.title = customEnabled ? 'Custom traits mixed into General/MHA. Click to exclude.' : 'Custom traits excluded from General/MHA. Click to include.';
+    // Insert before the lock button
+    const lockBtn = controls.querySelector('[data-lock]');
+    if (lockBtn) controls.insertBefore(btn, lockBtn);
+    else controls.appendChild(btn);
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      customEnabled = !customEnabled;
+      updateCustomToggleButtons();
+      refreshPoolButtons();
+      showToast(customEnabled ? 'Custom traits enabled ✦' : 'Custom traits disabled');
+    });
+  });
+}
+
+// Initialize
+loadCustomData();
+populateCustomCatSelect();
+renderCustomPoolsList();
+updateCustomToggleButtons();
+updateCustomCount();
+document.getElementById('btnImportCustom').addEventListener('click', importCustomTraits);
+
+// Pool export/import
+document.getElementById('btnExportPools').addEventListener('click', () => {
+  const json = JSON.stringify(customData, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'charforge-custom-pools.json'; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Pools exported ✦');
+});
+
+const poolFileInput = document.getElementById('poolFileInput');
+document.getElementById('btnImportPools').addEventListener('click', () => poolFileInput.click());
+poolFileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const imported = JSON.parse(ev.target.result);
+      if (!imported.pools) throw new Error('Invalid format');
+      // Merge into existing pools
+      let added = 0;
+      for (const [poolName, pool] of Object.entries(imported.pools)) {
+        if (!customData.pools[poolName]) customData.pools[poolName] = {};
+        for (const [gen, traits] of Object.entries(pool)) {
+          if (!customData.pools[poolName][gen]) customData.pools[poolName][gen] = [];
+          for (const trait of traits) {
+            if (!customData.pools[poolName][gen].includes(trait)) { customData.pools[poolName][gen].push(trait); added++; }
+          }
+        }
+      }
+      saveCustomData(); renderCustomPoolsList(); refreshPoolButtons(); updateCustomToggleButtons(); updateCustomCount();
+      showToast(added + ' traits imported from file ✦');
+    } catch(err) { showToast('Invalid pool file'); }
+    poolFileInput.value = '';
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById('btnClearAllPools').addEventListener('click', () => {
+  if (!confirm('Delete ALL custom pools? This cannot be undone.')) return;
+  customData = { pools: {} }; customEnabled = true;
+  saveCustomData(); renderCustomPoolsList(); refreshPoolButtons(); updateCustomToggleButtons(); updateCustomCount();
+  showToast('All custom pools deleted');
+});
 
 // ═══════ INIT ═══════
 (async function init() {
