@@ -385,6 +385,10 @@
   .custom-info-icon { font-size: 1rem; }
   .custom-info-title { font-family: 'Alegreya SC', serif; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); flex: 1; }
   .custom-trait-count { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent-primary); background: rgba(200,180,100,0.1); padding: 2px 8px; border-radius: 10px; }
+  .btn-body-shape-nsfw { background: none; border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; font-size: 0.75rem; cursor: pointer; opacity: 0.5; transition: all 0.2s; }
+  .btn-body-shape-nsfw:hover { opacity: 0.8; }
+  .btn-body-shape-nsfw.active { opacity: 1; border-color: var(--accent-primary); background: rgba(200,180,100,0.1); }
+  .condition-tier-label { width: 100%; font-family: 'Alegreya SC', serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; color: var(--text-secondary); padding: 6px 0 3px; margin-top: 4px; border-bottom: 1px solid rgba(255,255,255,0.04); }
   .custom-info-body { padding: 16px 20px; margin-top: -1px; background: var(--bg-card); border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; }
   .custom-info-body p { font-family: 'Alegreya', serif; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; margin: 0 0 8px; }
   .custom-info-body p:last-child { margin-bottom: 0; }
@@ -778,6 +782,18 @@
         </div>
       </div>
 
+      <!-- Body Shape Picker -->
+      <div class="gen-card" data-generator="bodyShape">
+        <div class="gen-card-header"><span class="gen-card-title">Body Shape<div class="gen-card-subtitle">Overall silhouette, proportions &amp; build type</div></span><div class="gen-card-controls"><button class="btn-body-shape-nsfw" id="btnBodyShapeNsfw" title="Show additional options">👁</button><button class="btn-add-all-card" title="Add selected to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button></div></div>
+        <div class="gen-card-results">
+          <div data-results class="condition-picker">
+            <input type="text" class="condition-search" id="bodyShapeSearch" placeholder="Search body shapes…" autocomplete="off">
+            <div class="condition-options" id="bodyShapeOptions"></div>
+            <div class="condition-selected" id="bodyShapeSelected"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Conditions Pickers -->
       <div class="gen-card" data-generator="physicalConditions">
         <div class="gen-card-header"><span class="gen-card-title">Physical Conditions<div class="gen-card-subtitle">Chronic conditions, disabilities &amp; physical health</div></span><div class="gen-card-controls"><button class="btn-add-all-card" title="Add selected to sheet" data-addall>+All</button><button class="btn-clear" data-clear>Clear</button></div></div>
@@ -879,7 +895,7 @@
     <div class="picker-toggle" id="pickerToggle"><span class="picker-toggle-icon">▶</span><span class="picker-toggle-label">Manual Trait Search</span></div>
     <div class="picker-panel" id="pickerPanel">
       <div class="picker-inner">
-        <div class="picker-controls"><input type="text" class="picker-search" id="pickerSearch" placeholder="Search traits… or browse by category" autocomplete="off"><select class="picker-category-select" id="pickerCategory"><option value="">— Select Category —</option><option value="face">Facial Features</option><option value="bodyFeatures">Body Features</option><option value="physicalQuirks">Physical Quirks</option><option value="identifying">Identifying Characteristics</option><option value="savvies">Savvies</option><option value="ineptitudes">Ineptitudes</option><option value="likes">Likes</option><option value="dislikes">Dislikes</option><option value="vices">Vices</option><option value="flaws">Flaws</option><option value="kinks">Kinks & Preferences</option><option value="virtues">Virtues</option><option value="perks">Perks</option><option value="pets">Pets</option><option value="hobbies">Hobbies</option><option value="religion">Religious Beliefs</option><option value="tics">Tics & Quirks</option><option value="mannerisms">Mannerisms</option><option value="intellectual">Intellectual Characteristics</option><option value="hygiene">Hygiene</option><option value="taboos">Taboos</option></select></div>
+        <div class="picker-controls"><input type="text" class="picker-search" id="pickerSearch" placeholder="Search traits… or browse by category" autocomplete="off"><select class="picker-category-select" id="pickerCategory"><option value="">— Select Category —</option><option value="face">Facial Features</option><option value="bodyFeatures">Body Features</option><option value="physicalQuirks">Physical Quirks</option><option value="identifying">Identifying Characteristics</option><option value="savvies">Savvies</option><option value="ineptitudes">Ineptitudes</option><option value="likes">Likes</option><option value="dislikes">Dislikes</option><option value="vices">Vices</option><option value="flaws">Flaws</option><option value="kinks">Kinks & Preferences</option><option value="virtues">Virtues</option><option value="perks">Perks</option><option value="pets">Pets</option><option value="hobbies">Hobbies</option><option value="religion">Religious Beliefs</option><option value="tics">Tics & Quirks</option><option value="mannerisms">Mannerisms</option><option value="intellectual">Intellectual Characteristics</option><option value="hygiene">Hygiene</option><option value="taboos">Taboos</option><option value="speech">Speech</option><option value="bodyShape">Body Shape</option></select></div>
         <div class="picker-list-area" id="pickerListArea"><div class="picker-list-empty">Select a category to browse, or type to search across all traits.</div></div>
         <div class="picker-info"><span class="picker-hint" id="pickerHint"></span></div>
       </div>
@@ -2800,6 +2816,65 @@ const DATA = {
       "Slow burn thinker — builds momentum over time"
     ]
   },
+  bodyShape: {
+    realistic: [
+      // General frames
+      "Ectomorph (narrow, lean frame)", "Mesomorph (naturally muscular)", "Endomorph (wide, soft frame)",
+      // Silhouettes
+      "Hourglass", "Pear-shaped (wider hips)", "Apple-shaped (wider torso)", "Rectangle (straight up and down)", "Inverted triangle (broad shoulders, narrow hips)", "Spoon-shaped (wider hips than bust with defined waist)", "Diamond (narrow shoulders, wide midsection, narrow hips)",
+      // Athletic builds
+      "Athletic build", "Swimmer's build (broad shoulders, long torso)", "Runner's build (lean, long-limbed)", "Gymnast's build (compact, muscular)", "Powerlifter build (thick, barrel-chested)", "Wrestler's build (dense, low center of gravity)", "Dancer's build (lean, flexible, long-limbed)", "Martial artist build (wiry, fast)", "Linebacker build (massive upper body)",
+      // Weight distribution
+      "Top-heavy", "Bottom-heavy", "Evenly distributed weight", "Carries weight in midsection", "Carries weight in thighs and hips",
+      // Proportions
+      "Long-legged", "Short-legged / long torso", "Long-armed", "Short-armed", "Broad-shouldered", "Narrow-shouldered", "Wide-hipped", "Narrow-hipped", "Long neck", "No visible neck", "Barrel-chested", "Flat-chested", "Deep-chested", "Broad-backed",
+      // Size descriptors
+      "Petite (small all over)", "Compact and sturdy", "Lanky / gangly", "Willowy (tall and slender)", "Stocky", "Burly", "Heavyset", "Beanpole", "Wiry", "Husky", "Brawny", "Rotund", "Gaunt", "Reedy", "Rangy", "Thick-set", "Slight", "Statuesque",
+      // Misc anatomical
+      "Large hands", "Small hands", "Big feet", "Small feet", "Pronounced collarbone", "Visible ribs", "Thick wrists/ankles", "Dainty wrists/ankles", "Wide ribcage", "Narrow ribcage", "High waist", "Low waist", "Long fingers", "Stubby fingers", "Prominent Adam's apple", "No visible Adam's apple"
+    ],
+    anime: [
+      // Classic anime body types
+      "Bishōnen (pretty boy, slender)", "Bishōjo (pretty girl, delicate)", "Chibi proportions (oversized head, tiny body)",
+      "Shōnen protagonist build (lean but cut)", "Shōjo protagonist build (willowy, long-legged)", "JoJo-tier muscular (impossibly ripped)",
+      "Moe (small, cute, round-faced)", "Ikemen (tall, chiseled, model-like)",
+      // Exaggerated proportions
+      "Noodle limbs (extremely thin, long limbs)", "Super deformed (SD)", "CLAMP proportions (impossibly tall and thin)",
+      "Toriyama build (massive upper body, tiny waist)", "One Piece proportions (wildly exaggerated)", "Baki-tier muscle (anatomy-defying muscle definition)",
+      // Size tropes
+      "Tiny but terrifying (small body, immense power)", "Gentle giant (massive but soft)", "Tank (wall of muscle, no neck)",
+      "Ara ara body (tall, mature, curvaceous)", "Loli/shota proportions (childlike frame, any age)", "Delinquent build (tall, broad, intimidating)",
+      "Magical girl figure (petite, accentuated by transformation)", "Mecha pilot build (lean, fit, compact)",
+      // Fantasy races
+      "Elf-like (tall, impossibly thin, ethereal)", "Dwarf-like (short, barrel-chested, dense)", "Orc-like (massive, green-tinted, hulking)",
+      "Fairy-like (tiny, delicate, weightless)", "Giant (scaled up human, towering)", "Beast-hybrid (partially animal proportions)",
+      // Specific tropes
+      "Pretty-boy villain (slender, angular, menacing elegance)", "Battle-scarred veteran (bulky, asymmetric from damage)",
+      "Android/cyborg (partially mechanical limbs, joints visible)", "Kemonomimi (human body with animal ears/tail)",
+      "Monster form (humanoid but wrong proportions)"
+    ],
+    kinky: [
+      // Exaggerated curves
+      "Extremely busty", "Extremely bottom-heavy", "Exaggerated hourglass", "Hyper-muscular", "Hyper-curvy",
+      "Thicc (exaggerated hips and thighs)", "Shortstack (very short, very curvy)",
+      // Size/proportion extremes
+      "Amazonian (extremely tall and muscular)", "Impossibly thin waist", "Mile-long legs", "Exaggerated V-taper",
+      "Macro (building-sized)", "Micro (palm-sized)",
+      // Transformation/fantasy
+      "Slime body (translucent, amorphous)", "Inflation body (exaggerated roundness)", "Muscle growth (beyond human limits)",
+      "Multi-armed", "Multi-limbed", "Lamia (snake lower body)", "Centaur (horse lower body)", "Arachne (spider lower body)",
+      "Merfolk (fish lower body)", "Harpy (wing-arms, bird legs)", "Naga (long serpentine body)",
+      // Fetish archetypes
+      "SSBBW/SSBHM (super-sized)", "Feeder body", "Doll-like proportions (ball-jointed aesthetic)",
+      "Rubber/latex body (shiny, skin-tight)", "Pregnant", "Heavily pregnant (multiples/overdue)",
+      "Bimbo/Himbo body (exaggerated everything)", "Hyper-endowed",
+      // Body mod
+      "Extreme piercings (many, prominent)", "Extreme tattoo coverage (80%+ body)", "Split tongue", "Subdermal implants",
+      "Corset-trained waist", "Extreme body modification",
+      // Other
+      "Living clothing/symbiote", "Tentacle appendages", "Goo/gel body", "Crystalline body", "Floral/plant body"
+    ]
+  },
   physicalConditions: [
     "Chronic pain", "Chronic fatigue syndrome", "Fibromyalgia",
     "Arthritis", "Rheumatoid arthritis", "Osteoarthritis",
@@ -3415,8 +3490,8 @@ async function renderProfileSelect() {
   }
 }
 
-const CATEGORY_LABELS = { savvies:'Savvies', ineptitudes:'Ineptitudes', likes:'Likes', dislikes:'Dislikes', virtues:'Virtues', perks:'Perks', vices:'Vices', flaws:'Flaws', kinks:'Kinks & Preferences', taboos:'Taboos', speech:'Speech', intellectual:'Intellectual Characteristics', pets:'Pets', hobbies:'Hobbies', religion:'Religious Beliefs', tics:'Tics & Quirks', mannerisms:'Mannerisms', hygiene:'Hygiene', identity:'Identity', body:'Build', eyeDescriptor:'Eyes', hairDescriptor:'Hair', face:'Facial Features', bodyFeatures:'Body Features', physicalQuirks:'Physical Quirks', identifying:'Identifying Characteristics', physicalConditions:'Physical Conditions', mentalConditions:'Mental & Neurological Conditions' };
-const ORDERED_CATS = ['eyeDescriptor','hairDescriptor','face','bodyFeatures','physicalQuirks','identifying','savvies','ineptitudes','likes','dislikes','virtues','perks','vices','flaws','kinks','taboos','speech','intellectual','pets','hobbies','religion','tics','mannerisms','hygiene','physicalConditions','mentalConditions'];
+const CATEGORY_LABELS = { savvies:'Savvies', ineptitudes:'Ineptitudes', likes:'Likes', dislikes:'Dislikes', virtues:'Virtues', perks:'Perks', vices:'Vices', flaws:'Flaws', kinks:'Kinks & Preferences', taboos:'Taboos', speech:'Speech', intellectual:'Intellectual Characteristics', pets:'Pets', hobbies:'Hobbies', religion:'Religious Beliefs', tics:'Tics & Quirks', mannerisms:'Mannerisms', hygiene:'Hygiene', identity:'Identity', body:'Build', bodyShape:'Body Shape', eyeDescriptor:'Eyes', hairDescriptor:'Hair', face:'Facial Features', bodyFeatures:'Body Features', physicalQuirks:'Physical Quirks', identifying:'Identifying Characteristics', physicalConditions:'Physical Conditions', mentalConditions:'Mental & Neurological Conditions' };
+const ORDERED_CATS = ['eyeDescriptor','hairDescriptor','face','bodyFeatures','physicalQuirks','identifying','savvies','ineptitudes','likes','dislikes','virtues','perks','vices','flaws','kinks','taboos','speech','intellectual','pets','hobbies','religion','tics','mannerisms','hygiene','bodyShape','physicalConditions','mentalConditions'];
 const META_KEYS = new Set(['_name', '_notes', '_image', '_identity', '_body']);
 
 let toastTimer = null;
@@ -3589,9 +3664,11 @@ function renderSheet() {
 
 function addToSheet(category, value) {
   if (!sheet[category]) sheet[category] = [];
-  if (category === 'speech') {
-    if (sheet[category].some(e => e.label === value.label && e.value === value.value)) { showToast('Already on sheet'); return; }
-    sheet[category].push(value);
+  if (category === 'speech' || category === 'intellectual') {
+    // Accept either {label,value} object or plain string
+    const entry = typeof value === 'string' ? { label: 'Custom', value: value } : value;
+    if (sheet[category].some(e => e.label === entry.label && e.value === entry.value)) { showToast('Already on sheet'); return; }
+    sheet[category].push(entry);
   } else {
     if (sheet[category].includes(value)) { showToast('Already on sheet'); return; }
     sheet[category].push(value);
@@ -3884,7 +3961,7 @@ function getHygienePool() {
 
 document.querySelectorAll('.gen-card').forEach(card => {
   const type = card.dataset.generator;
-  if (type === 'identity' || type === 'body' || type === 'physicalConditions' || type === 'mentalConditions') return; // handled separately
+  if (type === 'identity' || type === 'body' || type === 'bodyShape' || type === 'physicalConditions' || type === 'mentalConditions') return; // handled separately
   const btnGen = card.querySelector('[data-gen]'), btnClear = card.querySelector('[data-clear]'), btnLock = card.querySelector('[data-lock]'), btnAddAll = card.querySelector('[data-addall]'), countSelect = card.querySelector('[data-count]'), rc = card.querySelector('[data-results]');
   let locked = false;
   function generate() {
@@ -4002,6 +4079,115 @@ function wireConditionPicker(searchId, optionsId, selectedId, dataKey) {
 
 const physCondPicker = wireConditionPicker('physCondSearch', 'physCondOptions', 'physCondSelected', 'physicalConditions');
 const mentalCondPicker = wireConditionPicker('mentalCondSearch', 'mentalCondOptions', 'mentalCondSelected', 'mentalConditions');
+
+// ═══════ BODY SHAPE PICKER ═══════
+(function() {
+  const searchInput = document.getElementById('bodyShapeSearch');
+  const optionsDiv = document.getElementById('bodyShapeOptions');
+  const selectedDiv = document.getElementById('bodyShapeSelected');
+  const nsfwBtn = document.getElementById('btnBodyShapeNsfw');
+  if (!searchInput) return;
+
+  let selected = new Set();
+  let showKinky = false;
+
+  function getAllShapes() {
+    const shapes = [...DATA.bodyShape.realistic, ...DATA.bodyShape.anime];
+    if (showKinky) shapes.push(...DATA.bodyShape.kinky);
+    return shapes;
+  }
+
+  function getTier(item) {
+    if (DATA.bodyShape.realistic.includes(item)) return 'realistic';
+    if (DATA.bodyShape.anime.includes(item)) return 'anime';
+    if (DATA.bodyShape.kinky.includes(item)) return 'kinky';
+    return 'realistic';
+  }
+
+  function tierLabel(tier) {
+    return tier === 'realistic' ? '⚡' : tier === 'anime' ? '🌸' : '🔞';
+  }
+
+  function renderOptions(filter) {
+    if (!filter || filter.length < 1) {
+      // Show all grouped by tier when no search
+      const tiers = [
+        { key: 'realistic', label: 'Realistic', icon: '⚡', items: DATA.bodyShape.realistic },
+        { key: 'anime', label: 'Anime', icon: '🌸', items: DATA.bodyShape.anime }
+      ];
+      if (showKinky) tiers.push({ key: 'kinky', label: 'Kinky', icon: '🔞', items: DATA.bodyShape.kinky });
+      let html = '';
+      for (const tier of tiers) {
+        html += '<div class="condition-tier-label">' + tier.icon + ' ' + tier.label + ' <span style="opacity:0.5">(' + tier.items.length + ')</span></div>';
+        html += tier.items.map(item =>
+          '<span class="condition-chip' + (selected.has(item) ? ' selected' : '') + '" data-val="' + item.replace(/"/g, '&quot;') + '">' + item + '</span>'
+        ).join('');
+      }
+      optionsDiv.innerHTML = html;
+    } else {
+      const lower = filter.toLowerCase();
+      const all = getAllShapes();
+      const matches = all.filter(item => item.toLowerCase().includes(lower)).slice(0, 40);
+      optionsDiv.innerHTML = matches.map(item =>
+        '<span class="condition-chip' + (selected.has(item) ? ' selected' : '') + '" data-val="' + item.replace(/"/g, '&quot;') + '" title="' + getTier(item) + '">' + tierLabel(getTier(item)) + ' ' + item + '</span>'
+      ).join('');
+    }
+    optionsDiv.querySelectorAll('.condition-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const val = chip.dataset.val;
+        if (selected.has(val)) { selected.delete(val); chip.classList.remove('selected'); }
+        else { selected.add(val); chip.classList.add('selected'); }
+        renderSelected();
+      });
+    });
+  }
+
+  function renderSelected() {
+    selectedDiv.innerHTML = Array.from(selected).map(item =>
+      '<span class="condition-sel-tag">' + item + '<button class="remove-cond" data-val="' + item.replace(/"/g, '&quot;') + '">×</button></span>'
+    ).join('');
+    selectedDiv.querySelectorAll('.remove-cond').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selected.delete(btn.dataset.val);
+        renderSelected();
+        renderOptions(searchInput.value);
+      });
+    });
+  }
+
+  // Show all by default (no search needed)
+  renderOptions('');
+
+  searchInput.addEventListener('input', () => renderOptions(searchInput.value));
+
+  // NSFW toggle
+  nsfwBtn.addEventListener('click', () => {
+    showKinky = !showKinky;
+    nsfwBtn.classList.toggle('active', showKinky);
+    nsfwBtn.title = showKinky ? 'Kinky tier visible. Click to hide.' : 'Show additional options';
+    renderOptions(searchInput.value);
+  });
+
+  // Wire addAll
+  const card = searchInput.closest('.gen-card');
+  const btnAddAll = card.querySelector('[data-addall]');
+  if (btnAddAll) btnAddAll.addEventListener('click', () => {
+    if (selected.size === 0) { showToast('Select shapes first'); return; }
+    if (!sheet.bodyShape) sheet.bodyShape = [];
+    let added = 0;
+    selected.forEach(item => { if (!sheet.bodyShape.includes(item)) { sheet.bodyShape.push(item); added++; } });
+    if (added > 0) { saveCurrentSheet(); renderSheet(); showToast(added + ' added ✦'); } else showToast('All already on sheet');
+  });
+
+  // Wire clear
+  const btnClear = card.querySelector('[data-clear]');
+  if (btnClear) btnClear.addEventListener('click', () => {
+    selected.clear();
+    searchInput.value = '';
+    renderOptions('');
+    renderSelected();
+  });
+})();
 
 // ═══════ COLLAPSE ═══════
 document.querySelectorAll('[data-collapse]').forEach(h => { h.addEventListener('click', () => document.getElementById(h.dataset.collapse).classList.toggle('collapsed')); });
@@ -4508,7 +4694,27 @@ document.getElementById('btnDeleteProfile').addEventListener('click', async () =
 const pickerToggle = document.getElementById('pickerToggle'), pickerPanel = document.getElementById('pickerPanel');
 const pickerSearch = document.getElementById('pickerSearch'), pickerCategory = document.getElementById('pickerCategory');
 const pickerListArea = document.getElementById('pickerListArea'), pickerHint = document.getElementById('pickerHint');
-const PICKER_CATEGORIES = ORDERED_CATS.filter(c => c !== 'speech' && c !== 'intellectual' && c !== 'eyeDescriptor' && c !== 'hairDescriptor' && c !== 'hygiene');
+const PICKER_CATEGORIES = ORDERED_CATS.filter(c => c !== 'eyeDescriptor' && c !== 'hairDescriptor');
+
+// Flatten structured pools (speech, intellectual, hygiene) into searchable arrays
+function getFlatPool(cat) {
+  if (cat === 'speech') {
+    const s = DATA.speech;
+    return [...s.volume, ...s.commonWords, ...s.tics, ...s.emotion, ...s.swearing, ...s.manner, ...s.unique];
+  }
+  if (cat === 'intellectual') {
+    const s = DATA.intellectual;
+    return Object.values(s).flat();
+  }
+  if (cat === 'hygiene') {
+    const d = DATA.hygiene;
+    return [...d.good, ...d.bad, ...d.neutral];
+  }
+  if (cat === 'bodyShape') {
+    return [...DATA.bodyShape.realistic, ...DATA.bodyShape.anime, ...DATA.bodyShape.kinky];
+  }
+  return getPool(cat);
+}
 let pickerLimit = 80;
 pickerToggle.addEventListener('click', () => { pickerToggle.classList.toggle('open'); pickerPanel.classList.toggle('open'); if (pickerPanel.classList.contains('open')) setTimeout(() => pickerSearch.focus(), 100); });
 function isOnSheet(cat, val) { return sheet[cat] && sheet[cat].includes(val); }
@@ -4518,7 +4724,7 @@ function renderPickerList() {
   const cats = sc ? [sc] : PICKER_CATEGORIES;
   let ta = 0, ts = 0, html = '';
   for (const cat of cats) {
-    const pool = getPool(cat); if (!pool || !Array.isArray(pool)) continue;
+    const pool = getFlatPool(cat); if (!pool || !Array.isArray(pool)) continue;
     const items = q.length >= 2 ? pool.filter(i => i.toLowerCase().includes(q)) : pool;
     if (!items.length) continue; ta += items.length;
     const rem = pickerLimit - ts; if (rem <= 0) continue;
@@ -4573,7 +4779,7 @@ function populateCustomCatSelect() {
   const sel = document.getElementById('customCatSelect');
   sel.innerHTML = '<option value="">— Select a generator —</option>';
   // All tag-based generators that make sense for custom traits
-  const customizable = ['savvies','ineptitudes','likes','dislikes','virtues','perks','vices','flaws','kinks','taboos','face','bodyFeatures','physicalQuirks','identifying','pets','hobbies','religion','tics','mannerisms','hygiene'];
+  const customizable = ['savvies','ineptitudes','likes','dislikes','virtues','perks','vices','flaws','kinks','taboos','face','bodyFeatures','bodyShape','physicalQuirks','identifying','speech','intellectual','pets','hobbies','religion','tics','mannerisms','hygiene'];
   customizable.forEach(cat => {
     sel.innerHTML += '<option value="' + cat + '">' + (CATEGORY_LABELS[cat] || cat) + '</option>';
   });
@@ -4680,7 +4886,7 @@ function updateCustomToggleButtons() {
   document.querySelectorAll('.gen-card').forEach(card => {
     const type = card.dataset.generator;
     // Skip non-tag generators
-    if (type === 'identity' || type === 'body' || type === 'physicalConditions' || type === 'mentalConditions' || type === 'eyeDescriptor' || type === 'hairDescriptor' || type === 'speech' || type === 'intellectual') return;
+    if (type === 'identity' || type === 'body' || type === 'bodyShape' || type === 'physicalConditions' || type === 'mentalConditions' || type === 'eyeDescriptor' || type === 'hairDescriptor' || type === 'speech' || type === 'intellectual') return;
     const controls = card.querySelector('.gen-card-controls');
     if (!controls) return;
 
